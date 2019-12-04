@@ -28,7 +28,7 @@ class Director {
     public void setPrivateStage(Stage privateStage) {
         this.privateStage = privateStage;
     }
-    public Stage getPrivateStage() {
+    public final Stage getPrivateStage() {
         return privateStage;
     }
     /**

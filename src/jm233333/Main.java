@@ -6,6 +6,7 @@ import javafx.scene.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import jm233333.ui.SceneVisualizer;
 
 /**
  * The {@code Main} class includes the entrance and the main process of the application.
@@ -19,10 +20,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         // initialize scene
         Group root = new Group();
-        Scene scene = new Scene(root, 480, 240, Color.BLACK);
-        root.getChildren().add(new Circle(50, 50, 50, Color.GREEN));
+        Scene scene = new SceneVisualizer(root, 480, 320);
         // initialize stage
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("Hello GG");
         primaryStage.setScene(scene);
         primaryStage.show();
         //
