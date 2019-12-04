@@ -1,0 +1,10 @@
+#controller {
+    -fx-padding: 16;
+    -fx-min-height: 320;
+    -fx-background-color: rgb(128, 128, 255);
+    -fx-alignment: TOP-LEFT;
+}
+#canvas {
+    -fx-padding: 16;
+    -fx-background-color: rgb(255, 128, 255);
+}

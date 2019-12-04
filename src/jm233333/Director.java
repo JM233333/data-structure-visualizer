@@ -5,7 +5,7 @@ import javafx.stage.Stage;
 /**
  * The {@code Director} class is a singleton class that maintains global data and controls the overall program.
  */
-class Director {
+public class Director {
     /**
      * Defines the unique instance of Director.
      */
@@ -24,17 +24,17 @@ class Director {
     /**
      * The stage of the application.
      */
-    private Stage privateStage;
-    public void setPrivateStage(Stage privateStage) {
-        this.privateStage = privateStage;
+    private Stage primaryStage;
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
     }
-    public final Stage getPrivateStage() {
-        return privateStage;
+    public final Stage getPrimaryStage() {
+        return primaryStage;
     }
     /**
      * Initialize the unique instance of Director.
      */
-    public void initialize(Stage privateStage) {
-        setPrivateStage(privateStage);
+    public void initialize(Stage primaryStage) {
+        setPrimaryStage(primaryStage);
     }
 }
