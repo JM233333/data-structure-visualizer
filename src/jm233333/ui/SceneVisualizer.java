@@ -14,9 +14,9 @@ import jm233333.visual.VisualDataStructure;
 public class SceneVisualizer extends Scene {
 
     private BorderPane root;
+    private Controller controller;
     private VisualDataStructure visualDS;
-    private GridPane controller;
-    private Monitor canvas;
+    private Monitor monitor;
 
     /**
      * Creates a SceneVisualizer with a specific size.
@@ -39,7 +39,7 @@ public class SceneVisualizer extends Scene {
     private void initialize() {
         initializeCSS();
         initializeController();
-        initializeCanvas();
+        initializeMonitor();
     }
     private void initializeCSS() {
         Class cls = this.getClass();
@@ -48,48 +48,17 @@ public class SceneVisualizer extends Scene {
     }
     private void initializeController() {
         // initialize controller
-        controller = new GridPane();
+        controller = new Controller(visualDS);
         controller.setId("controller");
         root.setBottom(controller); // root.getChildren().add(controller);
         controller.setGridLinesVisible(true); // debug
-        // initialize method triggers in the controller
-        final MethodTrigger trigger1 = new MethodTrigger("push", "value");
-        GridPane.setConstraints(trigger1, 0, 0);
-        controller.getChildren().addAll(trigger1);
-        // initialize event listener for method triggers
-        trigger1.getButton().setOnAction((event) -> {
-            // get method name and parameters
-            String name = trigger1.getName();
-            ArrayList<Integer> parameters = trigger1.getArguments();
-            StringBuilder s = new StringBuilder(name);
-            for (int parameter : parameters) {
-                s.append(" ").append(parameter);
-            }
-            System.out.println(s);
-            // invoke method
-            try {
-                Class<?>[] parameterTypes = new Class<?>[parameters.size()];
-                for (int i = 0; i < parameters.size(); i ++) {
-                    Class cls = parameters.get(i).getClass();
-                    try {
-                        Field field = cls.getDeclaredField("TYPE");
-                        parameterTypes[i] = (Class<?>) field.get(parameters.get(i));
-                    } catch (NoSuchFieldException e) {
-                        parameterTypes[i] = cls;
-                    }
-                }
-                Method method = visualDS.getClass().getDeclaredMethod(name, parameterTypes);
-                method.invoke(visualDS, parameters.toArray());
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
-        });
     }
-    private void initializeCanvas() {
-        // initialize canvas
-        canvas = new Monitor();
-        canvas.setId("canvas");
-        root.setCenter(canvas); // root.getChildren().add(canvas);
+    private void initializeMonitor() {
+        // initialize monitor
+        monitor = new Monitor();
+        monitor.setId("monitor");
+        root.setCenter(monitor); // root.getChildren().add(canvas);
+        visualDS.setMonitor(monitor);
         //
     }
 }
