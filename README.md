@@ -6,4 +6,4 @@ DataStructureVisualizer is an application that provides visual graphic interface
 
 ## Update Record
 
-2019.12.6 : the first embryonic form
+2019.12.6 : an embryonic form is built
