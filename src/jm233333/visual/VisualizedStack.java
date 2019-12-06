@@ -3,10 +3,10 @@ package jm233333.visual;
 import javafx.util.Pair;
 import jm233333.ui.Monitor;
 
-public class Stack extends VisualDataStructure {
+public class VisualizedStack extends VisualizedDataStructure {
     private int[] data;
     private int top;
-    public Stack(int n) {
+    public VisualizedStack(int n) {
         data = new int[n];
         top = 0;
     }

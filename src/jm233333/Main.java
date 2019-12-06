@@ -1,15 +1,12 @@
 package jm233333;
 
 import javafx.application.Application;
-import javafx.beans.value.*;
 import javafx.scene.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import jm233333.ui.SceneVisualizer;
-import jm233333.visual.Stack;
-import jm233333.visual.VisualDataStructure;
+import jm233333.visual.VisualizedStack;
+import jm233333.visual.VisualizedDataStructure;
 
 /**
  * The {@code Main} class includes the entrance and the main process of the application.
@@ -24,7 +21,7 @@ public class Main extends Application {
         // initialize director
         Director.getInstance().setPrimaryStage(primaryStage);
         // initialize data structure
-        VisualDataStructure visualDS = new Stack(10);
+        VisualizedDataStructure visualDS = new VisualizedStack(10);
         // initialize scene
         BorderPane root = new BorderPane();
         Scene scene = new SceneVisualizer(root, 1024, 768, visualDS);

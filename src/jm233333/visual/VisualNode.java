@@ -1,4 +1,4 @@
-package jm233333.ui;
+package jm233333.visual;
 
 import javafx.scene.Group;
 

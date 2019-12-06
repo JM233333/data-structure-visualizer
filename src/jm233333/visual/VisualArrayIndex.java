@@ -1,6 +1,5 @@
-package jm233333.ui;
+package jm233333.visual;
 
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.shape.*;
 import javafx.scene.text.*;
@@ -21,10 +20,15 @@ public class VisualArrayIndex extends Group {
         initialize();
     }
     private void initialize() {
+        this.getChildren().add(VisualizedDataStructure.getEmptyBox(64, 64));
         text = new Text(name);
-        text.setTextAlignment(TextAlignment.CENTER);
         text.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
-        line = new Line(0, 32, 0, 64);
+        text.setTextAlignment(TextAlignment.CENTER);
+        text.setWrappingWidth(64);
+        text.setLayoutY(56);
+
+        line = new Line(32, 8, 32, 40);
+        line.setStrokeWidth(4);
         direction = Direction.UP;
         this.getChildren().addAll(text, line);
     }

@@ -1,14 +1,14 @@
 package jm233333.ui;
 
 import javafx.scene.layout.*;
-import jm233333.visual.VisualDataStructure;
+import jm233333.visual.VisualizedDataStructure;
 
 import java.lang.reflect.*;
 import java.util.*;
 
 public class Controller extends GridPane {
-    private VisualDataStructure visualDS;
-    public Controller(VisualDataStructure visualDS) {
+    private VisualizedDataStructure visualDS;
+    public Controller(VisualizedDataStructure visualDS) {
         super();
         this.visualDS = visualDS;
         // initialize method triggers in the controller

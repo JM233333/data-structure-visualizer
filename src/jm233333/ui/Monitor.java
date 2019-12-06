@@ -2,13 +2,8 @@ package jm233333.ui;
 
 import javafx.scene.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.*;
-import javafx.scene.shape.*;
-import javafx.stage.Stage;
 import javafx.util.Pair;
-import jm233333.Director;
-
-import java.util.*;
+import jm233333.visual.VisualArray;
 
 public class Monitor extends Pane {
     private final Group canvas;

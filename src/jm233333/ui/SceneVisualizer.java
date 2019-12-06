@@ -1,12 +1,9 @@
 package jm233333.ui;
 
-import java.lang.reflect.*;
-import java.util.*;
-
 import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.*;
-import jm233333.visual.VisualDataStructure;
+import jm233333.visual.VisualizedDataStructure;
 
 /**
  * The {@code SceneVisualizer} class maintains a scene graph for Visualizer UI.
@@ -15,7 +12,7 @@ public class SceneVisualizer extends Scene {
 
     private BorderPane root;
     private Controller controller;
-    private VisualDataStructure visualDS;
+    private VisualizedDataStructure visualDS;
     private Monitor monitor;
 
     /**
@@ -26,7 +23,7 @@ public class SceneVisualizer extends Scene {
      * @param height The height of the scene
      * @param visualDS The data structure that is to be visualized
      */
-    public SceneVisualizer(BorderPane root, double width, double height, VisualDataStructure visualDS) {
+    public SceneVisualizer(BorderPane root, double width, double height, VisualizedDataStructure visualDS) {
         super(root, width, height, Color.WHITE);
         this.root = root;
         this.visualDS = visualDS;
