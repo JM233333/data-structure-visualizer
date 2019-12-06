@@ -5,9 +5,18 @@ import javafx.scene.layout.*;
 import javafx.util.Pair;
 import jm233333.visual.VisualArray;
 
+/**
+ * The {@code Monitor} class is responsible for displaying the visualized data structure.
+ * Extended from JavaFX class {@code Pane} only for UI layout.
+ */
 public class Monitor extends Pane {
+
     private final Group canvas;
 //    private HashMap<Class, HashMap<String, ? super Object>> fieldMap;
+
+    /**
+     * Creates a Monitor.
+     */
     public Monitor() {
         canvas = new Group();
         this.getChildren().add(canvas);

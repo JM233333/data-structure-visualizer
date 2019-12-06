@@ -4,10 +4,17 @@ import javafx.scene.layout.*;
 
 import java.util.*;
 
+/**
+ * The {@code VisualArray} class defines the graphic components of an array that is displayed on the monitor.
+ * Used in subclasses of {@code VisualizedDataStructure}.
+ * Extended from JavaFX class {@code VBox} only for UI layout.
+ */
 public class VisualArray extends VBox {
+
     private String name;
     private HBox boxArray, boxIndexFieldUp, boxIndexFieldDown;
     private HashMap<String, VisualArrayIndex> indexFieldMap;
+    
     public VisualArray(String name, int n) {
         // super
         super();

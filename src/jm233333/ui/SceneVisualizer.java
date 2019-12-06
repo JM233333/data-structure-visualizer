@@ -7,6 +7,7 @@ import jm233333.visual.VisualizedDataStructure;
 
 /**
  * The {@code SceneVisualizer} class maintains a scene graph for Visualizer UI.
+ * Extended from JavaFX class {@code Scene}.
  */
 public class SceneVisualizer extends Scene {
 
