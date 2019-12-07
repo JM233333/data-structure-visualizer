@@ -3,6 +3,9 @@
 set namespaceSeparator ::
 
 namespace ui {
+	class SceneMenu {
+		;
+	}
 	class SceneVisualizer {
 		- ui::Controller controller;
 		- visual::VisualDataStructure visualDS;
@@ -11,27 +14,51 @@ namespace ui {
 	class Controller {
 		- visual::VisualDataStructure visualDS;
 	}
+	class MethodTrigger {
+		;
+	}
 	class Monitor {
 		;
 	}
 }
 
 namespace visual {
-	abstract class VisualDataStructure {
+
+	abstract class VisualizedDataStructure {
 		- ui::Monitor monitor;
 	}
+	class VisualizedStack {
+		;
+	}
+	
+	class VisualArray {
+		;
+	}
+	class VisualArrayIndex {
+		;
+	}
+	class VisualArrayNode {
+		;
+	}
+
+	VisualizedDataStructure --|> VisualizedStack
 }
 
 class Main {
 	;
 }
 
+class Director {
+	;
+}
+
+Main o-- ui::SceneMenu
 Main o-- ui::SceneVisualizer
 
 ui::SceneVisualizer *- ui::Controller
-ui::SceneVisualizer *-- visual::VisualDataStructure
+ui::SceneVisualizer *-- visual::VisualizedDataStructure
 ui::SceneVisualizer *-- ui::Monitor
-ui::Controller -down-> visual::VisualDataStructure
-visual::VisualDataStructure -up-> ui::Monitor
+ui::Controller -down-> visual::VisualizedDataStructure
+visual::VisualizedDataStructure -up-> ui::Monitor
 
 @enduml

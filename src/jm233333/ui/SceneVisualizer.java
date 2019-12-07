@@ -17,12 +17,12 @@ public class SceneVisualizer extends Scene {
     private Monitor monitor;
 
     /**
-     * Creates a SceneVisualizer with a specific size.
+     * Creates a SceneVisualizer with a specific size and a specific data structure that will be visualized.
      *
      * @param root The root node of the scene graph
      * @param width The width of the scene
      * @param height The height of the scene
-     * @param visualDS The data structure that is to be visualized
+     * @param visualDS The data structure that will be visualized
      */
     public SceneVisualizer(BorderPane root, double width, double height, VisualizedDataStructure visualDS) {
         super(root, width, height, Color.WHITE);
