@@ -91,4 +91,14 @@ public class Monitor extends Pane {
         VisualArray visualArray = mapVisualArray.get(nameArray);
         visualArray.updateIndexField(name, value);
     }
+
+    public void updateArrayElement(String name, int index, int value) {
+        VisualArray visualArray = mapVisualArray.get(name);
+        visualArray.updateArrayElement(index, value);
+    }
+
+    public void eraseArrayElement(String name, int index) {
+        VisualArray visualArray = mapVisualArray.get(name);
+        visualArray.eraseArrayElement(index);
+    }
 }

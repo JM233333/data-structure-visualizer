@@ -6,6 +6,8 @@
       <change beforePath="$PROJECT_DIR$/src/jm233333/ui/Monitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/ui/Monitor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jm233333/visual/VisualArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/visual/VisualArray.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jm233333/visual/VisualArrayIndex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/visual/VisualArrayIndex.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jm233333/visual/VisualArrayNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/visual/VisualArrayNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jm233333/visual/VisualNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/visual/VisualNode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jm233333/visual/VisualizedDataStructure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/visual/VisualizedDataStructure.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jm233333/visual/VisualizedStack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/visual/VisualizedStack.java" afterDir="false" />
     </list>
@@ -67,8 +69,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Class" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>

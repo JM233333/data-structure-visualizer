@@ -20,7 +20,7 @@ public class VisualArrayIndex extends Group {
         initialize();
     }
     private void initialize() {
-        this.getChildren().add(VisualizedDataStructure.getEmptyBox(64, 64));
+        this.getChildren().add(new VisualEmptyBox(64, 64));
         text = new Text(name);
         text.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
         text.setTextAlignment(TextAlignment.CENTER);

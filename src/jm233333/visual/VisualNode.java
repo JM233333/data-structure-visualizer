@@ -1,12 +1,15 @@
 package jm233333.visual;
 
 import javafx.scene.Group;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public abstract class VisualNode extends Group {
     private boolean isFilled;
     private int value;
     public VisualNode() {
-        clear();
+        isFilled = false;
+        value = 0;
     }
     public VisualNode(int value) {
         setValue(value);

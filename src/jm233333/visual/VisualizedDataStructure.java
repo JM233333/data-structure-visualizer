@@ -7,7 +7,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 import jm233333.ui.Monitor;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 
 /**
@@ -48,13 +49,6 @@ public abstract class VisualizedDataStructure {
     }
 
     /**
-     * Returns an empty box which will be used as a placeholder for displaying.
-     */
-    public static Rectangle getEmptyBox(double width, double height) {
-        return new Rectangle(width, height, Color.TRANSPARENT);
-    }
-
-    /**
      * Creates graphic components of the visualized data structure for displaying.
      */
     abstract void createVisual();
@@ -66,14 +60,12 @@ public abstract class VisualizedDataStructure {
         }
     }
 
-    protected void updateIndexField(String name, int value) {
+    void updateIndexField(String name, int value) {
         try {
             // get the field
             Field field = this.getClass().getDeclaredField(name);
-            // store the old value
-            field.setAccessible(true);
-            int oldValue = (int)field.get(this);
             // update data of the index field itself
+            field.setAccessible(true);
             field.set(this, value);
             field.setAccessible(false);
             // update data of the index field in the corresponding visual array
@@ -81,5 +73,25 @@ public abstract class VisualizedDataStructure {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    void updateArrayElement(String name, int index, int value) {
+        try {
+            // get the field
+            Field field = this.getClass().getDeclaredField(name);
+            // update data of array[index] itself
+            field.setAccessible(true);
+            int[] array = (int[])field.get(this);
+            Array.set(array, index, value);
+            field.setAccessible(false);
+            // update data of array[index] in the corresponding visual array
+            monitor.updateArrayElement(name, index, value);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+    void eraseArrayElement(String name, int index) {
+        // lazy-erase data of array[index] in the corresponding visual array
+        monitor.eraseArrayElement(name, index);
     }
 }
