@@ -16,7 +16,7 @@ public class VisualArrayIndex extends Group {
     }
     public VisualArrayIndex(String name, int value) {
         this.name = name;
-        this.value = value;
+        setValue(value);
         initialize();
     }
     private void initialize() {
@@ -31,5 +31,12 @@ public class VisualArrayIndex extends Group {
         line.setStrokeWidth(4);
         direction = Direction.UP;
         this.getChildren().addAll(text, line);
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+    public int getValue() {
+        return value;
     }
 }

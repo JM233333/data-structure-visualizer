@@ -37,9 +37,17 @@ public class VisualArray extends VBox {
         // initialize HashMap that maps the index fields
         indexFieldMap = new HashMap<>();
     }
+
     public void addIndexField(String name, int value) {
         VisualArrayIndex index = new VisualArrayIndex(name, value);
         indexFieldMap.put(name, index);
         boxIndexFieldDown.getChildren().set(value, index);
+    }
+
+    public void updateIndexField(String name, int value) {
+        VisualArrayIndex index = indexFieldMap.get(name);
+        boxIndexFieldDown.getChildren().remove(index.getValue());
+        boxIndexFieldDown.getChildren().set(value, index);
+        index.setValue(value);
     }
 }

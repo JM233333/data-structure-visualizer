@@ -24,14 +24,25 @@ public class VisualizedStack extends VisualizedDataStructure {
     }
 
     public void push(int value) {
-        data[++top] = value;
+        updateIndexField("top", top + 1);
+        data[top] = value;
+        System.out.println("top = " + top);
+        System.out.println("data[top] = " + data[top]);
     }
 
     public void pop() {
-        top --;
+        if (isEmpty()) {
+            System.out.println("POP EMPTY");
+            return;
+        }
+        updateIndexField("top", top - 1);
     }
 
     public int top() {
         return data[top];
+    }
+
+    public boolean isEmpty() {
+        return (top == 0);
     }
 }

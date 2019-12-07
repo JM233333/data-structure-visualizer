@@ -16,12 +16,15 @@ import java.util.HashMap;
 public abstract class VisualizedDataStructure {
 
     /**
-     * the reference to the monitor in which the visualized data structure is displayed.
+     * The reference to the monitor in which the visualized data structure is displayed.
      */
     private Monitor monitor = null;
 
     /**
-     * maintains the array associated with each index : pairs of (key: index field name, value: array).
+     * Records all relationships of (index field -> array).
+     *
+     * key: name of the index field
+     * value: reference to the array that the index field points to
      */
     private HashMap<String, int[]> mapAssociatedArray;
 
@@ -56,7 +59,27 @@ public abstract class VisualizedDataStructure {
      */
     abstract void createVisual();
 
-    protected void createVisualArray(String name, int n, Pair<String, Integer>... indexFields) {
-        monitor.createVisualArray(name, n, indexFields);
+    void createVisualArray(String name, int n, Pair<String, Integer>... indexFields) {
+        monitor.createVisualArray(name, n);
+        for (Pair<String, Integer> indexField : indexFields) {
+            monitor.addIndexField(name, indexField);
+        }
+    }
+
+    protected void updateIndexField(String name, int value) {
+        try {
+            // get the field
+            Field field = this.getClass().getDeclaredField(name);
+            // store the old value
+            field.setAccessible(true);
+            int oldValue = (int)field.get(this);
+            // update data of the index field itself
+            field.set(this, value);
+            field.setAccessible(false);
+            // update data of the index field in the corresponding visual array
+            monitor.updateIndexField(name, value);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 }
