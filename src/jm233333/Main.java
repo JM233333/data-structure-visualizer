@@ -3,7 +3,9 @@ package jm233333;
 import javafx.application.Application;
 import javafx.scene.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
+import jm233333.ui.SceneMenu;
 import jm233333.ui.SceneVisualizer;
 import jm233333.visual.VisualizedStack;
 import jm233333.visual.VisualizedDataStructure;
@@ -21,12 +23,14 @@ public class Main extends Application {
         // initialize director
         Director.getInstance().setPrimaryStage(primaryStage);
         // initialize data structure
-        VisualizedDataStructure visualDS = new VisualizedStack(10);
+//        VisualizedDataStructure visualDS = new VisualizedStack(10);
         // initialize scene
-        BorderPane root = new BorderPane();
-        Scene scene = new SceneVisualizer(root, 1024, 768, visualDS);
+//        BorderPane root = new BorderPane();
+//        Scene scene = new SceneVisualizer(root, 1024, 768, visualDS);
+        FlowPane root = new FlowPane();
+        Scene scene = new SceneMenu(root, 1024, 768);
         // initialize stage
-        primaryStage.setTitle("Hello GG");
+        primaryStage.setTitle("Data Structure Visualizer (under development)");
         primaryStage.setScene(scene);
         primaryStage.show();
         //

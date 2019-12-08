@@ -38,6 +38,7 @@ public class Monitor extends Pane {
      * Creates a Monitor.
      */
     public Monitor() {
+        super();
         canvas = new Group();
         this.getChildren().add(canvas);
         mapVisualArray = new HashMap<>();

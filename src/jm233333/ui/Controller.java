@@ -1,5 +1,8 @@
 package jm233333.ui;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.scene.Group;
 import javafx.scene.layout.*;
 import jm233333.visual.VisualizedDataStructure;
 
@@ -8,10 +11,11 @@ import java.util.*;
 
 /**
  * The {@code Controller} class is the user interface in which the user can manipulate the visualized data structure.
- * Extended from JavaFX class {@code GridPane} only for UI layout.
+ * Extended from JavaFX class {@code FlowPane} only for UI layout.
  */
-public class Controller extends GridPane {
+public class Controller extends Group {
 
+    private FlowPane flowPane;
     private VisualizedDataStructure visualDS;
 
     /**
@@ -22,6 +26,12 @@ public class Controller extends GridPane {
     public Controller(VisualizedDataStructure visualDS) {
         // super
         super();
+        // initialize layout
+        flowPane = new FlowPane();
+        flowPane.setOrientation(Orientation.VERTICAL);
+        flowPane.setMaxHeight(48 * 4 + 16 * 2);
+        flowPane.setPadding(new Insets(16));
+        this.getChildren().add(flowPane);
         // set reference to the interrelated visual data structure
         this.visualDS = visualDS;
         // initialize method triggers in the controller
@@ -37,14 +47,13 @@ public class Controller extends GridPane {
         int methodCount = methods.length;
         // initialize method triggers
         ArrayList<MethodTrigger> methodTriggers = new ArrayList<>();
-        for (int i = 0; i < methodCount; i ++) {
-            if (methods[i].getName().equals("createVisual")) {
+        for (Method method : methods) {
+            if (method.getName().equals("createVisual")) {
                 continue;
             }
-            MethodTrigger methodTrigger = new MethodTrigger(methods[i]);
+            MethodTrigger methodTrigger = new MethodTrigger(method);
             methodTriggers.add(methodTrigger);
-            GridPane.setConstraints(methodTrigger, 0, i);
-            this.getChildren().add(methodTrigger);
+            flowPane.getChildren().add(methodTrigger);
         }
         // initialize event listener for method triggers
         for (MethodTrigger methodTrigger : methodTriggers) {
