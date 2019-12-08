@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.*;
 import jm233333.Director;
-import jm233333.visual.VisualizedDataStructure;
+import jm233333.visualized.VisualizedDataStructure;
 
 /**
  * The {@code SceneVisualizer} class maintains a scene graph for Visualizer UI.

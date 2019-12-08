@@ -7,7 +7,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import jm233333.Director;
-import jm233333.visual.VisualizedDataStructure;
+import jm233333.visualized.VisualizedDataStructure;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
@@ -63,7 +63,7 @@ public class SceneMenu extends Scene {
         // initialize buttons linked to corresponding SceneVisualizer
         try {
             // get class type
-            Class<?> classType = Class.forName("jm233333.visual." + name);
+            Class<?> classType = Class.forName("jm233333.visualized." + name);
             // get needed constructor
             Class<?>[] parameterTypes = {int.class};
             Constructor constructor = classType.getConstructor(parameterTypes);

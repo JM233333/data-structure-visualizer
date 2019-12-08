@@ -4,7 +4,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Group;
 import javafx.scene.layout.*;
-import jm233333.visual.VisualizedDataStructure;
+import jm233333.visualized.VisualizedDataStructure;
 
 import java.lang.reflect.*;
 import java.util.*;

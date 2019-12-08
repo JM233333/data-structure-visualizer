@@ -2,13 +2,9 @@ package jm233333;
 
 import javafx.application.Application;
 import javafx.scene.*;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import jm233333.ui.SceneMenu;
-import jm233333.ui.SceneVisualizer;
-import jm233333.visual.VisualizedStack;
-import jm233333.visual.VisualizedDataStructure;
 
 /**
  * The {@code Main} class includes the entrance and the main process of the application.

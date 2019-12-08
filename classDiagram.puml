@@ -3,45 +3,118 @@
 set namespaceSeparator ::
 
 namespace ui {
+
 	class SceneMenu {
-		;
+		- FlowPane root
+		+ SceneMenu(FlowPane root, double width, double height)
+		- void initialize()
+		- void initializeList()
+		- void addButton(String name)
 	}
 	class SceneVisualizer {
-		- ui::Controller controller;
-		- visual::VisualDataStructure visualDS;
-		- ui::Monitor monitor;
+		- BorderPane root
+		- Controller controller
+		- VisualDataStructure visualDS
+		- Monitor monitor
+		- FlowPane menu
+		+ SceneVisualizer(BorderPane root, double width, double height, VisualizedDataStructure visualDS)
+		- void initialize()
+		- void initializeCSS()
+		- void initializeController()
+		- void initializeMonitor()
+		- void initializeMenu()
 	}
+
 	class Controller {
-		- visual::VisualDataStructure visualDS;
+		- FlowPane flowPane
+		- VisualDataStructure visualDS
+		+ Controller(VisualizedDataStructure visualDS)
+		- void initializeMethodTriggers()
 	}
 	class MethodTrigger {
-		;
+		- String name
+		- Button button
+		- ArrayList<TextField> textFields
+		+ MethodTrigger(String nameMethod, String... nameParameters)
+		+ MethodTrigger(Method method)
+		- void initialize(String nameMethod, String... nameParameters)
+		+ final String getName()
+		+ final Button getButton()
+		+ ArrayList<Integer> getParameters()
 	}
 	class Monitor {
-		;
+		- final Group canvas
+		- HashMap<String, VisualArray> mapVisualArray
+		- HashMap<String, String> mapIndexFieldConnection
+		+ Monitor()
+		+ void createVisualArray(String name, int n)
+		+ void addIndexField(String nameArray, Pair<String, Integer> indexField)
+		+ void addIndexField(String nameArray, String name, int value)
+		+ void updateIndexField(String name, int value)
+		+ void updateArrayElement(String name, int index, int value)
+		+ void eraseArrayElement(String name, int index)
 	}
+
+	SceneVisualizer *- Controller
+	SceneVisualizer *-- Monitor
+	Controller *- MethodTrigger
+
 }
 
-namespace visual {
+namespace visualized {
 
 	abstract class VisualizedDataStructure {
 		- ui::Monitor monitor;
+		+ VisualizedDataStructure()
+		+ void setMonitor(Monitor monitor)
+		+ final Monitor getMonitor()
+		+ {abstract} abstract void createVisual()
+		~ void createVisualArray(String name, int n, Pair<String, Integer>... indexFields)
+		~ void updateIndexField(String name, int value)
+		~ void updateArrayElement(String name, int index, int value)
+		~ void eraseArrayElement(String name, int index)
 	}
 	class VisualizedStack {
 		;
 	}
-	
+
+	VisualizedDataStructure --|> VisualizedLinkedList
+	VisualizedDataStructure --|> VisualizedStack
+	VisualizedDataStructure --|> VisualizedQueue
+	VisualizedDataStructure --|> VisualizedTree
+}
+
+namespace visual {
+
 	class VisualArray {
-		;
+		- String name
+		- HBox boxArray
+		- HBox boxIndexFieldUp
+		- HBox boxIndexFieldDown
+		- HashMap<String, VisualArrayIndex> indexFieldMap
+		+ VisualArray(String name, int n)
+		+ void addIndexField(String name, int value)
+		+ void updateIndexField(String name, int value)
+		+ void updateArrayElement(int index, int value)
+		+ void eraseArrayElement(int index)
 	}
 	class VisualArrayIndex {
-		;
+		- String name
+		- int value
+		- Text text
+		- Line line
+		+ VisualArrayIndex(String name)
+		+ VisualArrayIndex(String name, int value)
+		- void initialize()
+		+ void setValue(int value)
+		+ int getValue()
 	}
 	class VisualArrayNode {
 		;
 	}
 
-	VisualizedDataStructure --|> VisualizedStack
+	VisualArray *-- VisualArrayIndex
+	VisualArray *-- VisualArrayNode
 }
 
 class Main {
@@ -55,10 +128,12 @@ class Director {
 Main o-- ui::SceneMenu
 Main o-- ui::SceneVisualizer
 
-ui::SceneVisualizer *- ui::Controller
-ui::SceneVisualizer *-- visual::VisualizedDataStructure
-ui::SceneVisualizer *-- ui::Monitor
-ui::Controller -down-> visual::VisualizedDataStructure
-visual::VisualizedDataStructure -up-> ui::Monitor
+ui::SceneVisualizer *-- visualized::VisualizedDataStructure
+ui::Controller -down-> visualized::VisualizedDataStructure
+visualized::VisualizedDataStructure -up-> ui::Monitor
+
+ui::Monitor *-- visual::VisualArray
+
+visualized::VisualizedDataStructure -left[hidden]-> visual::VisualArray
 
 @enduml

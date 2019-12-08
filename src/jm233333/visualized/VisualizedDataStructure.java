@@ -1,4 +1,4 @@
-package jm233333.visual;
+package jm233333.visualized;
 
 import javafx.scene.*;
 import javafx.scene.layout.*;
