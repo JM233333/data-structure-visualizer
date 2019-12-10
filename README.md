@@ -6,4 +6,7 @@ DataStructureVisualizer is an application that provides visual graphic interface
 
 ## Update Record
 
-2019.12.6 : an embryonic form is built
+| Data | Updates |
+| :--- | :--- |
+| 2019.12.10 | supports fluent animation |
+| 2019.12.6 | builts embryonic form of the app |

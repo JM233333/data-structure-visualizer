@@ -4,125 +4,145 @@ set namespaceSeparator ::
 
 namespace ui {
 
-	class SceneMenu {
-		- FlowPane root
-		+ SceneMenu(FlowPane root, double width, double height)
-		- void initialize()
-		- void initializeList()
-		- void addButton(String name)
-	}
-	class SceneVisualizer {
-		- BorderPane root
-		- Controller controller
-		- VisualDataStructure visualDS
-		- Monitor monitor
-		- FlowPane menu
-		+ SceneVisualizer(BorderPane root, double width, double height, VisualizedDataStructure visualDS)
-		- void initialize()
-		- void initializeCSS()
-		- void initializeController()
-		- void initializeMonitor()
-		- void initializeMenu()
-	}
+    class SceneMenu {
+        - FlowPane root
+        + SceneMenu(FlowPane root, double width, double height)
+        - void initialize()
+        - void initializeList()
+        - void addButton(String name)
+    }
+    class SceneVisualizer {
+        - BorderPane root
+        - Controller controller
+        - VisualDataStructure visualDS
+        - Monitor monitor
+        - FlowPane menu
+        + SceneVisualizer(BorderPane root, double width, double height, VisualizedDataStructure visualDS)
+        - void initialize()
+        - void initializeCSS()
+        - void initializeController()
+        - void initializeMonitor()
+        - void initializeMenu()
+    }
 
-	class Controller {
-		- FlowPane flowPane
-		- VisualDataStructure visualDS
-		+ Controller(VisualizedDataStructure visualDS)
-		- void initializeMethodTriggers()
-	}
-	class MethodTrigger {
-		- String name
-		- Button button
-		- ArrayList<TextField> textFields
-		+ MethodTrigger(String nameMethod, String... nameParameters)
-		+ MethodTrigger(Method method)
-		- void initialize(String nameMethod, String... nameParameters)
-		+ final String getName()
-		+ final Button getButton()
-		+ ArrayList<Integer> getParameters()
-	}
-	class Monitor {
-		- final Group canvas
-		- HashMap<String, VisualArray> mapVisualArray
-		- HashMap<String, String> mapIndexFieldConnection
-		+ Monitor()
-		+ void createVisualArray(String name, int n)
-		+ void addIndexField(String nameArray, Pair<String, Integer> indexField)
-		+ void addIndexField(String nameArray, String name, int value)
-		+ void updateIndexField(String name, int value)
-		+ void updateArrayElement(String name, int index, int value)
-		+ void eraseArrayElement(String name, int index)
-	}
+    class Controller #Wheat {
+        - FlowPane flowPane
+        - VisualDataStructure visualDS
+        + Controller(VisualizedDataStructure visualDS)
+        - void initializeMethodTriggers()
+    }
+    class MethodTrigger {
+        - String name
+        - Button button
+        - ArrayList<TextField> textFields
+        + MethodTrigger(String nameMethod, String... nameParameters)
+        + MethodTrigger(Method method)
+        - void initialize(String nameMethod, String... nameParameters)
+        + final String getName()
+        + final Button getButton()
+        + ArrayList<Integer> getParameters()
+    }
+    class Monitor #Wheat {
+        - final Group canvas
+        - HashMap<String, VisualArray> mapVisualArray
+        - HashMap<String, String> mapIndexFieldConnection
+        + Monitor()
+        + void createVisualArray(String name, int n)
+        + void addIndexField(String nameArray, Pair<String, Integer> indexField)
+        + void addIndexField(String nameArray, String name, int value)
+        + void updateIndexField(String name, int value)
+        + void updateArrayElement(String name, int index, int value)
+        + void eraseArrayElement(String name, int index)
+    }
 
-	SceneVisualizer *- Controller
-	SceneVisualizer *-- Monitor
-	Controller *- MethodTrigger
+    SceneVisualizer *- Controller
+    SceneVisualizer *-- Monitor
+    Controller *- MethodTrigger
 
 }
 
 namespace visualized {
 
-	abstract class VisualizedDataStructure {
-		- ui::Monitor monitor;
-		+ VisualizedDataStructure()
-		+ void setMonitor(Monitor monitor)
-		+ final Monitor getMonitor()
-		+ {abstract} abstract void createVisual()
-		~ void createVisualArray(String name, int n, Pair<String, Integer>... indexFields)
-		~ void updateIndexField(String name, int value)
-		~ void updateArrayElement(String name, int index, int value)
-		~ void eraseArrayElement(String name, int index)
-	}
-	class VisualizedStack {
-		;
-	}
+    abstract class VisualizedDataStructure #Wheat {
+        - ui::Monitor monitor
+        - HashMap<String, int[]> mapAssociatedArray
+        + VisualizedDataStructure()
+        + void setMonitor(Monitor monitor)
+        + final Monitor getMonitor()
+        + {abstract} abstract void createVisual()
+        ~ void createVisualArray(String name, int n, Pair<String, Integer>... indexFields)
+        ~ void updateIndexField(String name, int value)
+        ~ void updateArrayElement(String name, int index, int value)
+        ~ void eraseArrayElement(String name, int index)
+    }
+    class VisualizedStack {
+        ;
+    }
 
-	VisualizedDataStructure --|> VisualizedLinkedList
-	VisualizedDataStructure --|> VisualizedStack
-	VisualizedDataStructure --|> VisualizedQueue
-	VisualizedDataStructure --|> VisualizedTree
+    VisualizedDataStructure --|> VisualizedLinkedList
+    VisualizedDataStructure --|> VisualizedStack
+    VisualizedDataStructure --|> VisualizedQueue
+    VisualizedDataStructure --|> VisualizedTree
 }
 
 namespace visual {
 
-	class VisualArray {
-		- String name
-		- HBox boxArray
-		- HBox boxIndexFieldUp
-		- HBox boxIndexFieldDown
-		- HashMap<String, VisualArrayIndex> indexFieldMap
-		+ VisualArray(String name, int n)
-		+ void addIndexField(String name, int value)
-		+ void updateIndexField(String name, int value)
-		+ void updateArrayElement(int index, int value)
-		+ void eraseArrayElement(int index)
-	}
-	class VisualArrayIndex {
-		- String name
-		- int value
-		- Text text
-		- Line line
-		+ VisualArrayIndex(String name)
-		+ VisualArrayIndex(String name, int value)
-		- void initialize()
-		+ void setValue(int value)
-		+ int getValue()
-	}
-	class VisualArrayNode {
-		;
-	}
+    abstract class Visual {
+        + {static} static <T> void createAnimation(double deltaTime, WritableValue<T> property, T value)
+        + {static} static <T> void updateAnimation(double deltaTime, WritableValue<T> property, T value)
+        + {static} static void createAnimationText(Text text, String str)
+    }
+    class VisualArray {
+        - String name
+        - ArrayList<VisualArrayNode> arrayNode
+        - HashMap<String, VisualArrayIndex> mapIndexField
+        + VisualArray(String name, int n)
+        + void addIndexField(String name, int value)
+        + void updateIndexField(String name, int value)
+        + void updateArrayElement(int index, int value)
+        + void eraseArrayElement(int index)
+    }
+    class VisualArrayIndex {
+        - String name
+        - int value
+        - Text text
+        - Line line
+        + VisualArrayIndex(String name)
+        + VisualArrayIndex(String name, int value)
+        - void initialize()
+        + void setValue(int value)
+        + int getValue()
+    }
+    class VisualArrayNode {
+        ;
+    }
 
-	VisualArray *-- VisualArrayIndex
-	VisualArray *-- VisualArrayNode
+    Visual --|> VisualArray
+    VisualArray *-- VisualArrayIndex
+    VisualArray *-- VisualArrayNode
 }
 
 class Main {
-	;
+    + void start(Stage primaryStage)
+    + {static} static void main(String[] args)
 }
 
 class Director {
-	;
+    - {static} static Director instance
+    - Stage primaryStage
+    - ArrayList<Timeline> animationWaitingList
+    - ArrayList<Timeline> animationPlayingList
+    - BooleanProperty animationPlayingProperty
+    - Director()
+    + {static} static Director getInstance()
+    + void initialize(Stage primaryStage)
+    + void setPrimaryStage(Stage primaryStage)
+    + final Stage getPrimaryStage()
+    + void addTimeline(Timeline timeline)
+    + final Timeline getLastTimeline()
+    + void playAnimation()
+    + final BooleanProperty animationPlayingProperty()
+    + boolean isAnimationPlaying()
 }
 
 Main o-- ui::SceneMenu

@@ -15,7 +15,7 @@ public class Main extends Application {
      * @param primaryStage the stage of the application.
      */
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         // initialize director
         Director.getInstance().setPrimaryStage(primaryStage);
         // initialize data structure
