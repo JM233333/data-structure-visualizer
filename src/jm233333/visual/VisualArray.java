@@ -1,7 +1,6 @@
 package jm233333.visual;
 
 import javafx.scene.Group;
-import javafx.scene.layout.*;
 
 import java.util.*;
 
@@ -10,55 +9,48 @@ import java.util.*;
  * Used in subclasses of {@code VisualizedDataStructure}.
  * Extended from JavaFX class {@code VBox} only for UI layout.
  */
-public class VisualArray extends VBox {
+public class VisualArray extends Group {
 
     private String name;
-    private HBox boxArray, boxIndexFieldUp, boxIndexFieldDown;
-    private HashMap<String, VisualArrayIndex> indexFieldMap;
+    private ArrayList<VisualArrayNode> arrayNode;
+    private HashMap<String, VisualArrayIndex> mapIndexField;
     
     public VisualArray(String name, int n) {
         // super
         super();
-        // initialize name
+        // initialize
         this.name = name;
-        // initialize HBox that stores the array
-        boxArray = new HBox();
+        arrayNode = new ArrayList<>();
+        mapIndexField = new HashMap<>();
+        // add empty nodes
         for (int i = 0; i < n; i ++) {
-            boxArray.getChildren().add(new VisualArrayNode());
+            VisualArrayNode node = new VisualArrayNode();
+            node.setLayoutX(node.getWidth() * i);
+            arrayNode.add(node);
+            this.getChildren().add(node);
         }
-        // initialize HBox that stores the index fields
-        boxIndexFieldUp = new HBox();
-        boxIndexFieldDown = new HBox();
-        for (int i = 0; i < n; i ++) {
-            boxIndexFieldUp.getChildren().add(new VisualEmptyBox(64, 64));
-            boxIndexFieldDown.getChildren().add(new VisualEmptyBox(64, 64));
-        }
-        // set as children
-        this.getChildren().addAll(boxIndexFieldUp, boxArray, boxIndexFieldDown);
-        // initialize HashMap that maps the index fields
-        indexFieldMap = new HashMap<>();
     }
 
     public void addIndexField(String name, int value) {
-        VisualArrayIndex visualArrayIndex = new VisualArrayIndex(name, value);
-        indexFieldMap.put(name, visualArrayIndex);
-        boxIndexFieldDown.getChildren().set(value, visualArrayIndex);
+        VisualArrayIndex indexField = new VisualArrayIndex(name, value);
+        indexField.setLayoutX(arrayNode.get(0).getWidth() * value);
+        indexField.setLayoutY(arrayNode.get(0).getHeight());
+        mapIndexField.put(name, indexField);
+        this.getChildren().add(indexField);
     }
 
     public void updateIndexField(String name, int value) {
-        VisualArrayIndex visualArrayIndex = indexFieldMap.get(name);
-        boxIndexFieldDown.getChildren().set(visualArrayIndex.getValue(), new VisualEmptyBox(64, 64));
-        boxIndexFieldDown.getChildren().set(value, visualArrayIndex);
-        visualArrayIndex.setValue(value);
+        VisualArrayIndex indexField = mapIndexField.get(name);
+        indexField.setValue(value);
     }
 
     public void updateArrayElement(int index, int value) {
-        VisualArrayNode element = (VisualArrayNode)boxArray.getChildren().get(index);
-        element.setValue(value);
+        VisualArrayNode node = arrayNode.get(index);
+        node.setValue(value);
     }
 
     public void eraseArrayElement(int index) {
-        VisualArrayNode element = (VisualArrayNode)boxArray.getChildren().get(index);
-        element.clear();
+        VisualArrayNode node = arrayNode.get(index);
+        node.clear();
     }
 }

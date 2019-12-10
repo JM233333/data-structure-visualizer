@@ -9,6 +9,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 public class VisualArrayNode extends VisualNode {
+    private Rectangle box;
     private Text text;
     private Line line;
     public VisualArrayNode() {
@@ -22,7 +23,7 @@ public class VisualArrayNode extends VisualNode {
     void initialize() {
         this.getChildren().clear();
 
-        Rectangle box = new Rectangle(64, 64);
+        box = new Rectangle(64, 64);
         box.setFill(Color.rgb(255, 255, 255));
         box.setStroke(Color.BLACK);
         box.setStrokeType(StrokeType.INSIDE);
@@ -40,10 +41,22 @@ public class VisualArrayNode extends VisualNode {
 
     public void clear() {
         super.clear();
-        text.setText("");
+        setText("");
     }
     public void setValue(int value) {
         super.setValue(value);
-        text.setText(String.valueOf(value));
+        setText(String.valueOf(value));
+    }
+    public double getWidth() {
+        return box.getWidth();
+    }
+    public double getHeight() {
+        return box.getHeight();
+    }
+    public final Text getText() {
+        return text;
+    }
+    public void setText(String str) {
+        createAnimationText(text, str);
     }
 }

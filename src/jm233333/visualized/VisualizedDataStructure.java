@@ -1,9 +1,5 @@
 package jm233333.visualized;
 
-import javafx.scene.*;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 import jm233333.ui.Monitor;
 

@@ -3,13 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classDiagram.puml" beforeDir="false" afterPath="$PROJECT_DIR$/classDiagram.puml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jm233333/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jm233333/Director.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/Director.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jm233333/ui/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/ui/Controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jm233333/ui/SceneMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/ui/SceneMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jm233333/ui/SceneVisualizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/ui/SceneVisualizer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jm233333/visual/VisualizedDataStructure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/visualized/VisualizedDataStructure.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jm233333/visual/VisualizedStack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/visualized/VisualizedStack.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jm233333/visual/VisualArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/visual/VisualArray.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jm233333/visual/VisualArrayIndex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/visual/VisualArrayIndex.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jm233333/visual/VisualArrayNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/visual/VisualArrayNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jm233333/visual/VisualNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/visual/VisualNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jm233333/visualized/VisualizedDataStructure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/visualized/VisualizedDataStructure.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jm233333/visualized/VisualizedStack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/visualized/VisualizedStack.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -107,7 +108,7 @@
     <property name="dynamic.classpath" value="false" />
     <property name="last_opened_file_path" value="E:/Git/bin/git.exe" />
     <property name="recentsLimit" value="5" />
-    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
+    <property name="settings.editor.selected.configurable" value="preferences.editor" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">

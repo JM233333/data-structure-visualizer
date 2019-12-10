@@ -4,7 +4,7 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public abstract class VisualNode extends Group {
+public abstract class VisualNode extends Visual {
     private boolean isFilled;
     private int value;
     public VisualNode() {

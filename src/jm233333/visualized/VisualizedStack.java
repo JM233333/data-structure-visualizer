@@ -1,7 +1,7 @@
 package jm233333.visualized;
 
 import javafx.util.Pair;
-import jm233333.visualized.VisualizedDataStructure;
+import jm233333.Director;
 
 /**
  * The {@code VisualizedStack} class defines the data structure {@code Stack} for visualizing.
@@ -28,6 +28,7 @@ public class VisualizedStack extends VisualizedDataStructure {
         updateArrayElement("data", top, value);
         System.out.println("top = " + top);
         System.out.println("data[top] = " + data[top]);
+        Director.getInstance().playAnimation();
     }
 
     public void pop() {
@@ -37,6 +38,7 @@ public class VisualizedStack extends VisualizedDataStructure {
         }
         eraseArrayElement("data", top);
         updateIndexField("top", top - 1);
+        Director.getInstance().playAnimation();
     }
 
     public int top() {
