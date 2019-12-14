@@ -2,35 +2,46 @@ package jm233333.visual;
 
 import javafx.geometry.VPos;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
-public class VisualArrayNode extends VisualNode {
+public class VisualListNode extends VisualNode {
 
-    private Rectangle box;
+    private static int nextId = 0;
+
+    private Rectangle boxValue, boxPointer;
     private Text text;
 
-    public VisualArrayNode() {
+    public VisualListNode() {
         super();
         initialize();
     }
-    public VisualArrayNode(int value) {
+
+    public VisualListNode(int value) {
         super(value);
         initialize();
     }
 
     void initialize() {
+        this.setId(String.valueOf(nextId));
+        nextId ++;
         this.getChildren().clear();
 
-        box = new Rectangle(64, 64);
-        box.setFill(Color.rgb(255, 255, 255));
-        box.setStroke(Color.BLACK);
-        box.setStrokeType(StrokeType.INSIDE);
-        box.setStrokeWidth(2);
-        this.getChildren().add(box);
+        boxValue = new Rectangle(64, 64);
+        boxValue.setLayoutX(0);
+        boxPointer = new Rectangle(32, 64);
+        boxPointer.setLayoutX(64);
+        for (Rectangle box : new Rectangle[]{boxValue, boxPointer}) {
+            box.setFill(Color.rgb(255, 255, 255));
+            box.setStroke(Color.BLACK);
+            box.setStrokeType(StrokeType.INSIDE);
+            box.setStrokeWidth(2);
+            this.getChildren().add(box);
+        }
 
         text = new Text();
         text.setFont(Font.font("Tahoma", FontWeight.NORMAL, 22));
@@ -45,19 +56,24 @@ public class VisualArrayNode extends VisualNode {
         super.clear();
         setText("");
     }
+
     public void setValue(int value) {
         super.setValue(value);
         setText(String.valueOf(value));
     }
+
     public double getWidth() {
-        return box.getWidth();
+        return boxValue.getWidth() + boxPointer.getWidth();
     }
+
     public double getHeight() {
-        return box.getHeight();
+        return boxValue.getHeight() + boxPointer.getHeight();
     }
+
     public final Text getText() {
         return text;
     }
+
     public void setText(String str) {
         Visual.createAnimationText(text, str);
     }

@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * The {@code VisualArray} class defines the graphic components of an array that is displayed on the monitor.
  * Used in subclasses of {@code VisualizedDataStructure}.
- * Extended from JavaFX class {@code VBox} only for UI layout.
+ * Extended from JavaFX class {@code Group} only for UI layout.
  */
 public class VisualArray extends Group {
 

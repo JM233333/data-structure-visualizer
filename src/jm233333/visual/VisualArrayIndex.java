@@ -1,10 +1,11 @@
 package jm233333.visual;
 
+import javafx.scene.Group;
 import javafx.scene.shape.*;
 import javafx.scene.text.*;
 import jm233333.Direction;
 
-public class VisualArrayIndex extends Visual {
+public class VisualArrayIndex extends Group {
     private String name;
     private int value;
     private Text text;
@@ -34,7 +35,7 @@ public class VisualArrayIndex extends Visual {
 
     public void setValue(int value) {
         this.value = value;
-        createAnimation(500, this.layoutXProperty(), 64 * value);
+        Visual.createAnimation(500, this.layoutXProperty(), 64 * value);
     }
     public int getValue() {
         return value;

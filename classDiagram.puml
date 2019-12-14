@@ -117,9 +117,9 @@ namespace visual {
         ;
     }
 
-    Visual --|> VisualArray
     VisualArray *-- VisualArrayIndex
     VisualArray *-- VisualArrayNode
+    VisualList o-- VisualListNode
 }
 
 class Main {
@@ -153,6 +153,7 @@ ui::Controller -down-> visualized::VisualizedDataStructure
 visualized::VisualizedDataStructure -up-> ui::Monitor
 
 ui::Monitor *-- visual::VisualArray
+ui::Monitor *-- visual::VisualList
 
 visualized::VisualizedDataStructure -left[hidden]-> visual::VisualArray
 

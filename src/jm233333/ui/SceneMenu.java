@@ -11,6 +11,7 @@ import jm233333.visualized.VisualizedDataStructure;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
+import java.util.Arrays;
 
 /**
  * The {@code SceneMenu} class maintains a scene graph for the main menu of the application.
@@ -47,30 +48,38 @@ public class SceneMenu extends Scene {
 //        for(String fileNames : file.list()) System.out.println(fileNames);
         try {
             BufferedReader in = new BufferedReader(new FileReader("src/data/menu.txt"));
-            String str;
             while (in.ready()) {
-                str = "Visualized" + in.readLine();
-                System.out.println(str);
-                // add button
-                addButton(str);
+                String[] args = in.readLine().split(" ");
+                assert (args.length > 0);
+                addButton(args);
             }
             in.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    private void addButton(String name) {
+    private void addButton(String... args) {
+        // get class data
+        String className = "Visualized" + args[0];
+        int argc = args.length - 1;
+        Class<?>[] parameterTypes = new Class<?>[argc];
+        Object[] parameters = new Object[argc];
+        for (int i = 0; i < argc; i ++) {
+            parameterTypes[i] = int.class;
+            parameters[i] = Integer.parseInt(args[i + 1]);
+        }
         // initialize buttons linked to corresponding SceneVisualizer
         try {
             // get class type
-            Class<?> classType = Class.forName("jm233333.visualized." + name);
+            Class<?> classType = Class.forName("jm233333.visualized." + className);
             // get needed constructor
-            Class<?>[] parameterTypes = {int.class};
+            //Class<?>[] parameterTypes = {int.class};
+            //Object[] parameters = {10};
             Constructor constructor = classType.getConstructor(parameterTypes);
-            Object[] parameters = {10};
             // create a new instance
             final VisualizedDataStructure visualDS = (VisualizedDataStructure)constructor.newInstance(parameters);
             // initialize button
+            String name = className + " " + Arrays.toString(parameters);
             Button button = new Button(name);
             root.getChildren().add(button);
             // set listener

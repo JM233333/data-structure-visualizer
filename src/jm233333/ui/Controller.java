@@ -60,6 +60,10 @@ public class Controller extends Group {
             if (method.getName().equals("createVisual")) {
                 continue;
             }
+            if (method.getName().equals("setMode")) {
+                continue;
+            }
+//            System.out.println(method.getName() + " : " + Arrays.toString(method.getParameterTypes()));
             MethodTrigger methodTrigger = new MethodTrigger(method);
             methodTriggers.add(methodTrigger);
             flowPane.getChildren().add(methodTrigger);

@@ -11,21 +11,21 @@ import javafx.util.Duration;
 import jm233333.Director;
 
 public abstract class Visual extends Group {
-    public static <T> void createAnimation(double deltaTime, WritableValue<T> property, T value) {
+    static <T> void createAnimation(double deltaTime, WritableValue<T> property, T value) {
         Timeline timeline = new Timeline();
         KeyValue keyValue = new KeyValue(property, value);
         KeyFrame keyFrame = new KeyFrame(Duration.millis(deltaTime), keyValue);
         timeline.getKeyFrames().add(keyFrame);
         Director.getInstance().addTimeline(timeline);
     }
-    public static <T> void updateAnimation(double deltaTime, WritableValue<T> property, T value) {
+    static <T> void updateAnimation(double deltaTime, WritableValue<T> property, T value) {
         Timeline timeline = Director.getInstance().getLastTimeline();
         assert timeline != null;
         KeyValue keyValue = new KeyValue(property, value);
         KeyFrame keyFrame = new KeyFrame(Duration.millis(deltaTime), keyValue);
         timeline.getKeyFrames().add(keyFrame);
     }
-    public static void createAnimationText(Text text, String str) {
+    static void createAnimationText(Text text, String str) {
         // change text
         createAnimation(50, text.textProperty(), str);
         updateAnimation(50, text.fillProperty(), Color.RED);
