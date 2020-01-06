@@ -2,7 +2,9 @@ package jm233333.visual;
 
 import javafx.geometry.VPos;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -15,6 +17,7 @@ public class VisualListNode extends VisualNode {
 
     private Rectangle boxValue, boxPointer;
     private Text text;
+    private Line pointer;
 
     public VisualListNode() {
         super();
@@ -50,6 +53,15 @@ public class VisualListNode extends VisualNode {
         text.setWrappingWidth(64);
         text.setLayoutY(32);
         this.getChildren().add(text);
+
+        pointer = new Line();
+        pointer.setStartX(64 + 16);
+        pointer.setStartY(16);
+        pointer.setEndX(pointer.getStartX() + 8);
+        pointer.setEndY(pointer.getStartY());
+        pointer.setStrokeWidth(4);
+        pointer.setStrokeLineCap(StrokeLineCap.BUTT);
+        this.getChildren().add(pointer);
     }
 
     public void clear() {
@@ -60,6 +72,10 @@ public class VisualListNode extends VisualNode {
     public void setValue(int value) {
         super.setValue(value);
         setText(String.valueOf(value));
+    }
+
+    public void setPointer(String id) {
+        ;
     }
 
     public double getWidth() {

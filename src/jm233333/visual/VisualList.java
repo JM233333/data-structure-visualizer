@@ -29,7 +29,7 @@ public class VisualList extends Group {
         return node;
     }
 
-    public void addNode(int value) {
+    public void insert(int index, int value) {
         VisualListNode node = createNode(value);
     }
 

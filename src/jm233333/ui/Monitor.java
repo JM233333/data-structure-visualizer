@@ -3,7 +3,7 @@ package jm233333.ui;
 import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.util.Pair;
-import jm233333.visual.VisualArray;
+import jm233333.visual.*;
 
 import java.util.HashMap;
 
@@ -24,7 +24,7 @@ public class Monitor extends Pane {
      * key: name of the array
      * value: reference to the corresponding visual array
      */
-    private HashMap<String, VisualArray> mapVisualArray;
+    private HashMap<String, Group> mapVisual;
 
     /**
      * Records all relationships of (index field -> array).
@@ -41,7 +41,7 @@ public class Monitor extends Pane {
         super();
         canvas = new Group();
         this.getChildren().add(canvas);
-        mapVisualArray = new HashMap<>();
+        mapVisual = new HashMap<>();
         mapIndexFieldConnection = new HashMap<>();
     }
 //    public <T> void updateField(String name, Class type, T value) {
@@ -60,7 +60,7 @@ public class Monitor extends Pane {
         visualArray.setLayoutX(64);
         visualArray.setLayoutY(64);
         canvas.getChildren().add(visualArray);
-        mapVisualArray.put(name, visualArray);
+        mapVisual.put(name, visualArray);
     }
 
     /**
@@ -82,24 +82,33 @@ public class Monitor extends Pane {
      * @param value initial value of the index field
      */
     public void addIndexField(String nameArray, String name, int value) {
-        VisualArray visualArray = mapVisualArray.get(nameArray);
+        VisualArray visualArray = (VisualArray)mapVisual.get(nameArray);
         visualArray.addIndexField(name, value);
         mapIndexFieldConnection.put(name, nameArray);
     }
 
     public void updateIndexField(String name, int value) {
         String nameArray = mapIndexFieldConnection.get(name);
-        VisualArray visualArray = mapVisualArray.get(nameArray);
+        VisualArray visualArray = (VisualArray)mapVisual.get(nameArray);
         visualArray.updateIndexField(name, value);
     }
 
     public void updateArrayElement(String name, int index, int value) {
-        VisualArray visualArray = mapVisualArray.get(name);
+        VisualArray visualArray = (VisualArray)mapVisual.get(name);
         visualArray.updateArrayElement(index, value);
     }
 
     public void eraseArrayElement(String name, int index) {
-        VisualArray visualArray = mapVisualArray.get(name);
+        VisualArray visualArray = (VisualArray)mapVisual.get(name);
         visualArray.eraseArrayElement(index);
+    }
+
+
+    public void createVisualList(String name, int n) {
+        VisualList visualList = new VisualList(name);
+        visualList.setLayoutX(64);
+        visualList.setLayoutY(64);
+        canvas.getChildren().add(visualList);
+        mapVisual.put(name, visualList);
     }
 }

@@ -57,6 +57,9 @@ public class Controller extends Group {
         // initialize method triggers
         ArrayList<MethodTrigger> methodTriggers = new ArrayList<>();
         for (Method method : methods) {
+            if ((method.getModifiers() & Modifier.PUBLIC) == 0) {
+                continue;
+            }
             if (method.getName().equals("createVisual")) {
                 continue;
             }
