@@ -23,8 +23,6 @@ public class VisualArrayNode extends VisualNode {
     }
 
     void initialize() {
-        this.getChildren().clear();
-
         box = new Rectangle(64, 64);
         box.setFill(Color.rgb(255, 255, 255));
         box.setStroke(Color.BLACK);

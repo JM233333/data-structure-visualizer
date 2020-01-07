@@ -104,11 +104,16 @@ public class Monitor extends Pane {
     }
 
 
-    public void createVisualList(String name, int n) {
+    public void createVisualList(String name) {
         VisualList visualList = new VisualList(name);
         visualList.setLayoutX(64);
         visualList.setLayoutY(64);
         canvas.getChildren().add(visualList);
         mapVisual.put(name, visualList);
+    }
+
+    public void pushFrontListNode(String nameList, int value) {
+        VisualList visualList = (VisualList)mapVisual.get(nameList);
+        visualList.pushFrontNode(value);
     }
 }

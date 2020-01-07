@@ -13,7 +13,7 @@ import javafx.scene.text.TextAlignment;
 
 public class VisualListNode extends VisualNode {
 
-    private static int nextId = 0;
+    private VisualListNode next;
 
     private Rectangle boxValue, boxPointer;
     private Text text;
@@ -30,9 +30,7 @@ public class VisualListNode extends VisualNode {
     }
 
     void initialize() {
-        this.setId(String.valueOf(nextId));
-        nextId ++;
-        this.getChildren().clear();
+        next = null;
 
         boxValue = new Rectangle(64, 64);
         boxValue.setLayoutX(0);
@@ -74,8 +72,9 @@ public class VisualListNode extends VisualNode {
         setText(String.valueOf(value));
     }
 
-    public void setPointer(String id) {
-        ;
+    public void setPointer(VisualListNode node) {
+        Visual.createAnimation(500, pointer.endXProperty(), node.boxValue.getLayoutX());
+        Visual.updateAnimation(500, pointer.endYProperty(), node.boxValue.getLayoutY() + 32);
     }
 
     public double getWidth() {

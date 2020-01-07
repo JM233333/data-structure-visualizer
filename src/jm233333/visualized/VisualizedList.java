@@ -22,7 +22,7 @@ public class VisualizedList extends VisualizedDataStructure {
 
     @Override
     void createVisual() {
-        ;
+        createVisualList("list");
     }
 
     public void push_front(int value) {
@@ -33,6 +33,7 @@ public class VisualizedList extends VisualizedDataStructure {
             node.next = head.next;
             head.next = node;
         }
+        pushFrontListNode("list", value);
     }
 
     public void insert(int index, int value) {

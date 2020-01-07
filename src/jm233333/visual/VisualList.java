@@ -2,6 +2,7 @@ package jm233333.visual;
 
 import javafx.scene.Group;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -13,6 +14,7 @@ public class VisualList extends Group {
 
     private String name;
     private HashMap<String, VisualListNode> mapNode;
+    private ArrayList<VisualListNode> arrayNode;
 
     public VisualList(String name) {
         // super
@@ -20,6 +22,7 @@ public class VisualList extends Group {
         // initialize
         this.name = name;
         mapNode = new HashMap<>();
+        arrayNode = new ArrayList<>();
     }
 
     private VisualListNode createNode(int value) {
@@ -29,8 +32,12 @@ public class VisualList extends Group {
         return node;
     }
 
-    public void insert(int index, int value) {
+    public void pushFrontNode(int value) {
         VisualListNode node = createNode(value);
+        if (!arrayNode.isEmpty()) {
+            VisualListNode lastNode = arrayNode.get(arrayNode.size() - 1);
+            node.setPointer(lastNode);
+        }
     }
 
 //    public void updateNode(String name, int value) {

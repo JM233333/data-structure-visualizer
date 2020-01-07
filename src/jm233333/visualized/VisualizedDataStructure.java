@@ -90,4 +90,11 @@ public abstract class VisualizedDataStructure {
         // lazy-erase data of array[index] in the corresponding visual array
         monitor.eraseArrayElement(name, index);
     }
+
+    void createVisualList(String name, Pair<String, Integer>... indexFields) {
+        monitor.createVisualList(name);
+    }
+    void pushFrontListNode(String name, int value) {
+        monitor.pushFrontListNode(name, value);
+    }
 }
