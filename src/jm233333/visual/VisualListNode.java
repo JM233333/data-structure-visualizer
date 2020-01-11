@@ -1,36 +1,41 @@
 package jm233333.visual;
 
-import javafx.geometry.VPos;
+import javafx.beans.value.ChangeListener;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeType;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
+import jm233333.Director;
+
+import java.util.Objects;
 
 public class VisualListNode extends VisualNode {
 
     private VisualListNode next;
+    private ChangeListener<Number> nextListenerX, nextListenerY;
 
     private Rectangle boxValue, boxPointer;
-    private Text text;
     private Line pointer;
 
     public VisualListNode() {
         super();
         initialize();
+        initializeText();
     }
 
     public VisualListNode(int value) {
         super(value);
         initialize();
+        initializeText(value);
     }
 
     void initialize() {
         next = null;
+        nextListenerX = null;
+        nextListenerY = null;
 
         boxValue = new Rectangle(64, 64);
         boxValue.setLayoutX(0);
@@ -44,21 +49,13 @@ public class VisualListNode extends VisualNode {
             this.getChildren().add(box);
         }
 
-        text = new Text();
-        text.setFont(Font.font("Tahoma", FontWeight.NORMAL, 22));
-        text.setTextAlignment(TextAlignment.CENTER);
-        text.setTextOrigin(VPos.CENTER);
-        text.setWrappingWidth(64);
-        text.setLayoutY(32);
-        this.getChildren().add(text);
-
         pointer = new Line();
         pointer.setStartX(64 + 16);
-        pointer.setStartY(16);
+        pointer.setStartY(32);
         pointer.setEndX(pointer.getStartX() + 8);
         pointer.setEndY(pointer.getStartY());
         pointer.setStrokeWidth(4);
-        pointer.setStrokeLineCap(StrokeLineCap.BUTT);
+        pointer.setStrokeLineCap(StrokeLineCap.ROUND);
         this.getChildren().add(pointer);
     }
 
@@ -67,14 +64,41 @@ public class VisualListNode extends VisualNode {
         setText("");
     }
 
-    public void setValue(int value) {
-        super.setValue(value);
-        setText(String.valueOf(value));
+    public void setNext() {
+        ;
     }
 
     public void setPointer(VisualListNode node) {
-        Visual.createAnimation(500, pointer.endXProperty(), node.boxValue.getLayoutX());
-        Visual.updateAnimation(500, pointer.endYProperty(), node.boxValue.getLayoutY() + 32);
+        //
+        Visual.createAnimation(500, pointer.endXProperty(),
+                node.getLayoutX() + node.boxValue.getLayoutX() - this.getLayoutX());
+        Visual.updateAnimation(500, pointer.endYProperty(),
+                node.getLayoutY() + node.boxValue.getLayoutY() - this.getLayoutY() + 32);
+        //
+        final VisualListNode thisNode = this;
+        Director.getInstance().getLastTimeline().setOnFinished((event) -> {
+            if (nextListenerX != null) {
+                node.layoutXProperty().removeListener(nextListenerX);
+                thisNode.layoutXProperty().removeListener(nextListenerX);
+            }
+            if (nextListenerY != null) {
+                node.layoutYProperty().removeListener(nextListenerY);
+                thisNode.layoutYProperty().removeListener(nextListenerY);
+            }
+            nextListenerX = (observable, oldX, newX) -> {
+                pointer.setEndX(node.getLayoutX() + node.boxValue.getLayoutX() - thisNode.getLayoutX());
+            };
+            nextListenerY = (observable, oldY, newY) -> {
+                pointer.setEndY(node.getLayoutY() + node.boxValue.getLayoutY() - thisNode.getLayoutY() + 32);
+            };
+            node.layoutXProperty().addListener(nextListenerX);
+            thisNode.layoutXProperty().addListener(nextListenerX);
+            node.layoutYProperty().addListener(nextListenerY);
+            thisNode.layoutYProperty().addListener(nextListenerY);
+        });
+    }
+    public final Line getPointer() {
+        return pointer;
     }
 
     public double getWidth() {
@@ -83,13 +107,5 @@ public class VisualListNode extends VisualNode {
 
     public double getHeight() {
         return boxValue.getHeight() + boxPointer.getHeight();
-    }
-
-    public final Text getText() {
-        return text;
-    }
-
-    public void setText(String str) {
-        Visual.createAnimationText(text, str);
     }
 }

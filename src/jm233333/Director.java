@@ -3,6 +3,8 @@ package jm233333;
 import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.BooleanPropertyBase;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -72,7 +74,11 @@ public class Director {
         for (int i = 0; i < animationPlayingList.size(); i ++) {
             final int index = i;
             Timeline timeline = animationPlayingList.get(index);
+            final EventHandler<ActionEvent> oldHandler = timeline.getOnFinished();
             timeline.setOnFinished((event) -> {
+                if (oldHandler != null) {
+                    oldHandler.handle(event);
+                }
                 if (index + 1 < animationPlayingList.size()) {
                     animationPlayingList.get(index + 1).play();
                 } else {
