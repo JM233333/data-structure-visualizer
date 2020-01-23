@@ -1,16 +1,10 @@
 package jm233333.visual;
 
 import javafx.beans.value.ChangeListener;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeType;
 import jm233333.Director;
-
-import java.util.Objects;
 
 public class VisualListNode extends VisualNode {
 
@@ -18,7 +12,7 @@ public class VisualListNode extends VisualNode {
     private ChangeListener<Number> nextListenerX, nextListenerY;
 
     private Rectangle boxValue, boxPointer;
-    private Line pointer;
+    private VisualPointer pointer;
 
     public VisualListNode() {
         super();
@@ -49,13 +43,11 @@ public class VisualListNode extends VisualNode {
             this.getChildren().add(box);
         }
 
-        pointer = new Line();
-        pointer.setStartX(64 + 16);
-        pointer.setStartY(32);
-        pointer.setEndX(pointer.getStartX() + 8);
-        pointer.setEndY(pointer.getStartY());
-        pointer.setStrokeWidth(4);
-        pointer.setStrokeLineCap(StrokeLineCap.ROUND);
+        pointer = new VisualPointer();
+        pointer.getBody().setStartX(64 + 16);
+        pointer.getBody().setStartY(32);
+        pointer.getBody().setEndX(pointer.getBody().getStartX() + 8);
+        pointer.getBody().setEndY(pointer.getBody().getStartY());
         this.getChildren().add(pointer);
     }
 
@@ -70,9 +62,9 @@ public class VisualListNode extends VisualNode {
 
     public void setPointer(VisualListNode node) {
         //
-        Visual.createAnimation(500, pointer.endXProperty(),
+        Visual.createAnimation(500, pointer.getBody().endXProperty(),
                 node.getLayoutX() + node.boxValue.getLayoutX() - this.getLayoutX());
-        Visual.updateAnimation(500, pointer.endYProperty(),
+        Visual.updateAnimation(500, pointer.getBody().endYProperty(),
                 node.getLayoutY() + node.boxValue.getLayoutY() - this.getLayoutY() + 32);
         //
         final VisualListNode thisNode = this;
@@ -85,11 +77,11 @@ public class VisualListNode extends VisualNode {
                 node.layoutYProperty().removeListener(nextListenerY);
                 thisNode.layoutYProperty().removeListener(nextListenerY);
             }
-            nextListenerX = (observable, oldX, newX) -> {
-                pointer.setEndX(node.getLayoutX() + node.boxValue.getLayoutX() - thisNode.getLayoutX());
+            nextListenerX = (observable, oldValue, newValue) -> {
+                pointer.getBody().setEndX(node.getLayoutX() + node.boxValue.getLayoutX() - thisNode.getLayoutX());
             };
-            nextListenerY = (observable, oldY, newY) -> {
-                pointer.setEndY(node.getLayoutY() + node.boxValue.getLayoutY() - thisNode.getLayoutY() + 32);
+            nextListenerY = (observable, oldValue, newValue) -> {
+                pointer.getBody().setEndY(node.getLayoutY() + node.boxValue.getLayoutY() - thisNode.getLayoutY() + 32);
             };
             node.layoutXProperty().addListener(nextListenerX);
             thisNode.layoutXProperty().addListener(nextListenerX);
@@ -97,7 +89,7 @@ public class VisualListNode extends VisualNode {
             thisNode.layoutYProperty().addListener(nextListenerY);
         });
     }
-    public final Line getPointer() {
+    public final VisualPointer getPointer() {
         return pointer;
     }
 

@@ -50,6 +50,20 @@ public class Monitor extends Pane {
 //    }
 
     /**
+     * Gets the visual component by name.
+     *
+     * @param name name of the visual component
+     */
+    public final Group getVisual(String name) {
+        return mapVisual.get(name);
+    }
+    public final Group getVisualByIndexFieldName(String name) {
+        String nameVisual = mapIndexFieldConnection.get(name);
+        System.out.println("NAME VISUAL " + nameVisual);
+        return mapVisual.get(nameVisual);
+    }
+
+    /**
      * Creates graphic components that represent an array.
      *
      * @param name name of the array
@@ -64,44 +78,30 @@ public class Monitor extends Pane {
     }
 
     /**
-     * Adds an index field and binds it to a specific array.
-     * Directly jumps into {@code addIndexField(nameArray, data.name, data.value)} in reality.
+     * Adds a connection from an index field to the array that it belongs to.
      *
-     * @param nameArray name of the array
-     * @param indexField data of the index field
-     */
-    public void addIndexField(String nameArray, Pair<String, Integer> indexField) {
-        addIndexField(nameArray, indexField.getKey(), indexField.getValue());
-    }
-
-    /**
-     * Adds an index field and binds it to a specific array.
-     *
-     * @param nameArray name of the array
      * @param name name of the index field
-     * @param value initial value of the index field
+     * @param nameArray name of the array
      */
-    public void addIndexField(String nameArray, String name, int value) {
-        VisualArray visualArray = (VisualArray)mapVisual.get(nameArray);
-        visualArray.addIndexField(name, value);
+    public void addIndexFieldConnection(String name, String nameArray) {
         mapIndexFieldConnection.put(name, nameArray);
     }
 
-    public void updateIndexField(String name, int value) {
-        String nameArray = mapIndexFieldConnection.get(name);
-        VisualArray visualArray = (VisualArray)mapVisual.get(nameArray);
-        visualArray.updateIndexField(name, value);
-    }
-
-    public void updateArrayElement(String name, int index, int value) {
-        VisualArray visualArray = (VisualArray)mapVisual.get(name);
-        visualArray.updateArrayElement(index, value);
-    }
-
-    public void eraseArrayElement(String name, int index) {
-        VisualArray visualArray = (VisualArray)mapVisual.get(name);
-        visualArray.eraseArrayElement(index);
-    }
+//    public void updateIndexField(String name, int value) {
+//        String nameArray = mapIndexFieldConnection.get(name);
+//        VisualArray visualArray = (VisualArray)mapVisual.get(nameArray);
+//        visualArray.updateIndexField(name, value);
+//    }
+//
+//    public void updateArrayElement(String name, int index, int value) {
+//        VisualArray visualArray = (VisualArray)mapVisual.get(name);
+//        visualArray.updateElement(index, value);
+//    }
+//
+//    public void eraseArrayElement(String name, int index) {
+//        VisualArray visualArray = (VisualArray)mapVisual.get(name);
+//        visualArray.eraseElement(index);
+//    }
 
 
     public void createVisualList(String name) {
@@ -112,8 +112,8 @@ public class Monitor extends Pane {
         mapVisual.put(name, visualList);
     }
 
-    public void pushFrontListNode(String nameList, int value) {
-        VisualList visualList = (VisualList)mapVisual.get(nameList);
-        visualList.pushFrontNode(value);
-    }
+//    public void pushFrontListNode(String nameList, int value) {
+//        VisualList visualList = (VisualList)mapVisual.get(nameList);
+//        visualList.pushFrontNode(value);
+//    }
 }

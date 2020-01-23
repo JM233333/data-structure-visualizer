@@ -44,12 +44,12 @@ public class VisualArray extends Group {
         indexField.setValue(value);
     }
 
-    public void updateArrayElement(int index, int value) {
+    public void updateElement(int index, int value) {
         VisualArrayNode node = arrayNode.get(index);
         node.setValue(value);
     }
 
-    public void eraseArrayElement(int index) {
+    public void eraseElement(int index) {
         VisualArrayNode node = arrayNode.get(index);
         node.clear();
     }

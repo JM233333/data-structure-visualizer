@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import jm233333.Director;
 
-public abstract class Visual extends Group {
+class Visual extends Group {
     static <T> void createAnimation(double deltaTime, WritableValue<T> property, T value) {
         Timeline timeline = new Timeline();
         KeyValue keyValue = new KeyValue(property, value);

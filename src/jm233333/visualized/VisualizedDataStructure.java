@@ -2,9 +2,11 @@ package jm233333.visualized;
 
 import javafx.util.Pair;
 import jm233333.ui.Monitor;
+import jm233333.visual.*;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.security.acl.Group;
 import java.util.HashMap;
 
 /**
@@ -52,23 +54,22 @@ public abstract class VisualizedDataStructure {
     void createVisualArray(String name, int n, Pair<String, Integer>... indexFields) {
         monitor.createVisualArray(name, n);
         for (Pair<String, Integer> indexField : indexFields) {
-            monitor.addIndexField(name, indexField);
+            createVisualIndexField(name, indexField);
         }
     }
+    void createVisualIndexField(String nameArray, Pair<String, Integer> indexField) {
+        getVisualArray(nameArray).addIndexField(indexField.getKey(), indexField.getValue());
+        monitor.addIndexFieldConnection(indexField.getKey(), nameArray);
+    }
+    void createVisualList(String name, Pair<String, Integer>... indexFields) {
+        monitor.createVisualList(name);
+    }
 
-    void updateIndexField(String name, int value) {
-        try {
-            // get the field
-            Field field = this.getClass().getDeclaredField(name);
-            // update data of the index field itself
-            field.setAccessible(true);
-            field.set(this, value);
-            field.setAccessible(false);
-            // update data of the index field in the corresponding visual array
-            monitor.updateIndexField(name, value);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+    final VisualArray getVisualArray(String name) {
+        return (VisualArray)monitor.getVisual(name);
+    }
+    final VisualList getVisualList(String name) {
+        return (VisualList)monitor.getVisual(name);
     }
 
     void updateArrayElement(String name, int index, int value) {
@@ -81,20 +82,31 @@ public abstract class VisualizedDataStructure {
             Array.set(array, index, value);
             field.setAccessible(false);
             // update data of array[index] in the corresponding visual array
-            monitor.updateArrayElement(name, index, value);
+            getVisualArray(name).updateElement(index, value);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
     void eraseArrayElement(String name, int index) {
         // lazy-erase data of array[index] in the corresponding visual array
-        monitor.eraseArrayElement(name, index);
+        getVisualArray(name).eraseElement(index);
+    }
+    void updateIndexField(String name, int value) {
+        try {
+            // get the field
+            Field field = this.getClass().getDeclaredField(name);
+            // update data of the index field itself
+            field.setAccessible(true);
+            field.set(this, value);
+            field.setAccessible(false);
+            // update data of the index field in the corresponding visual array
+            ((VisualArray)monitor.getVisualByIndexFieldName(name)).updateIndexField(name, value);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
-    void createVisualList(String name, Pair<String, Integer>... indexFields) {
-        monitor.createVisualList(name);
-    }
     void pushFrontListNode(String name, int value) {
-        monitor.pushFrontListNode(name, value);
+        getVisualList(name).pushFrontNode(value);
     }
 }

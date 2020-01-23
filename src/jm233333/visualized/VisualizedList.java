@@ -25,19 +25,41 @@ public class VisualizedList extends VisualizedDataStructure {
         createVisualList("list");
     }
 
-    public void push_front(int value) {
+    public void pushFront(int value) {
+        // create new node
         Node node = new Node(value);
+        // push front
         if (head == null) {
             head = node;
         } else {
             node.next = head.next;
             head.next = node;
         }
-        pushFrontListNode("list", value);
+        // play animation
+        getVisualList("list").pushFrontNode(value);
     }
 
     public void insert(int index, int value) {
-        ;
+        if (head == null) {
+            System.out.println("INSERT EMPTY");
+            return;
+        }
+        // get position
+        Node p = head;
+        for (int i = 0; i < index; i ++) {
+            p = p.next;
+            if (p == null) {
+                System.out.println("INSERT ERROR");
+                return;
+            }
+        }
+        // create new node
+        Node node = new Node(value);
+        // insert
+        node.next = p.next;
+        p.next = node;
+        // play animation
+        getVisualList("list").insertNode(index, value);
     }
 
     private void insert(Node p, int value) {
