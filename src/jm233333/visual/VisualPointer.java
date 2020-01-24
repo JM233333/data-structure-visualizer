@@ -39,17 +39,19 @@ public class VisualPointer extends Group {
         double sx = getBody().getStartX() - getBody().getEndX();
         double sy = getBody().getStartY() - getBody().getEndY();
         double bodyLength = Math.sqrt(sx*sx + sy*sy);
-        double bodyAngle = Math.acos(sx / bodyLength);
+        double bodyAngleX = Math.acos(sx / bodyLength);
+        double bodyAngleY = Math.asin(sy / bodyLength);
         double hatLength = 8;
         for (Line line : new Line[]{hatLeft, hatRight}) {
             int direction = (line == hatLeft ? 1 : -1);
-            double hatAngle = bodyAngle + (direction * Math.PI / 4);
-            double ex = hatLength * Math.cos(hatAngle);
-            double ey = hatLength * Math.sin(hatAngle);
+            double hatAngleX = bodyAngleX + (direction * Math.PI / 4);
+            double hatAngleY = bodyAngleY + (direction * Math.PI / 4);
+            double ex = hatLength * Math.cos(hatAngleX);
+            double ey = hatLength * Math.sin(hatAngleY);
             line.setStartX(getBody().getEndX());
             line.setStartY(getBody().getEndY());
-            line.setEndX(line.getStartX() + ex);
-            line.setEndY(line.getStartY() + ey);
+            line.setEndX(getBody().getEndX() + ex);
+            line.setEndY(getBody().getEndY() + ey);
         }
     }
 }

@@ -3,8 +3,8 @@ package jm233333.visual;
 import javafx.scene.Group;
 import jm233333.Director;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  * The {@code VisualList} class defines the graphic components of a list that is displayed on the monitor.
@@ -27,11 +27,11 @@ public class VisualList extends Group {
     }
 
     private VisualListNode createNode(int value) {
-        return createNode(0, value);
+        return createNode(-1, value);
     }
     private VisualListNode createNode(int index, int value) {
         VisualListNode node = new VisualListNode(value);
-        node.setLayoutX(32 + 96 * index);
+        node.setLayoutX(32 + (index + 1) * (32 + node.getWidth()));
         node.setLayoutY(96);
         mapNode.put(node.getId(), node);
         this.getChildren().add(node);
@@ -44,17 +44,17 @@ public class VisualList extends Group {
         // set pointer and move old nodes
         if (!arrayNode.isEmpty()) {
             // set pointer
-            VisualListNode lastNode = arrayNode.get(arrayNode.size() - 1);
+            VisualListNode lastNode = arrayNode.get(0);
             newNode.setPointer(lastNode);
             // move old nodes
             Visual.createAnimation(500, lastNode.layoutXProperty(), lastNode.getLayoutX() + 128);
-            for (int i = arrayNode.size() - 2; i >= 0; i --) {
+            for (int i = 1; i < arrayNode.size(); i ++) {
                 VisualListNode node = arrayNode.get(i);
                 Visual.updateAnimation(500, node.layoutXProperty(), node.getLayoutX() + 128);
             }
         }
         // insert new node
-        arrayNode.add(newNode);
+        arrayNode.add(0, newNode);
         Visual.createAnimation(500, newNode.layoutYProperty(), 0);
         Director.getInstance().playAnimation();
     }
@@ -71,15 +71,15 @@ public class VisualList extends Group {
         }
         // move old nodes
         if (index + 1 < arrayNode.size()) {
-            VisualListNode lastNode = arrayNode.get(arrayNode.size() - 1);
+            VisualListNode lastNode = arrayNode.get(index + 1);
             Visual.createAnimation(500, lastNode.layoutXProperty(), lastNode.getLayoutX() + 128);
-            for (int i = arrayNode.size() - 2; i >= index + 1; i--) {
+            for (int i = index + 2; i < arrayNode.size(); i ++) {
                 VisualListNode node = arrayNode.get(i);
                 Visual.updateAnimation(500, node.layoutXProperty(), node.getLayoutX() + 128);
             }
         }
         // insert new node
-        arrayNode.add(newNode);
+        arrayNode.add(index + 1, newNode);
         Visual.createAnimation(500, newNode.layoutYProperty(), 0);
         Director.getInstance().playAnimation();
     }

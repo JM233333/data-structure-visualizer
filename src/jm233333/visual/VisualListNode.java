@@ -69,12 +69,10 @@ public class VisualListNode extends VisualNode {
         //
         final VisualListNode thisNode = this;
         Director.getInstance().getLastTimeline().setOnFinished((event) -> {
-            if (nextListenerX != null) {
-                node.layoutXProperty().removeListener(nextListenerX);
+            if (next != null) {
+                next.layoutXProperty().removeListener(nextListenerX);
                 thisNode.layoutXProperty().removeListener(nextListenerX);
-            }
-            if (nextListenerY != null) {
-                node.layoutYProperty().removeListener(nextListenerY);
+                next.layoutYProperty().removeListener(nextListenerY);
                 thisNode.layoutYProperty().removeListener(nextListenerY);
             }
             nextListenerX = (observable, oldValue, newValue) -> {
@@ -87,6 +85,7 @@ public class VisualListNode extends VisualNode {
             thisNode.layoutXProperty().addListener(nextListenerX);
             node.layoutYProperty().addListener(nextListenerY);
             thisNode.layoutYProperty().addListener(nextListenerY);
+            next = node;
         });
     }
     public final VisualPointer getPointer() {
