@@ -61,8 +61,4 @@ public class VisualizedList extends VisualizedDataStructure {
         // play animation
         getVisualList("list").insertNode(index, value);
     }
-
-    private void insert(Node p, int value) {
-        ;
-    }
 }

@@ -106,6 +106,9 @@ public abstract class VisualizedDataStructure {
         }
     }
 
+    void createListNode(int value) {
+        ;
+    }
     void pushFrontListNode(String name, int value) {
         getVisualList(name).pushFrontNode(value);
     }

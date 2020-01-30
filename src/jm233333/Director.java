@@ -17,6 +17,7 @@ public class Director {
     private static Director instance = new Director();
     private Stage primaryStage;
     private ArrayList<Timeline> animationWaitingList, animationPlayingList;
+    private int animationCurrentIndex;
     private BooleanProperty animationPlayingProperty;
 
     /**
@@ -24,6 +25,9 @@ public class Director {
      */
     private Director() {
         animationWaitingList = new ArrayList<>();
+        animationPlayingList = null;
+        animationCurrentIndex = -1;
+        animationPlayingProperty().setValue(false);
     }
 
     /**
@@ -60,7 +64,7 @@ public class Director {
     public void playAnimation() {
         // check
         if (isAnimationPlaying()) {
-            System.out.println("NOOOOOOO");
+            animationPlayingList.get(animationCurrentIndex).play();
             return;
         }
         // switch buffer
@@ -81,14 +85,23 @@ public class Director {
                 }
                 if (index + 1 < animationPlayingList.size()) {
                     animationPlayingList.get(index + 1).play();
+                    animationCurrentIndex = index + 1;
+                    animationPlayingProperty.setValue(true);
                 } else {
-                    animationPlayingProperty.setValue(false);
+                    animationCurrentIndex = -1;
+                    animationPlayingProperty().setValue(false);
                 }
             });
         }
         // play the first timeline
         animationPlayingList.get(0).play();
+        animationCurrentIndex = 0;
         animationPlayingProperty.setValue(true);
+    }
+    public void pauseAnimation() {
+        if (isAnimationPlaying() && animationCurrentIndex != -1) {
+            animationPlayingList.get(animationCurrentIndex).pause();
+        }
     }
     public final BooleanProperty animationPlayingProperty() {
         if (animationPlayingProperty == null) {

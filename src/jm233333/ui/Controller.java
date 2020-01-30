@@ -3,6 +3,7 @@ package jm233333.ui;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Group;
+import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import jm233333.Director;
 import jm233333.visualized.VisualizedDataStructure;
@@ -35,16 +36,19 @@ public class Controller extends Group {
         this.getChildren().add(flowPane);
         // set reference to the interrelated visual data structure
         this.visualDS = visualDS;
-        // initialize method triggers in the controller
+        // initialize method triggers
         initializeMethodTriggers();
-        // prohibit operating while playing animation
-        Director.getInstance().animationPlayingProperty().addListener((event) -> {
-            if (Director.getInstance().isAnimationPlaying()) {
-                this.setDisable(true);
-            } else {
-                this.setDisable(false);
-            }
+        // initialize animation controllers (temporary)
+        Button btnPlay = new Button("play animation");
+        btnPlay.setOnAction((event) -> {
+            Director.getInstance().playAnimation();
         });
+        flowPane.getChildren().add(btnPlay);
+        Button btnPause = new Button("pause animation");
+        btnPause.setOnAction((event) -> {
+            Director.getInstance().pauseAnimation();
+        });
+        flowPane.getChildren().add(btnPause);
     }
 
     /**
@@ -100,6 +104,14 @@ public class Controller extends Group {
                     method.invoke(visualDS, parameters.toArray());
                 } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
+                }
+            });
+            // prohibit operating while playing animation
+            Director.getInstance().animationPlayingProperty().addListener((event) -> {
+                if (Director.getInstance().isAnimationPlaying()) {
+                    methodTrigger.setDisable(true);
+                } else {
+                    methodTrigger.setDisable(false);
                 }
             });
         }
