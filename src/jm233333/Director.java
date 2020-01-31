@@ -1,14 +1,15 @@
 package jm233333;
 
+import java.util.ArrayList;
+
 import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.BooleanPropertyBase;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
-import jm233333.ui.CodeTracker;
 
-import java.util.ArrayList;
+import jm233333.ui.CodeTracker;
 
 /**
  * The {@code Director} class is a singleton class that maintains global data and controls the overall program.
@@ -23,7 +24,7 @@ public class Director {
     private BooleanProperty animationPlayingProperty;
 
     /**
-     * Creates the unique instance of Director.
+     * Creates the unique instance of {@code Director}.
      */
     private Director() {
         animationWaitingList = new ArrayList<>();
@@ -33,15 +34,18 @@ public class Director {
     }
 
     /**
-     * Gets the unique instance of Director.
-     * @return reference to the unique instance of Director
+     * Gets the unique instance of {@code Director}.
+     *
+     * @return the unique instance of {@code Director}
      */
     public static Director getInstance() {
         return instance;
     }
 
     /**
-     * Initialize the unique instance of Director.
+     * Initializes the unique instance of {@code Director} with a specified {@code Stage}.
+     *
+     * @param primaryStage the {@code Stage} that is designated as the primary stage
      */
     public void initialize(Stage primaryStage) {
         setPrimaryStage(primaryStage);
@@ -54,18 +58,31 @@ public class Director {
         return primaryStage;
     }
 
+    /**
+     * Adds a {@code Timeline} to the animation waiting list.
+     *
+     * @param timeline the {@code Timeline} that will be added
+     */
     public void addTimeline(Timeline timeline) {
         animationWaitingList.add(timeline);
     }
-    public void clearAllTimeline() {
-        animationWaitingList.clear();
-    }
+
+    /**
+     * Gets the last {@code Timeline} in the animation waiting list.
+     *
+     * @return the last {@code Timeline}
+     */
     public final Timeline getLastTimeline() {
         if (animationWaitingList.isEmpty()) {
             return null;
         }
         return animationWaitingList.get(animationWaitingList.size() - 1);
     }
+
+    /**
+     * If the animation playing list is empty, swaps it with the animation waiting list;
+     * Otherwise, sets the animation status to PLAYING.
+     */
     public void playAnimation() {
         // check
         if (isAnimationPlaying()) {
@@ -103,11 +120,20 @@ public class Director {
         animationCurrentIndex = 0;
         animationPlayingProperty.setValue(true);
     }
+
+    /**
+     * If the animation playing list is not empty, sets the animation status to PAUSED.
+     */
     public void pauseAnimation() {
         if (isAnimationPlaying() && animationCurrentIndex != -1) {
             animationPlayingList.get(animationCurrentIndex).pause();
         }
     }
+
+    /**
+     * a {@code BooleanProperty} that represents the animation status.
+     * means PLAYING when the value is {@code true}, or PAUSED while {@code false}.
+     */
     public final BooleanProperty animationPlayingProperty() {
         if (animationPlayingProperty == null) {
             animationPlayingProperty = new BooleanPropertyBase(false) {
@@ -123,6 +149,12 @@ public class Director {
         }
         return animationPlayingProperty;
     }
+
+    /**
+     * Gets the judgement that if the animation status is PLAYING.
+     *
+     * @return if the animation status is PLAYING
+     */
     public boolean isAnimationPlaying() {
         return animationPlayingProperty().getValue();
     }

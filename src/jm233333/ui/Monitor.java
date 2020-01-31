@@ -1,11 +1,11 @@
 package jm233333.ui;
 
+import java.util.HashMap;
+
 import javafx.scene.*;
 import javafx.scene.layout.*;
-import javafx.util.Pair;
-import jm233333.visual.*;
 
-import java.util.HashMap;
+import jm233333.visual.*;
 
 /**
  * The {@code Monitor} class is responsible for displaying the visualized data structure.
@@ -57,6 +57,12 @@ public class Monitor extends Pane {
     public final Group getVisual(String name) {
         return mapVisual.get(name);
     }
+
+    /**
+     * Gets the visual array that a specified index field points to.
+     *
+     * @param name name of the index field
+     */
     public final Group getVisualByIndexFieldName(String name) {
         String nameVisual = mapIndexFieldConnection.get(name);
         System.out.println("NAME VISUAL " + nameVisual);
@@ -87,11 +93,25 @@ public class Monitor extends Pane {
         mapIndexFieldConnection.put(name, nameArray);
     }
 
+    /**
+     * Creates graphic components that represent a list.
+     *
+     * @param name name of the list
+     */
     public void createVisualList(String name) {
         VisualList visualList = new VisualList(name);
         visualList.setLayoutX(64);
         visualList.setLayoutY(64);
         canvas.getChildren().add(visualList);
         mapVisual.put(name, visualList);
+    }
+
+    /**
+     * Creates graphic components that represent a binary tree.
+     *
+     * @param name name of the binary tree
+     */
+    public void createVisualBinaryTree(String name) {
+        ;
     }
 }
