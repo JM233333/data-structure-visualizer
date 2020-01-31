@@ -6,6 +6,7 @@ import javafx.beans.property.BooleanPropertyBase;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import jm233333.ui.CodeTracker;
 
 import java.util.ArrayList;
 
@@ -16,6 +17,7 @@ public class Director {
 
     private static Director instance = new Director();
     private Stage primaryStage;
+    private CodeTracker boundCodeTracker;
     private ArrayList<Timeline> animationWaitingList, animationPlayingList;
     private int animationCurrentIndex;
     private BooleanProperty animationPlayingProperty;
@@ -54,6 +56,9 @@ public class Director {
 
     public void addTimeline(Timeline timeline) {
         animationWaitingList.add(timeline);
+    }
+    public void clearAllTimeline() {
+        animationWaitingList.clear();
     }
     public final Timeline getLastTimeline() {
         if (animationWaitingList.isEmpty()) {

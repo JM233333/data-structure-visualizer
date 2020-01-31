@@ -42,10 +42,6 @@ public abstract class VisualNode extends Group {
         text.setLayoutY(32);
         this.getChildren().add(text);
     }
-    void initializeText(int value) {
-        initializeText();
-        setValue(value);
-    }
 
     public void clear() {
         isFilled = false;

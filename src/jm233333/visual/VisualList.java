@@ -14,7 +14,6 @@ import java.util.ArrayList;
 public class VisualList extends Group {
 
     private String name;
-    private HashMap<String, VisualListNode> mapNode;
     private ArrayList<VisualListNode> arrayNode;
 
     public VisualList(String name) {
@@ -22,25 +21,28 @@ public class VisualList extends Group {
         super();
         // initialize
         this.name = name;
-        mapNode = new HashMap<>();
         arrayNode = new ArrayList<>();
     }
 
-    private VisualListNode createNode(int value) {
-        return createNode(-1, value);
-    }
     private VisualListNode createNode(int index, int value) {
         VisualListNode node = new VisualListNode(value);
-        node.setLayoutX(32 + (index + 1) * (32 + node.getWidth()));
+        node.setLayoutX(32 + index * (32 + node.getWidth()));
         node.setLayoutY(96);
-        mapNode.put(node.getId(), node);
         this.getChildren().add(node);
         return node;
+    }
+    private void removeNode(int index) {
+        VisualListNode node = arrayNode.remove(index);
+        Visual.createAnimation(500, node.scaleXProperty(), 0);
+        Visual.updateAnimation(500, node.scaleYProperty(), 0);
+        Director.getInstance().getLastTimeline().setOnFinished((event) -> {
+            this.getChildren().remove(node);
+        });
     }
 
     public void pushFrontNode(int value) {
         // create node
-        VisualListNode newNode = createNode(value);
+        VisualListNode newNode = createNode(0, value);
         // set pointer and move old nodes
         if (!arrayNode.isEmpty()) {
             // set pointer
@@ -60,33 +62,86 @@ public class VisualList extends Group {
     }
 
     public void insertNode(int index, int value) {
+        // special judge
+        if (index == 0) {
+            pushFrontNode(value);
+            return;
+        }
         // create node
         VisualListNode newNode = createNode(index, value);
         // set pointer
-        VisualListNode prvNode = arrayNode.get(index);
+        VisualListNode prvNode = arrayNode.get(index - 1);
         prvNode.setPointer(newNode);
-        if (index + 1 < arrayNode.size()) {
-            VisualListNode nxtNode = arrayNode.get(index + 1);
+        if (index < arrayNode.size()) {
+            VisualListNode nxtNode = arrayNode.get(index);
             newNode.setPointer(nxtNode);
         }
         // move old nodes
-        if (index + 1 < arrayNode.size()) {
-            VisualListNode lastNode = arrayNode.get(index + 1);
+        if (index < arrayNode.size()) {
+            VisualListNode lastNode = arrayNode.get(index);
             Visual.createAnimation(500, lastNode.layoutXProperty(), lastNode.getLayoutX() + 128);
-            for (int i = index + 2; i < arrayNode.size(); i ++) {
+            for (int i = index + 1; i < arrayNode.size(); i ++) {
                 VisualListNode node = arrayNode.get(i);
                 Visual.updateAnimation(500, node.layoutXProperty(), node.getLayoutX() + 128);
             }
         }
         // insert new node
-        arrayNode.add(index + 1, newNode);
+        arrayNode.add(index, newNode);
         Visual.createAnimation(500, newNode.layoutYProperty(), 0);
         Director.getInstance().playAnimation();
     }
 
-//    public void updateNode(String name, int value) {
-//        VisualArrayIndex indexField = mapIndexField.get(name);
-//        indexField.setValue(value);
-//        Visual.createAnimation(500, node.layoutXProperty(), 64 * value);
-//    }
+    public void updateNode(int index, int value) {
+        VisualListNode node = arrayNode.get(index);
+        node.setValue(value);
+    }
+
+    public void popFrontNode() {
+        // get erased node
+        VisualListNode erasedNode = arrayNode.get(0);
+        Visual.createAnimation(500, erasedNode.layoutYProperty(), 96);
+        // move rest nodes
+        if (arrayNode.size() > 1) {
+            VisualListNode lastNode = arrayNode.get(1);
+            Visual.createAnimation(500, lastNode.layoutXProperty(), lastNode.getLayoutX() - 128);
+            for (int i = 2; i < arrayNode.size(); i ++) {
+                VisualListNode node = arrayNode.get(i);
+                Visual.updateAnimation(500, node.layoutXProperty(), node.getLayoutX() - 128);
+            }
+        }
+        // remove erased node
+        removeNode(0);
+        Director.getInstance().playAnimation();
+    }
+
+    public void eraseNode(int index) {
+        // special judge
+        if (index == 0) {
+            popFrontNode();
+            return;
+        }
+        // get erased node
+        VisualListNode erasedNode = arrayNode.get(index);
+        Visual.createAnimation(500, erasedNode.layoutYProperty(), 96);
+        // set pointer
+        VisualListNode prvNode = arrayNode.get(index - 1);
+        if (index + 1 < arrayNode.size()) {
+            VisualListNode nxtNode = arrayNode.get(index + 1);
+            prvNode.setPointer(nxtNode);
+        } else {
+            prvNode.setPointer(null);
+        }
+        // move rest nodes
+        if (index + 1 < arrayNode.size()) {
+            VisualListNode lastNode = arrayNode.get(index + 1);
+            Visual.createAnimation(500, lastNode.layoutXProperty(), lastNode.getLayoutX() - 128);
+            for (int i = index + 2; i < arrayNode.size(); i ++) {
+                VisualListNode node = arrayNode.get(i);
+                Visual.updateAnimation(500, node.layoutXProperty(), node.getLayoutX() - 128);
+            }
+        }
+        // remove erased node
+        removeNode(index);
+        Director.getInstance().playAnimation();
+    }
 }

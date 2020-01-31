@@ -87,23 +87,6 @@ public class Monitor extends Pane {
         mapIndexFieldConnection.put(name, nameArray);
     }
 
-//    public void updateIndexField(String name, int value) {
-//        String nameArray = mapIndexFieldConnection.get(name);
-//        VisualArray visualArray = (VisualArray)mapVisual.get(nameArray);
-//        visualArray.updateIndexField(name, value);
-//    }
-//
-//    public void updateArrayElement(String name, int index, int value) {
-//        VisualArray visualArray = (VisualArray)mapVisual.get(name);
-//        visualArray.updateElement(index, value);
-//    }
-//
-//    public void eraseArrayElement(String name, int index) {
-//        VisualArray visualArray = (VisualArray)mapVisual.get(name);
-//        visualArray.eraseElement(index);
-//    }
-
-
     public void createVisualList(String name) {
         VisualList visualList = new VisualList(name);
         visualList.setLayoutX(64);
@@ -111,9 +94,4 @@ public class Monitor extends Pane {
         canvas.getChildren().add(visualList);
         mapVisual.put(name, visualList);
     }
-
-//    public void pushFrontListNode(String nameList, int value) {
-//        VisualList visualList = (VisualList)mapVisual.get(nameList);
-//        visualList.pushFrontNode(value);
-//    }
 }

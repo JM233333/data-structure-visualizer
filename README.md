@@ -14,9 +14,8 @@ DataStructureVisualizer is an application that provides visual graphic interface
 
 - Markdown, PlantUML (not necessary)
 
-## Update Record
+## Update Record (after 2020.2)
 
 | Data | Updates |
 | :--- | :--- |
-| 2019.12.10 | supports fluent animation |
-| 2019.12.6 | builts embryonic form of the app |
+| - | - |

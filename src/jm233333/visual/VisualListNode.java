@@ -23,7 +23,8 @@ public class VisualListNode extends VisualNode {
     public VisualListNode(int value) {
         super(value);
         initialize();
-        initializeText(value);
+        initializeText();
+        getText().setText(String.valueOf(value));
     }
 
     void initialize() {
@@ -49,6 +50,11 @@ public class VisualListNode extends VisualNode {
         pointer.getBody().setEndX(pointer.getBody().getStartX() + 8);
         pointer.getBody().setEndY(pointer.getBody().getStartY());
         this.getChildren().add(pointer);
+
+        this.setScaleX(0);
+        this.setScaleY(0);
+        Visual.createAnimation(500, this.scaleXProperty(), 1);
+        Visual.updateAnimation(500, this.scaleYProperty(), 1);
     }
 
     public void clear() {
@@ -62,10 +68,17 @@ public class VisualListNode extends VisualNode {
 
     public void setPointer(VisualListNode node) {
         //
-        Visual.createAnimation(500, pointer.getBody().endXProperty(),
-                node.getLayoutX() + node.boxValue.getLayoutX() - this.getLayoutX());
-        Visual.updateAnimation(500, pointer.getBody().endYProperty(),
-                node.getLayoutY() + node.boxValue.getLayoutY() - this.getLayoutY() + 32);
+        if (node != null) {
+            Visual.createAnimation(500, pointer.getBody().endXProperty(),
+                    node.getLayoutX() + node.boxValue.getLayoutX() - this.getLayoutX());
+            Visual.updateAnimation(500, pointer.getBody().endYProperty(),
+                    node.getLayoutY() + node.boxValue.getLayoutY() - this.getLayoutY() + 32);
+        } else {
+            Visual.createAnimation(500, pointer.getBody().endXProperty(),
+                    pointer.getBody().getStartX() + 8);
+            Visual.updateAnimation(500, pointer.getBody().endYProperty(),
+                    pointer.getBody().getStartY());
+        }
         //
         final VisualListNode thisNode = this;
         Director.getInstance().getLastTimeline().setOnFinished((event) -> {
@@ -75,16 +88,18 @@ public class VisualListNode extends VisualNode {
                 next.layoutYProperty().removeListener(nextListenerY);
                 thisNode.layoutYProperty().removeListener(nextListenerY);
             }
-            nextListenerX = (observable, oldValue, newValue) -> {
-                pointer.getBody().setEndX(node.getLayoutX() + node.boxValue.getLayoutX() - thisNode.getLayoutX());
-            };
-            nextListenerY = (observable, oldValue, newValue) -> {
-                pointer.getBody().setEndY(node.getLayoutY() + node.boxValue.getLayoutY() - thisNode.getLayoutY() + 32);
-            };
-            node.layoutXProperty().addListener(nextListenerX);
-            thisNode.layoutXProperty().addListener(nextListenerX);
-            node.layoutYProperty().addListener(nextListenerY);
-            thisNode.layoutYProperty().addListener(nextListenerY);
+            if (node != null) {
+                nextListenerX = (observable, oldValue, newValue) -> {
+                    pointer.getBody().setEndX(node.getLayoutX() + node.boxValue.getLayoutX() - thisNode.getLayoutX());
+                };
+                nextListenerY = (observable, oldValue, newValue) -> {
+                    pointer.getBody().setEndY(node.getLayoutY() + node.boxValue.getLayoutY() - thisNode.getLayoutY() + 32);
+                };
+                node.layoutXProperty().addListener(nextListenerX);
+                thisNode.layoutXProperty().addListener(nextListenerX);
+                node.layoutYProperty().addListener(nextListenerY);
+                thisNode.layoutYProperty().addListener(nextListenerY);
+            }
             next = node;
         });
     }
