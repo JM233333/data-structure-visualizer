@@ -17,9 +17,11 @@ public class SceneVisualizer extends Scene {
 
     private BorderPane root;
     private Controller controller;
-    private VisualizedDataStructure visualDS;
     private Monitor monitor;
+    private CodeTracker codeTracker;
     private FlowPane menu;
+
+    private VisualizedDataStructure visualDS;
 
     /**
      * Creates a SceneVisualizer with a specific size and a specific data structure that will be visualized.
@@ -44,9 +46,10 @@ public class SceneVisualizer extends Scene {
         root.setMaxHeight(768);
         //
         initializeCSS();
-        initializeController();
-        initializeMonitor();
-        initializeMenu();
+        initializeController();  // bottom
+        initializeMonitor();     // center
+        initializeCodeTracker(); // right
+        initializeMenu();        // top
     }
     private void initializeCSS() {
         Class cls = this.getClass();
@@ -64,16 +67,22 @@ public class SceneVisualizer extends Scene {
         // initialize monitor
         monitor = new Monitor();
         monitor.setId("monitor");
-        root.setCenter(monitor); // root.getChildren().add(canvas);
+        root.setCenter(monitor);
         visualDS.setMonitor(monitor);
+    }
+    private void initializeCodeTracker() {
+        // initialize code tracker
+        codeTracker = new CodeTracker();
+        codeTracker.setId("codeTracker");
+        root.setRight(codeTracker);
     }
     private void initializeMenu() {
         // initialize menu
         menu = new FlowPane();
-        menu.setMaxWidth(160);
+        menu.setMaxHeight(64);
         menu.setAlignment(Pos.TOP_CENTER);
         menu.setPadding(new Insets(16, 16, 16, 16));
-        root.setRight(menu);
+        root.setTop(menu);
         // initialize buttons
         Button buttonBack = new Button("Return Menu");
         buttonBack.setOnAction((event) -> {

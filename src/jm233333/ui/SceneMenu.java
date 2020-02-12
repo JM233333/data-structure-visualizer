@@ -47,7 +47,7 @@ public class SceneMenu extends Scene {
 //        File file = new File(".");
 //        for(String fileNames : file.list()) System.out.println(fileNames);
         try {
-            BufferedReader in = new BufferedReader(new FileReader("src/data/menu.txt"));
+            BufferedReader in = new BufferedReader(new FileReader("src/data/ui/menu.txt"));
             while (in.ready()) {
                 String[] args = in.readLine().split(" ");
                 assert (args.length > 0);
