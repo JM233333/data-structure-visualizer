@@ -83,7 +83,7 @@ public class Controller extends Group {
                 String name = methodTrigger.getName();
                 ArrayList<Integer> parameters = methodTrigger.getParameters();
                 StringBuilder s = new StringBuilder(name);
-                // output for debug
+                // debug
                 for (int parameter : parameters) {
                     s.append(" ").append(parameter);
                 }
@@ -100,6 +100,7 @@ public class Controller extends Group {
                             parameterTypes[i] = cls;
                         }
                     }
+                    visualDS.trackToMethodBeginning(name);
                     Method method = visualDS.getClass().getDeclaredMethod(name, parameterTypes);
                     method.invoke(visualDS, parameters.toArray());
                 } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {

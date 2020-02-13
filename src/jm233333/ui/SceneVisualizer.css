@@ -1,10 +1,24 @@
 #controller {
     -fx-padding: 16;
     -fx-min-height: 320;
-    -fx-background-color: rgb(128, 128, 255);
+    -fx-background-color: rgb(0, 0, 255);
     -fx-alignment: TOP-LEFT;
 }
 #monitor {
     -fx-padding: 16;
     -fx-background-color: rgb(255, 128, 255);
+}
+#current {
+    -fx-fill: rgb(0, 0, 255);
+}
+
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+.scroll-pane:focused {
+    -fx-background-color: transparent;
+}
+.scroll-pane .content {
+    -fx-background-color: transparent;
 }

@@ -43,12 +43,13 @@ public class SceneVisualizer extends Scene {
      */
     private void initialize() {
         //
+        root.setId("root");
         root.setMaxHeight(768);
         //
         initializeCSS();
-        initializeController();  // bottom
         initializeMonitor();     // center
         initializeCodeTracker(); // right
+        initializeController();  // bottom
         initializeMenu();        // top
     }
     private void initializeCSS() {
@@ -75,6 +76,7 @@ public class SceneVisualizer extends Scene {
         codeTracker = new CodeTracker();
         codeTracker.setId("codeTracker");
         root.setRight(codeTracker);
+        visualDS.setCodeTracker(codeTracker);
     }
     private void initializeMenu() {
         // initialize menu

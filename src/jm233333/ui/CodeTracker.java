@@ -2,10 +2,14 @@ package jm233333.ui;
 
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+
+import jm233333.visual.Visual;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -16,21 +20,36 @@ import java.util.HashMap;
  * The {@code CodeTracker}  is responsible for tracking the invoked method code of the visualized data structure.
  *  * Extended from JavaFX class {@code Group} only for UI layout.
  */
-public class CodeTracker extends Group {
+public class CodeTracker extends ScrollPane {
 
+    private Group contentRoot;
     private TextFlow codeBoard;
+    private Polygon currentLineSymbol;
 
     private HashMap<String, Integer> mapEntrance;
-    private int lineIndex;
+    private String currentMethod;
+    private int currentLineIndex;
 
     public CodeTracker() {
-        // initialize code board
+        // initialize content
+        contentRoot = new Group();
+        this.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        this.setContent(contentRoot);
+        // initialize the code board
         codeBoard = new TextFlow();
-        codeBoard.setPadding(new Insets(16));
-        this.getChildren().add(codeBoard);
+        codeBoard.setPadding(new Insets(16, 32, 16, 32));
+        contentRoot.getChildren().add(codeBoard);
+        // initialize the current-line symbol
+        currentLineSymbol = new Polygon(0, 0, 16, 8, 0, 16);
+        currentLineSymbol.setFill(Color.WHEAT);
+        currentLineSymbol.setVisible(false);
+        currentLineSymbol.setLayoutX(8);
+        currentLineSymbol.setLayoutY(20);
+        contentRoot.getChildren().add(currentLineSymbol);
         // initialize data
         mapEntrance = new HashMap<>();
-        lineIndex = -1;
+        currentMethod = "";
+        currentLineIndex = -1;
         // dbg
         readF("Stack");
     }
@@ -58,20 +77,46 @@ public class CodeTracker extends Group {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        // debug
+        for (HashMap.Entry<String, Integer> entry : mapEntrance.entrySet()) {
+            Text text = new Text(" > " + entry.getKey() + " " + entry.getValue() + "\n");
+            text.setFont(Font.font(18));
+            codeBoard.getChildren().add(text);
+        }
+    }
+
+    public void setCurrentMethod(String nMethod) {
+        if (!currentMethod.equals(nMethod)) {
+            setCurrentLineIndex(mapEntrance.get(nMethod));
+        }
+    }
+    public final String getCurrentMethod() {
+        return currentMethod;
+    }
+
+    public void setCurrentLineIndex(int nLineIndex) {
+        if (currentLineIndex != nLineIndex) {
+            if (currentLineIndex == -1) {
+                currentLineSymbol.setVisible(true);
+            } else {
+                Visual.createAnimation(250, getCurrentLine().fillProperty(), Color.BLACK);
+            }
+            currentLineIndex = nLineIndex;
+            if (currentLineIndex == -1) {
+                currentLineSymbol.setVisible(false);
+            } else {
+                Visual.updateAnimation(250, getCurrentLine().fillProperty(), Color.WHITE);
+            }
+        }
+    }
+    public int getCurrentLineIndex() {
+        return currentLineIndex;
     }
 
     public final Text getLine(int index) {
         return (Text)codeBoard.getChildren().get(index);
     }
-
-    public void setLineIndex(int lineIndex) {
-        if (this.lineIndex != lineIndex) {
-            getLine(this.lineIndex).setFill(Color.BLACK);
-            getLine(lineIndex).setFill(Color.BLUE);
-            this.lineIndex = lineIndex;
-        }
-    }
-    public int getLineIndex() {
-        return lineIndex;
+    public final Text getCurrentLine() {
+        return getLine(getCurrentLineIndex());
     }
 }

@@ -1,13 +1,13 @@
 package jm233333.visualized;
 
 import javafx.util.Pair;
+
+import jm233333.ui.CodeTracker;
 import jm233333.ui.Monitor;
 import jm233333.visual.*;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.security.acl.Group;
-import java.util.HashMap;
 
 /**
  * The {@code VisualizedDataStructure} class provides common properties for all types of visualized data structures.
@@ -20,15 +20,20 @@ public abstract class VisualizedDataStructure {
     private Monitor monitor = null;
 
     /**
+     * The reference to the code tracker that helps displaying the visualized data structure.
+     */
+    private CodeTracker codeTracker = null;
+
+    /**
      * Records all relationships of (index field -> array).
      *
      * key: name of the index field
      * value: reference to the array that the index field points to
      */
-    private HashMap<String, int[]> mapAssociatedArray;
+    //private HashMap<String, int[]> mapAssociatedArray;
 
     public VisualizedDataStructure() {
-        mapAssociatedArray = new HashMap<>();
+        //mapAssociatedArray = new HashMap<>();
     }
 
     public void setMonitor(Monitor monitor) {
@@ -42,8 +47,15 @@ public abstract class VisualizedDataStructure {
 //            System.out.println(typeName + " " + fieldName);
 //        }
     }
-    public final Monitor getMonitor() {
-        return monitor;
+    public void setCodeTracker(CodeTracker codeTracker) {
+        this.codeTracker = codeTracker;
+    }
+
+    /**
+     * Tracks to the beginning of the specified method of the visualized data structure.
+     */
+    public void trackToMethodBeginning(String name) {
+        ;
     }
 
     /**

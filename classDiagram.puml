@@ -17,7 +17,7 @@ namespace ui {
         - VisualDataStructure visualDS
         - Monitor monitor
         - FlowPane menu
-        + SceneVisualizer(BorderPane root, double width, double height, VisualizedDataStructure visualDS)
+        + SceneVisualizer(BorderPane root, double width, double height, VDS vDS)
         - void initialize()
         - void initializeCSS()
         - void initializeController()
@@ -25,7 +25,7 @@ namespace ui {
         - void initializeMenu()
     }
 
-    class Controller #Wheat {
+    class Controller #wheat {
         - FlowPane flowPane
         - VisualDataStructure visualDS
         + Controller(VisualizedDataStructure visualDS)
@@ -42,38 +42,53 @@ namespace ui {
         + final Button getButton()
         + ArrayList<Integer> getParameters()
     }
-    class Monitor #Wheat {
+    class Monitor #wheat {
         - final Group canvas
-        - HashMap<String, VisualArray> mapVisualArray
+        - HashMap<String, Group> mapVisual
         - HashMap<String, String> mapIndexFieldConnection
         + Monitor()
+        + final Group getVisual(String name)
+        + final Group getVisualByIndexFieldName(String name)
         + void createVisualArray(String name, int n)
-        + void addIndexField(String nameArray, Pair<String, Integer> indexField)
-        + void addIndexField(String nameArray, String name, int value)
-        + void updateIndexField(String name, int value)
-        + void updateArrayElement(String name, int index, int value)
-        + void eraseArrayElement(String name, int index)
+        + void addIndexFieldConnection(String name, String nameArray)
+        + void createVisualList(String name)
+        + void createVisualBinaryTree(String name)
+    }
+    class CodeTracker #wheat {
+        - TextFlow codeBoard
+        - HashMap<String, Integer> mapEntrance
+        - int lineIndex
+        + CodeTracker()
+        + final Text getLine()
+        + void setLineIndex(int lineIndex)
+        + int getLineIndex()
     }
 
     SceneVisualizer *- Controller
     SceneVisualizer *-- Monitor
+    SceneVisualizer *-- CodeTracker
     Controller *- MethodTrigger
+    Monitor -right[hidden]-> CodeTracker
 
 }
 
 namespace visualized {
 
-    abstract class VisualizedDataStructure #Wheat {
+    abstract class VisualizedDataStructure #wheat {
         - ui::Monitor monitor
         - HashMap<String, int[]> mapAssociatedArray
         + VisualizedDataStructure()
         + void setMonitor(Monitor monitor)
-        + final Monitor getMonitor()
+        + void setCodeTracker(CodeTracker codeTracker)
         + {abstract} abstract void createVisual()
         ~ void createVisualArray(String name, int n, Pair<String, Integer>... indexFields)
-        ~ void updateIndexField(String name, int value)
+        ~ void createVisualIndexField(String nameArray, Pair<String, Integer> indexField)
+        ~ void createVisualList(String name, Pair<String, Integer>... indexFields)
+        ~ final VisualArray getVisualArray(String name)
+        ~ final VisualList getVisualList(String name)
         ~ void updateArrayElement(String name, int index, int value)
         ~ void eraseArrayElement(String name, int index)
+        ~ void updateIndexField(String name, int value)
     }
     class VisualizedStack {
         ;
@@ -151,6 +166,7 @@ Main o-- ui::SceneVisualizer
 ui::SceneVisualizer *-- visualized::VisualizedDataStructure
 ui::Controller -down-> visualized::VisualizedDataStructure
 visualized::VisualizedDataStructure -up-> ui::Monitor
+visualized::VisualizedDataStructure -up-> ui::CodeTracker
 
 ui::Monitor *-- visual::VisualArray
 ui::Monitor *-- visual::VisualList

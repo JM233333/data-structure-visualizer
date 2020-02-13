@@ -6,7 +6,6 @@ import java.util.*;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 

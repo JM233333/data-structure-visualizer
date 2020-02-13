@@ -2,7 +2,6 @@ package jm233333.visualized;
 
 import javafx.util.Pair;
 import jm233333.Director;
-import jm233333.visual.*;
 
 /**
  * The {@code VisualizedStack} class defines the data structure {@code Stack} for visualizing.

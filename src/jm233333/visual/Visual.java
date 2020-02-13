@@ -10,15 +10,15 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import jm233333.Director;
 
-class Visual extends Group {
-    static <T> void createAnimation(double deltaTime, WritableValue<T> property, T value) {
+public class Visual extends Group {
+    public static <T> void createAnimation(double deltaTime, WritableValue<T> property, T value) {
         Timeline timeline = new Timeline();
         KeyValue keyValue = new KeyValue(property, value);
         KeyFrame keyFrame = new KeyFrame(Duration.millis(deltaTime), keyValue);
         timeline.getKeyFrames().add(keyFrame);
         Director.getInstance().addTimeline(timeline);
     }
-    static <T> void updateAnimation(double deltaTime, WritableValue<T> property, T value) {
+    public static <T> void updateAnimation(double deltaTime, WritableValue<T> property, T value) {
         Timeline timeline = Director.getInstance().getLastTimeline();
         assert timeline != null;
         KeyValue keyValue = new KeyValue(property, value);
