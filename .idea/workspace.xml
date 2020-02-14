@@ -5,11 +5,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/data/code/Stack.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/code/Stack.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jm233333/ui/CodeTracker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/ui/CodeTracker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jm233333/ui/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/ui/Controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jm233333/ui/MethodTrigger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/ui/MethodTrigger.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jm233333/ui/SceneVisualizer.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/ui/SceneVisualizer.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jm233333/ui/SceneVisualizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/ui/SceneVisualizer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jm233333/visual/Visual.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/visual/Visual.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jm233333/visualized/VisualizedDataStructure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/visualized/VisualizedDataStructure.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jm233333/visualized/VisualizedStack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jm233333/visualized/VisualizedStack.java" afterDir="false" />
     </list>

@@ -6,6 +6,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -30,6 +31,9 @@ public class CodeTracker extends ScrollPane {
     private String currentMethod;
     private int currentLineIndex;
 
+    public static final String NEXT_LINE = "__next";
+    public static final String REMAIN = "__remain";
+
     public CodeTracker() {
         // initialize content
         contentRoot = new Group();
@@ -41,10 +45,9 @@ public class CodeTracker extends ScrollPane {
         contentRoot.getChildren().add(codeBoard);
         // initialize the current-line symbol
         currentLineSymbol = new Polygon(0, 0, 16, 8, 0, 16);
-        currentLineSymbol.setFill(Color.WHEAT);
-        currentLineSymbol.setVisible(false);
+        currentLineSymbol.setFill(Color.ORANGE);
+        currentLineSymbol.setOpacity(0);
         currentLineSymbol.setLayoutX(8);
-        currentLineSymbol.setLayoutY(20);
         contentRoot.getChildren().add(currentLineSymbol);
         // initialize data
         mapEntrance = new HashMap<>();
@@ -88,24 +91,42 @@ public class CodeTracker extends ScrollPane {
     public void setCurrentMethod(String nMethod) {
         if (!currentMethod.equals(nMethod)) {
             setCurrentLineIndex(mapEntrance.get(nMethod));
+            gotoEntrance(NEXT_LINE);
         }
     }
     public final String getCurrentMethod() {
         return currentMethod;
     }
 
+    public void gotoEntrance(String name) {
+        if (name.equals(REMAIN)) {
+            return;
+        }
+        if (name.equals(NEXT_LINE)) {
+            setCurrentLineIndex(currentLineIndex + 1);
+        } else {
+            setCurrentLineIndex(mapEntrance.get(name));
+        }
+    }
     public void setCurrentLineIndex(int nLineIndex) {
         if (currentLineIndex != nLineIndex) {
             if (currentLineIndex == -1) {
-                currentLineSymbol.setVisible(true);
+                Visual.createAnimation(500, currentLineSymbol.opacityProperty(), 1);
             } else {
-                Visual.createAnimation(250, getCurrentLine().fillProperty(), Color.BLACK);
+                Visual.createAnimation(500, getCurrentLine().fillProperty(), Color.BLACK);
             }
             currentLineIndex = nLineIndex;
+            Visual.updateAnimation(250, currentLineSymbol.layoutYProperty(), getCurrentLine().getLayoutY() + 4);
             if (currentLineIndex == -1) {
-                currentLineSymbol.setVisible(false);
+                Visual.updateAnimation(500, currentLineSymbol.opacityProperty(), 0);
             } else {
-                Visual.updateAnimation(250, getCurrentLine().fillProperty(), Color.WHITE);
+                Visual.updateAnimation(25, getCurrentLine().fillProperty(), Color.BLUE);
+            }
+            // pause debug
+            if (currentLineIndex == -1) {
+                Visual.createAnimation(500, currentLineSymbol.opacityProperty(), 0);
+            } else {
+                Visual.createAnimation(500, currentLineSymbol.opacityProperty(), 1);
             }
         }
     }
@@ -117,6 +138,9 @@ public class CodeTracker extends ScrollPane {
         return (Text)codeBoard.getChildren().get(index);
     }
     public final Text getCurrentLine() {
-        return getLine(getCurrentLineIndex());
+        if (currentLineIndex == -1) {
+            return null;
+        }
+        return getLine(currentLineIndex);
     }
 }

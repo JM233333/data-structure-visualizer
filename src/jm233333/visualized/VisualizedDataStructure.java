@@ -52,10 +52,16 @@ public abstract class VisualizedDataStructure {
     }
 
     /**
-     * Tracks to the beginning of the specified method of the visualized data structure.
+     * Tracks to the beginning line of the specified method of the visualized data structure.
      */
     public void trackToMethodBeginning(String name) {
-        ;
+        codeTracker.setCurrentMethod(name);
+    }
+    /**
+     * Tracks to the line that the specified entrance represents.
+     */
+    public void trackToEntrance(String name) {
+        codeTracker.gotoEntrance(name);
     }
 
     /**
@@ -73,7 +79,7 @@ public abstract class VisualizedDataStructure {
         getVisualArray(nameArray).addIndexField(indexField.getKey(), indexField.getValue());
         monitor.addIndexFieldConnection(indexField.getKey(), nameArray);
     }
-    void createVisualList(String name, Pair<String, Integer>... indexFields) {
+    void createVisualList(String name) {//, Pair<String, Integer>... indexFields) {
         monitor.createVisualList(name);
     }
 
@@ -84,7 +90,7 @@ public abstract class VisualizedDataStructure {
         return (VisualList)monitor.getVisual(name);
     }
 
-    void updateArrayElement(String name, int index, int value) {
+    void updateArrayElement(String name, int index, int value, String nameCodeEntrance) {
         try {
             // get the field
             Field field = this.getClass().getDeclaredField(name);
@@ -95,15 +101,19 @@ public abstract class VisualizedDataStructure {
             field.setAccessible(false);
             // update data of array[index] in the corresponding visual array
             getVisualArray(name).updateElement(index, value);
+            // update code tracker
+            trackToEntrance(nameCodeEntrance);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
-    void eraseArrayElement(String name, int index) {
+    void eraseArrayElement(String name, int index, String nameCodeEntrance) {
         // lazy-erase data of array[index] in the corresponding visual array
         getVisualArray(name).eraseElement(index);
+        // update code tracker
+        trackToEntrance(nameCodeEntrance);
     }
-    void updateIndexField(String name, int value) {
+    void updateIndexField(String name, int value, String nameCodeEntrance) {
         try {
             // get the field
             Field field = this.getClass().getDeclaredField(name);
@@ -113,6 +123,8 @@ public abstract class VisualizedDataStructure {
             field.setAccessible(false);
             // update data of the index field in the corresponding visual array
             ((VisualArray)monitor.getVisualByIndexFieldName(name)).updateIndexField(name, value);
+            // update code tracker
+            trackToEntrance(nameCodeEntrance);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }

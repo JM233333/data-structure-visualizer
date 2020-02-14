@@ -2,6 +2,7 @@ package jm233333.visualized;
 
 import javafx.util.Pair;
 import jm233333.Director;
+import jm233333.ui.CodeTracker;
 
 /**
  * The {@code VisualizedStack} class defines the data structure {@code Stack} for visualizing.
@@ -30,12 +31,12 @@ public class VisualizedStack extends VisualizedDataStructure {
 
     public void push(int value) {
         if (mode == ModeStack.TOP_TO_UPON) {
-            updateArrayElement("data", top, value);
-            updateIndexField("top", top + 1);
+            updateArrayElement("data", top, value, CodeTracker.NEXT_LINE);
+            updateIndexField("top", top + 1, CodeTracker.NEXT_LINE);
         }
         else {
-            updateIndexField("top", top + 1);
-            updateArrayElement("data", top, value);
+            updateIndexField("top", top + 1, CodeTracker.NEXT_LINE);
+            updateArrayElement("data", top, value, CodeTracker.NEXT_LINE);
         }
         Director.getInstance().playAnimation();
     }
@@ -46,11 +47,11 @@ public class VisualizedStack extends VisualizedDataStructure {
             return;
         }
         if (mode == ModeStack.TOP_TO_UPON) {
-            updateIndexField("top", top - 1);
-            eraseArrayElement("data", top);
+            updateIndexField("top", top - 1, CodeTracker.NEXT_LINE);
+            eraseArrayElement("data", top, CodeTracker.REMAIN);
         } else {
-            eraseArrayElement("data", top);
-            updateIndexField("top", top - 1);
+            eraseArrayElement("data", top, CodeTracker.REMAIN);
+            updateIndexField("top", top - 1, CodeTracker.NEXT_LINE);
         }
         Director.getInstance().playAnimation();
     }
@@ -70,22 +71,22 @@ public class VisualizedStack extends VisualizedDataStructure {
         return (top == 0);
     }
 
-    public void setMode(ModeStack mode) {
-        if (this.mode == mode) {
-            return;
-        }
-        if (this.mode == ModeStack.TOP_TO_UPON) {
-            for (int i = top; i >= 1; i --) {
-                updateArrayElement("data", i, data[i - 1]);
-            }
-            eraseArrayElement("data", 0);
-        } else {
-            for (int i = 0; i < top; i ++) {
-                updateArrayElement("data", i, data[i + 1]);
-            }
-            eraseArrayElement("data", top);
-        }
-        this.mode = mode;
-        Director.getInstance().playAnimation();
-    }
+//    public void setMode(ModeStack mode) {
+//        if (this.mode == mode) {
+//            return;
+//        }
+//        if (this.mode == ModeStack.TOP_TO_UPON) {
+//            for (int i = top; i >= 1; i --) {
+//                updateArrayElement("data", i, data[i - 1]);
+//            }
+//            eraseArrayElement("data", 0);
+//        } else {
+//            for (int i = 0; i < top; i ++) {
+//                updateArrayElement("data", i, data[i + 1]);
+//            }
+//            eraseArrayElement("data", top);
+//        }
+//        this.mode = mode;
+//        Director.getInstance().playAnimation();
+//    }
 }

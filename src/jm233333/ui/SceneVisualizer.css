@@ -8,9 +8,6 @@
     -fx-padding: 16;
     -fx-background-color: rgb(255, 128, 255);
 }
-#current {
-    -fx-fill: rgb(0, 0, 255);
-}
 
 
 .scroll-pane {

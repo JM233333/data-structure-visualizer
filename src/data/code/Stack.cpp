@@ -26,10 +26,10 @@ public:
 		}
 		return data[top - 1];
 	}
-	bool is_empty() {           //#/ is_empty
+	bool is_empty() {           //#/ isEmpty
 		return (top == 0);
 	}
-	bool is_full() {            //#/ is_full
+	bool is_full() {            //#/ isFull
 		return (top == length);
 	}
 };
