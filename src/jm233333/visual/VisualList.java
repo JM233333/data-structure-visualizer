@@ -3,7 +3,6 @@ package jm233333.visual;
 import javafx.scene.Group;
 import jm233333.Director;
 
-import java.util.HashMap;
 import java.util.ArrayList;
 
 /**

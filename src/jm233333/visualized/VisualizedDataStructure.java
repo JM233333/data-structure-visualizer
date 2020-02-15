@@ -69,7 +69,7 @@ public abstract class VisualizedDataStructure {
     }
 
     /**
-     * Tracks to the beginning line of the specified method of the visualized data structure.
+     * Tracks to the beginning code line of the specified method.
      */
     public void trackCodeMethodBeginning(String name) {
         codeTracker.setCurrentMethod(name);
@@ -109,9 +109,6 @@ public abstract class VisualizedDataStructure {
 
     final VisualArray getVisualArray(String name) {
         return (VisualArray)monitor.getVisual(name);
-    }
-    final VisualArray getVisualArrayByIndexField(String name) {
-        return (VisualArray)monitor.getVisualByIndexFieldName(name);
     }
     final VisualList getVisualList(String name) {
         return (VisualList)monitor.getVisual(name);

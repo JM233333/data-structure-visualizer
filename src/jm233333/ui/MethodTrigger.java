@@ -64,7 +64,6 @@ public class MethodTrigger extends HBox {
         this.setPadding(new Insets(8));
         this.setSpacing(32);
         this.setAlignment(Pos.CENTER_LEFT);
-        this.setMinWidth(256);
         this.setPrefHeight(48);
         // initialize name
         this.name = nameMethod;

@@ -18,7 +18,6 @@ public class Director {
 
     private static Director instance = new Director();
     private Stage primaryStage;
-    private CodeTracker boundCodeTracker;
     private ArrayList<Timeline> animationWaitingList, animationPlayingList;
     private int animationCurrentIndex;
     private BooleanProperty animationPlayingProperty;
@@ -94,8 +93,10 @@ public class Director {
         animationWaitingList = new ArrayList<>();
         // check empty
         if (animationPlayingList.isEmpty()) {
+            System.out.println("EMRPT");
             return;
         }
+        System.out.println(animationPlayingList.get(0).toString());
         // set event listeners
         for (int i = 0; i < animationPlayingList.size(); i ++) {
             final int index = i;
@@ -108,7 +109,7 @@ public class Director {
                 if (index + 1 < animationPlayingList.size()) {
                     animationPlayingList.get(index + 1).play();
                     animationCurrentIndex = index + 1;
-                    animationPlayingProperty.setValue(true);
+                    animationPlayingProperty().setValue(true);
                 } else {
                     animationCurrentIndex = -1;
                     animationPlayingProperty().setValue(false);

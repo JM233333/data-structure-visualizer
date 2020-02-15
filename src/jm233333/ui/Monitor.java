@@ -14,7 +14,7 @@ import jm233333.visual.*;
 public class Monitor extends Pane {
 
     /**
-     * Maintains all the graphic components displayed on the monitor.
+     * Displays the graphic components of the visualized data structure.
      */
     private final Group canvas;
 
@@ -38,9 +38,12 @@ public class Monitor extends Pane {
      * Creates a Monitor.
      */
     public Monitor() {
+        // initialize
         super();
+        // initialize canvas
         canvas = new Group();
         this.getChildren().add(canvas);
+        // initialize data
         mapVisual = new HashMap<>();
         mapIndexFieldConnection = new HashMap<>();
     }

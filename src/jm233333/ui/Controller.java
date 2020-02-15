@@ -17,7 +17,8 @@ import java.util.*;
  */
 public class Controller extends Group {
 
-    private FlowPane flowPane;
+    private HBox root;
+    private FlowPane paneMethodTrigger, paneAnimationController, paneOutputBox, paneFileReader;
     private VisualizedDataStructure visualDS;
 
     /**
@@ -28,12 +29,20 @@ public class Controller extends Group {
     public Controller(VisualizedDataStructure visualDS) {
         // super
         super();
-        // initialize layout
-        flowPane = new FlowPane();
-        flowPane.setOrientation(Orientation.VERTICAL);
-        flowPane.setMaxHeight(48 * 4 + 16 * 2);
-        flowPane.setPadding(new Insets(16));
-        this.getChildren().add(flowPane);
+        // initialize root
+        root = new HBox();
+        this.getChildren().add(root);
+        // initialize flow panes
+        paneMethodTrigger = new FlowPane();
+        paneAnimationController = new FlowPane();
+        paneOutputBox = new FlowPane();
+        paneFileReader = new FlowPane();
+        for (FlowPane pane : new FlowPane[]{paneMethodTrigger, paneAnimationController, paneOutputBox, paneFileReader}) {
+            pane.setOrientation(Orientation.VERTICAL);
+            pane.setMaxHeight(48 * 4 + 16 * 2);
+            pane.setPadding(new Insets(16));
+            root.getChildren().add(pane);
+        }
         // set reference to the interrelated visual data structure
         this.visualDS = visualDS;
         // initialize method triggers
@@ -43,12 +52,12 @@ public class Controller extends Group {
         btnPlay.setOnAction((event) -> {
             Director.getInstance().playAnimation();
         });
-        flowPane.getChildren().add(btnPlay);
+        paneAnimationController.getChildren().add(btnPlay);
         Button btnPause = new Button("pause animation");
         btnPause.setOnAction((event) -> {
             Director.getInstance().pauseAnimation();
         });
-        flowPane.getChildren().add(btnPause);
+        paneAnimationController.getChildren().add(btnPause);
     }
 
     /**
@@ -73,7 +82,7 @@ public class Controller extends Group {
 //            System.out.println(method.getName() + " : " + Arrays.toString(method.getParameterTypes()));
             MethodTrigger methodTrigger = new MethodTrigger(method);
             methodTriggers.add(methodTrigger);
-            flowPane.getChildren().add(methodTrigger);
+            paneMethodTrigger.getChildren().add(methodTrigger);
         }
         // initialize event listener for method triggers
         for (MethodTrigger methodTrigger : methodTriggers) {

@@ -16,11 +16,13 @@ public class VisualArrayIndex extends Group {
     }
     public VisualArrayIndex(String name, int value) {
         this.name = name;
-        setValue(value);
+        this.value = value;
         initialize();
     }
     private void initialize() {
+        this.setLayoutX(64 * value);
         this.getChildren().add(new VisualEmptyBox(64, 64));
+
         text = new Text(name);
         text.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
         text.setTextAlignment(TextAlignment.CENTER);
