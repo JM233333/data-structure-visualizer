@@ -1,5 +1,9 @@
 package jm233333.visualized;
 
+import jm233333.Director;
+import jm233333.ui.CodeTracker;
+import jm233333.visual.VisualList;
+
 /**
  * The {@code VisualizedList} class defines the data structure {@code List} for visualizing.
  * Extended from abstract class {@code VisualizedDataStructure}.
@@ -17,23 +21,36 @@ public class VisualizedList extends VisualizedDataStructure {
 
     private Node head = null;
 
+    public VisualizedList() {
+        super();
+    }
+
     @Override
     void createVisual() {
-        createVisualList("list");
+        createVisualList(getName());
     }
 
     public void pushFront(int value) {
         // create new node
         Node node = new Node(value);
+        getVisualList(getName()).cacheNode(0, value);
+        trackCodeEntrance(CodeTracker.NEXT_LINE);
         // push front
         if (head == null) {
+            trackCodeEntrance(CodeTracker.NEXT_LINE);
             head = node;
         } else {
+            trackCodeEntrance(getCodeCurrentMethod() + "_if/else");
+            trackCodeEntrance(CodeTracker.NEXT_LINE);
             node.next = head.next;
+            getVisualList(getName()).setPointer(VisualList.CACHED_NODE, 0);
+            getVisualList(getName()).moveRestNodes(0, 1);
+            trackCodeEntrance(CodeTracker.NEXT_LINE);
             head.next = node;
         }
-        // play animation
-        getVisualList("list").pushFrontNode(value);
+        getVisualList(getName()).insertCachedNode(0);
+        trackCodeEntrance(getCodeCurrentMethod() + "_end");
+        Director.getInstance().playAnimation();
     }
 
     public void insert(int index, int value) {

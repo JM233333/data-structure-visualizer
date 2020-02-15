@@ -60,7 +60,8 @@ public class SceneMenu extends Scene {
     }
     private void addButton(String... args) {
         // get class data
-        String className = "Visualized" + args[0];
+        String dsName = args[0];
+        String className = "Visualized" + dsName;
         int argc = args.length - 1;
         Class<?>[] parameterTypes = new Class<?>[argc];
         Object[] parameters = new Object[argc];
@@ -78,13 +79,14 @@ public class SceneMenu extends Scene {
             Constructor constructor = classType.getConstructor(parameterTypes);
             // create a new instance
             final VisualizedDataStructure visualDS = (VisualizedDataStructure)constructor.newInstance(parameters);
+            visualDS.setName(dsName);
             // initialize button
             String name = className + " " + Arrays.toString(parameters);
             Button button = new Button(name);
             root.getChildren().add(button);
             // set listener
             button.setOnAction((event) -> {
-                Scene scene = new SceneVisualizer(new BorderPane(), 1024, 768, visualDS);
+                Scene scene = new SceneVisualizer(new BorderPane(), 1200, 800, visualDS);
                 Director.getInstance().getPrimaryStage().setScene(scene);
             });
         } catch (Exception e) {

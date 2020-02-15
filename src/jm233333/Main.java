@@ -24,7 +24,7 @@ public class Main extends Application {
 //        BorderPane root = new BorderPane();
 //        Scene scene = new SceneVisualizer(root, 1024, 768, visualDS);
         FlowPane root = new FlowPane();
-        Scene scene = new SceneMenu(root, 1024, 768);
+        Scene scene = new SceneMenu(root, 1200, 800);
         // initialize stage
         primaryStage.setTitle("Data Structure Visualizer (under development)");
         primaryStage.setScene(scene);

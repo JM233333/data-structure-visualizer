@@ -1,5 +1,6 @@
 package jm233333.visualized;
 
+import com.sun.org.apache.bcel.internal.classfile.Code;
 import javafx.util.Pair;
 
 import jm233333.ui.CodeTracker;
@@ -13,6 +14,11 @@ import java.lang.reflect.Field;
  * The {@code VisualizedDataStructure} class provides common properties for all types of visualized data structures.
  */
 public abstract class VisualizedDataStructure {
+
+    /**
+     * The name of the visualized data structure.
+     */
+    private String name = "";
 
     /**
      * The reference to the monitor in which the visualized data structure is displayed.
@@ -35,6 +41,16 @@ public abstract class VisualizedDataStructure {
     public VisualizedDataStructure() {
         //mapAssociatedArray = new HashMap<>();
     }
+    public VisualizedDataStructure(String name) {
+        setName(name);
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    public final String getName() {
+        return name;
+    }
 
     public void setMonitor(Monitor monitor) {
         this.monitor = monitor;
@@ -48,20 +64,28 @@ public abstract class VisualizedDataStructure {
 //        }
     }
     public void setCodeTracker(CodeTracker codeTracker) {
+        codeTracker.readFile(name);
         this.codeTracker = codeTracker;
     }
 
     /**
      * Tracks to the beginning line of the specified method of the visualized data structure.
      */
-    public void trackToMethodBeginning(String name) {
+    public void trackCodeMethodBeginning(String name) {
         codeTracker.setCurrentMethod(name);
     }
     /**
-     * Tracks to the line that the specified entrance represents.
+     * Tracks to the code line that the specified entrance represents.
      */
-    public void trackToEntrance(String name) {
+    public void trackCodeEntrance(String name) {
         codeTracker.gotoEntrance(name);
+    }
+
+    /**
+     * Gets the current method name of the code tracker.
+     */
+    public final String getCodeCurrentMethod() {
+        return codeTracker.getCurrentMethod();
     }
 
     /**
@@ -86,54 +110,10 @@ public abstract class VisualizedDataStructure {
     final VisualArray getVisualArray(String name) {
         return (VisualArray)monitor.getVisual(name);
     }
+    final VisualArray getVisualArrayByIndexField(String name) {
+        return (VisualArray)monitor.getVisualByIndexFieldName(name);
+    }
     final VisualList getVisualList(String name) {
         return (VisualList)monitor.getVisual(name);
-    }
-
-    void updateArrayElement(String name, int index, int value, String nameCodeEntrance) {
-        try {
-            // get the field
-            Field field = this.getClass().getDeclaredField(name);
-            // update data of array[index] itself
-            field.setAccessible(true);
-            int[] array = (int[])field.get(this);
-            Array.set(array, index, value);
-            field.setAccessible(false);
-            // update data of array[index] in the corresponding visual array
-            getVisualArray(name).updateElement(index, value);
-            // update code tracker
-            trackToEntrance(nameCodeEntrance);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
-    void eraseArrayElement(String name, int index, String nameCodeEntrance) {
-        // lazy-erase data of array[index] in the corresponding visual array
-        getVisualArray(name).eraseElement(index);
-        // update code tracker
-        trackToEntrance(nameCodeEntrance);
-    }
-    void updateIndexField(String name, int value, String nameCodeEntrance) {
-        try {
-            // get the field
-            Field field = this.getClass().getDeclaredField(name);
-            // update data of the index field itself
-            field.setAccessible(true);
-            field.set(this, value);
-            field.setAccessible(false);
-            // update data of the index field in the corresponding visual array
-            ((VisualArray)monitor.getVisualByIndexFieldName(name)).updateIndexField(name, value);
-            // update code tracker
-            trackToEntrance(nameCodeEntrance);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
-
-    void createListNode(int value) {
-        ;
-    }
-    void pushFrontListNode(String name, int value) {
-        getVisualList(name).pushFrontNode(value);
     }
 }

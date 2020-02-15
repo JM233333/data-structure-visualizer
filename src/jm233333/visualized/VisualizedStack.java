@@ -26,49 +26,59 @@ public class VisualizedStack extends VisualizedDataStructure {
 
     @Override
     void createVisual() {
-        createVisualArray("data", data.length, new Pair<>("top", 0));
+        createVisualArray(getName(), data.length, new Pair<>("top", 0));
     }
 
     public void push(int value) {
-        if (mode == ModeStack.TOP_TO_UPON) {
-            updateArrayElement("data", top, value, CodeTracker.NEXT_LINE);
-            updateIndexField("top", top + 1, CodeTracker.NEXT_LINE);
+        if (isFull()) {
+            trackCodeEntrance(CodeTracker.NEXT_LINE);
+            trackCodeEntrance(getCodeCurrentMethod() + "_end");
+            Director.getInstance().playAnimation();
+            return;
         }
-        else {
-            updateIndexField("top", top + 1, CodeTracker.NEXT_LINE);
-            updateArrayElement("data", top, value, CodeTracker.NEXT_LINE);
-        }
+        trackCodeEntrance(getCodeCurrentMethod() + "_main_begin");
+        data[top] = value;
+        getVisualArray(getName()).updateElement(top, value);
+        trackCodeEntrance(CodeTracker.NEXT_LINE);
+        top ++;
+        getVisualArray(getName()).updateIndexField("top", top);
+        trackCodeEntrance(CodeTracker.NEXT_LINE);
         Director.getInstance().playAnimation();
     }
 
     public void pop() {
         if (isEmpty()) {
-            System.out.println("POP EMPTY");
+            trackCodeEntrance(CodeTracker.NEXT_LINE);
+            trackCodeEntrance(getCodeCurrentMethod() + "_end");
+            Director.getInstance().playAnimation();
             return;
         }
-        if (mode == ModeStack.TOP_TO_UPON) {
-            updateIndexField("top", top - 1, CodeTracker.NEXT_LINE);
-            eraseArrayElement("data", top, CodeTracker.REMAIN);
-        } else {
-            eraseArrayElement("data", top, CodeTracker.REMAIN);
-            updateIndexField("top", top - 1, CodeTracker.NEXT_LINE);
-        }
+        trackCodeEntrance(getCodeCurrentMethod() + "_main_begin");
+        top --;
+        getVisualArray(getName()).updateIndexField("top", top);
+        getVisualArray(getName()).eraseElement(top);
+        trackCodeEntrance(CodeTracker.NEXT_LINE);
         Director.getInstance().playAnimation();
     }
 
     public int top() {
         if (isEmpty()) {
+            trackCodeEntrance(CodeTracker.NEXT_LINE);
+            trackCodeEntrance(getCodeCurrentMethod() + "_end");
+            Director.getInstance().playAnimation();
             return 0;
         }
-        if (mode == ModeStack.TOP_TO_UPON) {
-            return data[top - 1];
-        } else {
-            return data[top];
-        }
+        trackCodeEntrance(getCodeCurrentMethod() + "_main_begin");
+        trackCodeEntrance(CodeTracker.NEXT_LINE);
+        Director.getInstance().playAnimation();
+        return data[top - 1];
     }
 
     public boolean isEmpty() {
         return (top == 0);
+    }
+    public boolean isFull() {
+        return (top == data.length);
     }
 
 //    public void setMode(ModeStack mode) {

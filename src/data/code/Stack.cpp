@@ -14,18 +14,24 @@ public:
 	}
 public:
 	void push(int x) {          //#/ push
-		data[top] = x;
+		if (is_full()) {
+			return;
+		}
+		data[top] = x;          //#/ push_main_begin
 		top ++;
-	}
+	}                           //#/ push_end
 	void pop() {                //#/ pop
-		top --;
-	}
+		if (is_empty()) {
+			return;
+		}
+		top --;                 //#/ pop_main_begin
+	}                           //#/ pop_end
 	int top() {                 //#/ top
 		if (is_empty()) {
 			return 0;
 		}
-		return data[top - 1];
-	}
+		return data[top - 1];   //#/ top_main_begin
+	}                           //#/ top_end
 	bool is_empty() {           //#/ isEmpty
 		return (top == 0);
 	}

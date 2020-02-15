@@ -13,15 +13,44 @@ import java.util.ArrayList;
  */
 public class VisualList extends Group {
 
+    public static final int CACHED_NODE = -1;
+
     private String name;
-    private ArrayList<VisualListNode> arrayNode;
+    private ArrayList<VisualListNode> arrayNode = new ArrayList<>();
+    private VisualListNode cachedNode = null;
 
     public VisualList(String name) {
         // super
         super();
         // initialize
         this.name = name;
-        arrayNode = new ArrayList<>();
+    }
+
+    public void cacheNode(int index, int value) {
+        if (cachedNode == null) {
+            cachedNode = createNode(index, value);
+        }
+    }
+    public void insertCachedNode(int index) {
+        if (cachedNode != null) {
+            arrayNode.add(index, cachedNode);
+            Visual.createAnimation(500, cachedNode.layoutYProperty(), 0);
+            cachedNode = null;
+        }
+    }
+
+    public void setPointer(int indexFrom, int indexTo) {
+        VisualListNode nodeFrom = (indexFrom == CACHED_NODE ? cachedNode : arrayNode.get(indexFrom));
+        VisualListNode nodeTo = (indexTo == CACHED_NODE ? cachedNode : arrayNode.get(indexTo));
+        nodeFrom.setPointer(nodeTo);
+    }
+    public void moveRestNodes(int begin, int distance) {
+        VisualListNode lastNode = arrayNode.get(begin);
+        Visual.createAnimation(500, lastNode.layoutXProperty(), lastNode.getLayoutX() + 128 * distance);
+        for (int i = begin + 1; i < arrayNode.size(); i ++) {
+            VisualListNode node = arrayNode.get(i);
+            Visual.updateAnimation(500, node.layoutXProperty(), node.getLayoutX() + 128 * distance);
+        }
     }
 
     private VisualListNode createNode(int index, int value) {

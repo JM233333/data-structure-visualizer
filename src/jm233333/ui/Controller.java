@@ -100,7 +100,7 @@ public class Controller extends Group {
                             parameterTypes[i] = cls;
                         }
                     }
-                    visualDS.trackToMethodBeginning(name);
+                    visualDS.trackCodeMethodBeginning(name);
                     Method method = visualDS.getClass().getDeclaredMethod(name, parameterTypes);
                     method.invoke(visualDS, parameters.toArray());
                 } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {

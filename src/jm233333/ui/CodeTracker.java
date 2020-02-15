@@ -23,6 +23,9 @@ import java.util.HashMap;
  */
 public class CodeTracker extends ScrollPane {
 
+    public static final String NEXT_LINE = "__next";
+    public static final String REMAIN = "__remain";
+
     private Group contentRoot;
     private TextFlow codeBoard;
     private Polygon currentLineSymbol;
@@ -30,9 +33,6 @@ public class CodeTracker extends ScrollPane {
     private HashMap<String, Integer> mapEntrance;
     private String currentMethod;
     private int currentLineIndex;
-
-    public static final String NEXT_LINE = "__next";
-    public static final String REMAIN = "__remain";
 
     public CodeTracker() {
         // initialize content
@@ -53,10 +53,8 @@ public class CodeTracker extends ScrollPane {
         mapEntrance = new HashMap<>();
         currentMethod = "";
         currentLineIndex = -1;
-        // dbg
-        readF("Stack");
     }
-    private void readF(final String name) {
+    public void readFile(final String name) {
         // clear
         codeBoard.getChildren().clear();
         mapEntrance.clear();
@@ -88,11 +86,13 @@ public class CodeTracker extends ScrollPane {
         }
     }
 
+    public void resetCurrentMethod() {
+        currentMethod = null;
+    }
     public void setCurrentMethod(String nMethod) {
-        if (!currentMethod.equals(nMethod)) {
-            setCurrentLineIndex(mapEntrance.get(nMethod));
-            gotoEntrance(NEXT_LINE);
-        }
+        currentMethod = nMethod;
+        setCurrentLineIndex(mapEntrance.get(nMethod));
+        gotoEntrance(NEXT_LINE);
     }
     public final String getCurrentMethod() {
         return currentMethod;
@@ -120,13 +120,13 @@ public class CodeTracker extends ScrollPane {
             if (currentLineIndex == -1) {
                 Visual.updateAnimation(500, currentLineSymbol.opacityProperty(), 0);
             } else {
-                Visual.updateAnimation(25, getCurrentLine().fillProperty(), Color.BLUE);
+                Visual.updateAnimation(250, getCurrentLine().fillProperty(), Color.BLUE);
             }
             // pause debug
             if (currentLineIndex == -1) {
-                Visual.createAnimation(500, currentLineSymbol.opacityProperty(), 0);
+                Visual.createAnimation(100, currentLineSymbol.opacityProperty(), 0);
             } else {
-                Visual.createAnimation(500, currentLineSymbol.opacityProperty(), 1);
+                Visual.createAnimation(100, currentLineSymbol.opacityProperty(), 1);
             }
         }
     }
