@@ -2,9 +2,12 @@ package jm233333.ui;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
+import javafx.scene.text.TextFlow;
 import jm233333.Director;
 import jm233333.visualized.VisualizedDataStructure;
 
@@ -18,7 +21,9 @@ import java.util.*;
 public class Controller extends Group {
 
     private HBox root;
-    private FlowPane paneMethodTrigger, paneAnimationController, paneOutputBox, paneFileReader;
+    private FlowPane paneMethodTrigger, paneAnimationController;
+    private ScrollPane paneOutputBox, paneFileReader;
+    private TextFlow outputBox;
     private VisualizedDataStructure visualDS;
 
     /**
@@ -32,41 +37,44 @@ public class Controller extends Group {
         // initialize root
         root = new HBox();
         this.getChildren().add(root);
-        // initialize flow panes
+        // initialize panes
+        final double padding = 16, height = 32;
+        final int columnSize = 4;
+        final double paneHeight = (height + padding) * columnSize + padding;
         paneMethodTrigger = new FlowPane();
         paneAnimationController = new FlowPane();
-        paneOutputBox = new FlowPane();
-        paneFileReader = new FlowPane();
-        for (FlowPane pane : new FlowPane[]{paneMethodTrigger, paneAnimationController, paneOutputBox, paneFileReader}) {
+        for (FlowPane pane : new FlowPane[]{paneMethodTrigger, paneAnimationController}) {
             pane.setOrientation(Orientation.VERTICAL);
-            pane.setMaxHeight(48 * 4 + 16 * 2);
-            pane.setPadding(new Insets(16));
+            pane.setMaxHeight(paneHeight);
+            pane.setPadding(new Insets(padding));
+            pane.setVgap(padding);
             root.getChildren().add(pane);
         }
+        paneOutputBox = new ScrollPane();
+        paneOutputBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        paneOutputBox.setMinWidth(256);
+        paneOutputBox.setMaxWidth(256);
+        paneOutputBox.setMaxHeight(paneHeight);
+        paneOutputBox.setPadding(new Insets(padding));
+        root.getChildren().add(paneOutputBox);
         // set reference to the interrelated visual data structure
         this.visualDS = visualDS;
         // initialize method triggers
         initializeMethodTriggers();
-        // initialize animation controllers (temporary)
-        Button btnPlay = new Button("play animation");
-        btnPlay.setOnAction((event) -> {
-            Director.getInstance().playAnimation();
-        });
-        paneAnimationController.getChildren().add(btnPlay);
-        Button btnPause = new Button("pause animation");
-        btnPause.setOnAction((event) -> {
-            Director.getInstance().pauseAnimation();
-        });
-        paneAnimationController.getChildren().add(btnPause);
+        // initialize animation controllers
+        initializeAnimationControllers();
+        // initialize output box
+        outputBox = new TextFlow();
+        paneOutputBox.setContent(outputBox);
     }
 
     /**
+     * Initializes method triggers.
      * Finds all public methods of the visualized data structure and initializes corresponding method triggers with them.
      */
     private void initializeMethodTriggers() {
         // find all public methods of visualDS
         Method[] methods = visualDS.getClass().getDeclaredMethods();
-        int methodCount = methods.length;
         // initialize method triggers
         ArrayList<MethodTrigger> methodTriggers = new ArrayList<>();
         for (Method method : methods) {
@@ -125,5 +133,32 @@ public class Controller extends Group {
                 }
             });
         }
+    }
+
+    /**
+     * Initializes animation controllers.
+     */
+    private void initializeAnimationControllers() {
+        Button btnPlay = new Button("play animation");
+        btnPlay.setOnAction((event) -> {
+            Director.getInstance().playAnimation();
+        });
+        paneAnimationController.getChildren().add(btnPlay);
+        Button btnPause = new Button("pause animation");
+        btnPause.setOnAction((event) -> {
+            Director.getInstance().pauseAnimation();
+        });
+        paneAnimationController.getChildren().add(btnPause);
+
+        for (Button button : new Button[]{btnPlay, btnPause}) {
+            button.setAlignment(Pos.CENTER_LEFT);
+        }
+    }
+
+    /**
+     * Gets the output box.
+     */
+    public final TextFlow getOutputBox() {
+        return outputBox;
     }
 }

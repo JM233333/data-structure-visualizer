@@ -61,10 +61,11 @@ public class MethodTrigger extends HBox {
      */
     private void initialize(String nameMethod, String... nameParameters) {
         // initialize layout of this
-        this.setPadding(new Insets(8));
+        this.setPadding(new Insets(0, 16, 0, 16));
         this.setSpacing(32);
         this.setAlignment(Pos.CENTER_LEFT);
-        this.setPrefHeight(48);
+        this.setMinHeight(32);
+        this.setMaxHeight(32);
         // initialize name
         this.name = nameMethod;
         // initialize button

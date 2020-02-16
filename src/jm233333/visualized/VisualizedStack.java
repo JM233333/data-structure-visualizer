@@ -30,9 +30,8 @@ public class VisualizedStack extends VisualizedDataStructure {
     }
 
     public void push(int value) {
-        if (isFull()) {
+        if (_isFull()) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
-            trackCodeEntrance(getCodeCurrentMethod() + "_end");
             Director.getInstance().playAnimation();
             return;
         }
@@ -47,9 +46,8 @@ public class VisualizedStack extends VisualizedDataStructure {
     }
 
     public void pop() {
-        if (isEmpty()) {
+        if (_isEmpty()) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
-            trackCodeEntrance(getCodeCurrentMethod() + "_end");
             Director.getInstance().playAnimation();
             return;
         }
@@ -62,22 +60,35 @@ public class VisualizedStack extends VisualizedDataStructure {
     }
 
     public int top() {
-        if (isEmpty()) {
+        if (_isEmpty()) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
-            trackCodeEntrance(getCodeCurrentMethod() + "_end");
             Director.getInstance().playAnimation();
             return 0;
         }
         trackCodeEntrance(getCodeCurrentMethod() + "_main_begin");
         trackCodeEntrance(CodeTracker.NEXT_LINE);
+        outputMessage(getCodeCurrentMethod() + " " + data[top - 1]);
         Director.getInstance().playAnimation();
         return data[top - 1];
     }
 
     public boolean isEmpty() {
-        return (top == 0);
+        boolean flag = (top == 0);
+        outputMessage(getCodeCurrentMethod() + " " + (flag ? "true" : "false"));
+        Director.getInstance().playAnimation();
+        return flag;
     }
     public boolean isFull() {
+        boolean flag = (top == data.length);
+        outputMessage(getCodeCurrentMethod() + " " + (flag ? "true" : "false"));
+        Director.getInstance().playAnimation();
+        return flag;
+    }
+
+    private boolean _isEmpty() {
+        return (top == 0);
+    }
+    private boolean _isFull() {
         return (top == data.length);
     }
 

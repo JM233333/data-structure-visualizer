@@ -9,6 +9,11 @@
     -fx-background-color: rgb(255, 128, 255);
 }
 
+#fihdsfisufidufbutton {
+     -fx-background-color: transparent;
+     -fx-padding: 0;
+     -fx-background-insets: 0;
+ }
 
 .scroll-pane {
     -fx-background-color: transparent;

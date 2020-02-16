@@ -25,7 +25,7 @@ public class Visual extends Group {
         KeyFrame keyFrame = new KeyFrame(Duration.millis(deltaTime), keyValue);
         timeline.getKeyFrames().add(keyFrame);
     }
-    static void createAnimationText(Text text, String str) {
+    public static void createAnimationText(Text text, String str) {
         // change text
         createAnimation(50, text.textProperty(), str);
         updateAnimation(50, text.fillProperty(), Color.RED);

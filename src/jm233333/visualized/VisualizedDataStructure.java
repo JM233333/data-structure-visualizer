@@ -1,14 +1,15 @@
 package jm233333.visualized;
 
-import com.sun.org.apache.bcel.internal.classfile.Code;
+import javafx.animation.Timeline;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.util.Pair;
 
+import jm233333.Director;
 import jm233333.ui.CodeTracker;
 import jm233333.ui.Monitor;
 import jm233333.visual.*;
-
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 
 /**
  * The {@code VisualizedDataStructure} class provides common properties for all types of visualized data structures.
@@ -29,6 +30,11 @@ public abstract class VisualizedDataStructure {
      * The reference to the code tracker that helps displaying the visualized data structure.
      */
     private CodeTracker codeTracker = null;
+
+    /**
+     * The reference to the {@code TextFlow} that the visualized data structure outputs to.
+     */
+    private TextFlow outputBox = null;
 
     /**
      * Records all relationships of (index field -> array).
@@ -67,6 +73,9 @@ public abstract class VisualizedDataStructure {
         codeTracker.readFile(name);
         this.codeTracker = codeTracker;
     }
+    public void setOutputBox(TextFlow outputBox) {
+        this.outputBox = outputBox;
+    }
 
     /**
      * Tracks to the beginning code line of the specified method.
@@ -86,6 +95,23 @@ public abstract class VisualizedDataStructure {
      */
     public final String getCodeCurrentMethod() {
         return codeTracker.getCurrentMethod();
+    }
+
+    /**
+     * Outputs message to the output box.
+     */
+    public void outputMessage(String message) {
+        Text text = new Text(message + "\n");
+        text.setFont(Font.font(18));
+        text.setOpacity(0);
+        outputBox.getChildren().add(text);
+        Visual.createAnimation(500, text.opacityProperty(), 1);
+    }
+    /**
+     * Clears the output box.
+     */
+    public void clearOutputBox() {
+        outputBox.getChildren().clear();
     }
 
     /**
