@@ -11,30 +11,30 @@ import javafx.util.Duration;
 import jm233333.Director;
 
 public class Visual extends Group {
-    public static <T> void createAnimation(double deltaTime, WritableValue<T> property, T value) {
+    public static <T> void createAnimation(double scaleRate, WritableValue<T> property, T value) {
         Timeline timeline = new Timeline();
         KeyValue keyValue = new KeyValue(property, value);
-        KeyFrame keyFrame = new KeyFrame(Duration.millis(deltaTime), keyValue);
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(Director.getInstance().getAnimationRate() * scaleRate), keyValue);
         timeline.getKeyFrames().add(keyFrame);
         Director.getInstance().addTimeline(timeline);
     }
-    public static <T> void updateAnimation(double deltaTime, WritableValue<T> property, T value) {
+    public static <T> void updateAnimation(double scaleRate, WritableValue<T> property, T value) {
         Timeline timeline = Director.getInstance().getLastTimeline();
         assert timeline != null;
         KeyValue keyValue = new KeyValue(property, value);
-        KeyFrame keyFrame = new KeyFrame(Duration.millis(deltaTime), keyValue);
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(Director.getInstance().getAnimationRate() * scaleRate), keyValue);
         timeline.getKeyFrames().add(keyFrame);
     }
     public static void createAnimationText(Text text, String str) {
         // change text
-        createAnimation(50, text.textProperty(), str);
-        updateAnimation(50, text.fillProperty(), Color.RED);
+        createAnimation(0.1, text.textProperty(), str);
+        updateAnimation(0.1, text.fillProperty(), Color.RED);
         // emphasize
-        updateAnimation(250, text.scaleXProperty(), 2.0);
-        updateAnimation(250, text.scaleYProperty(), 2.0);
+        updateAnimation(0.5, text.scaleXProperty(), 2.0);
+        updateAnimation(0.5, text.scaleYProperty(), 2.0);
         // resume
-        createAnimation(250, text.scaleXProperty(), 1.0);
-        updateAnimation(250, text.scaleYProperty(), 1.0);
-        updateAnimation(250, text.fillProperty(), Color.BLACK);
+        createAnimation(0.5, text.scaleXProperty(), 1.0);
+        updateAnimation(0.5, text.scaleYProperty(), 1.0);
+        updateAnimation(0.5, text.fillProperty(), Color.BLACK);
     }
 }

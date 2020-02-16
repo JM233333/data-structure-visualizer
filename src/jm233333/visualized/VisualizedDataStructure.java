@@ -105,13 +105,17 @@ public abstract class VisualizedDataStructure {
         text.setFont(Font.font(18));
         text.setOpacity(0);
         outputBox.getChildren().add(text);
-        Visual.createAnimation(500, text.opacityProperty(), 1);
+        Visual.createAnimation(1.0, text.opacityProperty(), 1);
     }
     /**
      * Clears the output box.
      */
     public void clearOutputBox() {
         outputBox.getChildren().clear();
+    }
+
+    public void addStepPoint() {
+        Director.getInstance().addStepPoint();
     }
 
     /**

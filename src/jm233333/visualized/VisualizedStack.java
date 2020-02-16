@@ -38,6 +38,7 @@ public class VisualizedStack extends VisualizedDataStructure {
         trackCodeEntrance(getCodeCurrentMethod() + "_main_begin");
         data[top] = value;
         getVisualArray(getName()).updateElement(top, value);
+        addStepPoint();
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         top ++;
         getVisualArray(getName()).updateIndexField("top", top);

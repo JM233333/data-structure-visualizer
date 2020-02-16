@@ -1,6 +1,6 @@
 package jm233333;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
@@ -9,27 +9,38 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 
-import jm233333.ui.CodeTracker;
-
 /**
  * The {@code Director} class is a singleton class that maintains global data and controls the overall program.
  */
 public class Director {
 
     private static Director instance = new Director();
+
     private Stage primaryStage;
+
+    public static final double UNIT_ANIMATION_RATE = 100,
+            MIN_ANIMATION_RATE = UNIT_ANIMATION_RATE,
+            MAX_ANIMATION_RATE = 15 * UNIT_ANIMATION_RATE,
+            DEFAULT_ANIMATION_RATE = 500;
     private ArrayList<Timeline> animationWaitingList, animationPlayingList;
     private int animationCurrentIndex;
     private BooleanProperty animationPlayingProperty;
+    private double animationRate;
+    private HashSet<Integer> stepPointSet;
+    private boolean isSingleStep;
 
     /**
      * Creates the unique instance of {@code Director}.
      */
     private Director() {
+        primaryStage = null;
         animationWaitingList = new ArrayList<>();
         animationPlayingList = null;
         animationCurrentIndex = -1;
         animationPlayingProperty().setValue(false);
+        animationRate = DEFAULT_ANIMATION_RATE;
+        stepPointSet = new HashSet<>();
+        isSingleStep = false;
     }
 
     /**
@@ -93,11 +104,11 @@ public class Director {
         animationWaitingList = new ArrayList<>();
         // check empty
         if (animationPlayingList.isEmpty()) {
-            System.out.println("EMRPT");
+            System.out.println("EMPTY ANIMATION TIMELINE LIST");
             return;
         }
-        System.out.println(animationPlayingList.get(0).toString());
         // set event listeners
+        System.out.println("CONTAIN? " + stepPointSet.contains(7));
         for (int i = 0; i < animationPlayingList.size(); i ++) {
             final int index = i;
             Timeline timeline = animationPlayingList.get(index);
@@ -110,9 +121,13 @@ public class Director {
                     animationPlayingList.get(index + 1).play();
                     animationCurrentIndex = index + 1;
                     animationPlayingProperty().setValue(true);
+                    if (isSingleStep() && stepPointSet.contains(index)) {
+                        pauseAnimation();
+                    }
                 } else {
                     animationCurrentIndex = -1;
                     animationPlayingProperty().setValue(false);
+                    stepPointSet.clear();
                 }
             });
         }
@@ -158,5 +173,22 @@ public class Director {
      */
     public boolean isAnimationPlaying() {
         return animationPlayingProperty().getValue();
+    }
+
+    public void addStepPoint() {
+        stepPointSet.add(animationWaitingList.size() - 1);
+    }
+    public void setSingleStep(boolean flag) {
+        this.isSingleStep = flag;
+    }
+    public boolean isSingleStep() {
+        return isSingleStep;
+    }
+
+    public void setAnimationRate(double rate) {
+        animationRate = rate;
+    }
+    public double getAnimationRate() {
+        return animationRate;
     }
 }

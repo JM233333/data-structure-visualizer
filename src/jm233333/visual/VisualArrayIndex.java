@@ -37,7 +37,7 @@ public class VisualArrayIndex extends Group {
 
     public void setValue(int value) {
         this.value = value;
-        Visual.createAnimation(500, this.layoutXProperty(), 64 * value);
+        Visual.createAnimation(1.0, this.layoutXProperty(), 64 * value);
     }
     public int getValue() {
         return value;

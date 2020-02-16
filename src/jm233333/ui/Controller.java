@@ -4,8 +4,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextFlow;
 import jm233333.Director;
@@ -50,6 +49,8 @@ public class Controller extends Group {
             pane.setVgap(padding);
             root.getChildren().add(pane);
         }
+        paneAnimationController.setMinWidth(256);
+        paneAnimationController.setId("pane-animation-controller");
         paneOutputBox = new ScrollPane();
         paneOutputBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         paneOutputBox.setMinWidth(256);
@@ -139,6 +140,7 @@ public class Controller extends Group {
      * Initializes animation controllers.
      */
     private void initializeAnimationControllers() {
+        //
         Button btnPlay = new Button("play animation");
         btnPlay.setOnAction((event) -> {
             Director.getInstance().playAnimation();
@@ -149,10 +151,42 @@ public class Controller extends Group {
             Director.getInstance().pauseAnimation();
         });
         paneAnimationController.getChildren().add(btnPause);
-
+        //
         for (Button button : new Button[]{btnPlay, btnPause}) {
             button.setAlignment(Pos.CENTER_LEFT);
         }
+        //
+        final Label fff = new Label("Animation Rate : ");
+        paneAnimationController.getChildren().add(fff);
+        Slider slider = new Slider(Director.MIN_ANIMATION_RATE, Director.MAX_ANIMATION_RATE, Director.DEFAULT_ANIMATION_RATE);
+        slider.setPrefWidth(160);
+        slider.setShowTickLabels(false);
+        slider.setShowTickMarks(true);
+        slider.setSnapToTicks(true);
+        slider.setMajorTickUnit(slider.getMax() - slider.getMin() - 1);
+        slider.setMinorTickCount((int)(slider.getMajorTickUnit() / Director.UNIT_ANIMATION_RATE));
+        slider.setBlockIncrement(Director.UNIT_ANIMATION_RATE);
+        paneAnimationController.getChildren().add(slider);
+        slider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Director.getInstance().setAnimationRate(slider.getValue());
+        });
+        //
+        final Label fff2 = new Label("Action Type : ");
+        paneAnimationController.getChildren().add(fff2);
+        final ToggleGroup group = new ToggleGroup();
+        RadioButton rb1 = new RadioButton("Single Step");
+        rb1.setToggleGroup(group);
+        rb1.setUserData(true);
+        RadioButton rb2 = new RadioButton("Continuous");
+        rb2.setToggleGroup(group);
+        rb2.setUserData(false);
+        (Director.getInstance().isSingleStep() ? rb1 : rb2).setSelected(true);
+        paneAnimationController.getChildren().addAll(rb1, rb2);
+        group.selectedToggleProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (group.getSelectedToggle() != null) {
+                Director.getInstance().setSingleStep((boolean)group.getSelectedToggle().getUserData());
+            }
+        });
     }
 
     /**
