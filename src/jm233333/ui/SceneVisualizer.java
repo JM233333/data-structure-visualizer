@@ -58,6 +58,7 @@ public class SceneVisualizer extends Scene {
         Class cls = this.getClass();
         String name = cls.getName();
         this.getStylesheets().add(cls.getResource(name.substring(name.lastIndexOf('.') + 1) + ".css").toExternalForm());
+        this.getStylesheets().add(cls.getResource("/lib/bootstrapfx.css").toExternalForm());
     }
     private void initializeController() {
         // initialize controller

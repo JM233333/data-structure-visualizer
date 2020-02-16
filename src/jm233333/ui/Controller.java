@@ -154,6 +154,7 @@ public class Controller extends Group {
         //
         for (Button button : new Button[]{btnPlay, btnPause}) {
             button.setAlignment(Pos.CENTER_LEFT);
+            button.getStyleClass().setAll("btn", "btn-danger");//debug
         }
         //
         final Label fff = new Label("Animation Rate : ");
