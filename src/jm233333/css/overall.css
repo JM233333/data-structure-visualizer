@@ -1,13 +1,15 @@
-
+.bg-default {
+  -fx-background-color: #fff;
+}
 
 
 
 .scroll-pane {
-    -fx-background-color: transparent;
+  -fx-background-color: transparent;
 }
 .scroll-pane:focused {
-    -fx-background-color: transparent;
+  -fx-background-color: transparent;
 }
-.scroll-pane .content {
-    -fx-background-color: transparent;
+.scroll-pane > .content {
+  -fx-background-color: transparent;
 }

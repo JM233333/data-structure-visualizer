@@ -73,7 +73,7 @@ public class Controller extends Group {
             pane.setMinWidth(256);
             pane.setMaxWidth(256);
             pane.setMaxHeight(panelBodyHeight);
-            pane.setPadding(new Insets(padding));
+            pane.setPrefHeight(panelBodyHeight);
         }
         // set reference to the interrelated visual data structure
         this.visualDS = visualDS;
@@ -83,7 +83,9 @@ public class Controller extends Group {
         initializeAnimationControllers();
         // initialize output box
         outputBox = new TextFlow();
-        outputBox.getStyleClass().setAll("panel", "panel-info");
+        outputBox.setMinWidth(256 - 32 + 2);
+        outputBox.setMinHeight(panelBodyHeight - 32 + 2);
+        outputBox.getStyleClass().addAll("bg-default");
         ((ScrollPane)panelOutputBox.getPanelBody()).setContent(outputBox);
     }
 

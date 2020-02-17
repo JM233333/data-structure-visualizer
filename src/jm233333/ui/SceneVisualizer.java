@@ -9,8 +9,6 @@ import javafx.scene.paint.*;
 import jm233333.Director;
 import jm233333.visualized.VisualizedDataStructure;
 
-//import org.kordamp.bootstrapfx.scene.layout.Panel;
-
 /**
  * The {@code SceneVisualizer} class maintains a scene graph for Visualizer UI.
  * Extended from JavaFX class {@code Scene}.
@@ -47,12 +45,17 @@ public class SceneVisualizer extends Scene {
         //
         root.setId("root");
         root.setMaxHeight(768);
+        root.getStyleClass().add("bg-info");
         //
         initializeCSS();
         initializeMonitor();     // center
         initializeCodeTracker(); // right
         initializeController();  // bottom
         initializeMenu();        // top
+        //
+        for (Parent p : new Parent[]{controller, monitor, codeTracker, menu}) {
+            p.getStyleClass().addAll("panel", "panel-primary");
+        }
     }
     private void initializeCSS() {
         Class cls = this.getClass();
@@ -80,7 +83,7 @@ public class SceneVisualizer extends Scene {
     private void initializeCodeTracker() {
         // initialize code tracker
         codeTracker = new CodeTracker();
-        codeTracker.setId("codeTracker");
+        codeTracker.setId("code-tracker");
         root.setRight(codeTracker);
         visualDS.setCodeTracker(codeTracker);
     }
