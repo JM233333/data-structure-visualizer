@@ -5,6 +5,9 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextFlow;
 import jm233333.Director;
@@ -20,7 +23,7 @@ import java.util.*;
 public class Controller extends Group {
 
     private HBox root;
-    private FlowPane paneMethodTrigger, paneAnimationController;
+    private PanelConsole panelMethodTrigger, panelAnimationController, panelOutputBox, panelFileReader;
     private ScrollPane paneOutputBox, paneFileReader;
     private TextFlow outputBox;
     private VisualizedDataStructure visualDS;
@@ -35,29 +38,43 @@ public class Controller extends Group {
         super();
         // initialize root
         root = new HBox();
+        root.setPadding(new Insets(16));
+        root.setSpacing(16);
+        //root.getStyleClass().setAll("panel", "panel-default");
         this.getChildren().add(root);
-        // initialize panes
+        // set ui layout data
         final double padding = 16, height = 32;
         final int columnSize = 4;
-        final double paneHeight = (height + padding) * columnSize + padding;
-        paneMethodTrigger = new FlowPane();
-        paneAnimationController = new FlowPane();
-        for (FlowPane pane : new FlowPane[]{paneMethodTrigger, paneAnimationController}) {
+        final double panelHeadingHeight = height + 2 * padding;
+        final double panelBodyHeight = (height + padding) * columnSize + padding;
+        final double panelHeight = panelHeadingHeight + panelBodyHeight + 2 * padding;
+        // initialize panels
+        panelMethodTrigger = new PanelConsole(new FlowPane(), "Method Triggers");
+        panelAnimationController = new PanelConsole(new FlowPane(), "Animation Controller");
+        panelOutputBox = new PanelConsole(new ScrollPane(), "Output Box");
+        panelFileReader = new PanelConsole(new ScrollPane(), "File Reader");
+        for (PanelConsole panel : new PanelConsole[]{panelMethodTrigger, panelAnimationController, panelOutputBox, panelFileReader}) {
+            panel.setMaxHeight(panelHeight);
+            panel.getStyleClass().add("panel-primary");
+            root.getChildren().add(panel);
+        }
+        for (PanelConsole panel : new PanelConsole[]{panelMethodTrigger, panelAnimationController}) {
+            FlowPane pane = (FlowPane)panel.getPanelBody();
             pane.setOrientation(Orientation.VERTICAL);
-            pane.setMaxHeight(paneHeight);
+            pane.setPrefHeight(panelBodyHeight);
+            pane.setMaxHeight(panelBodyHeight);
             pane.setPadding(new Insets(padding));
             pane.setVgap(padding);
-            root.getChildren().add(pane);
         }
-        paneAnimationController.setMinWidth(256);
-        paneAnimationController.setId("pane-animation-controller");
-        paneOutputBox = new ScrollPane();
-        paneOutputBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        paneOutputBox.setMinWidth(256);
-        paneOutputBox.setMaxWidth(256);
-        paneOutputBox.setMaxHeight(paneHeight);
-        paneOutputBox.setPadding(new Insets(padding));
-        root.getChildren().add(paneOutputBox);
+//        paneAnimationController.setMinWidth(256);
+        for (PanelConsole panel : new PanelConsole[]{panelOutputBox}) {
+            ScrollPane pane = (ScrollPane)panel.getPanelBody();
+            pane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            pane.setMinWidth(256);
+            pane.setMaxWidth(256);
+            pane.setMaxHeight(panelBodyHeight);
+            pane.setPadding(new Insets(padding));
+        }
         // set reference to the interrelated visual data structure
         this.visualDS = visualDS;
         // initialize method triggers
@@ -66,7 +83,8 @@ public class Controller extends Group {
         initializeAnimationControllers();
         // initialize output box
         outputBox = new TextFlow();
-        paneOutputBox.setContent(outputBox);
+        outputBox.getStyleClass().setAll("panel", "panel-info");
+        ((ScrollPane)panelOutputBox.getPanelBody()).setContent(outputBox);
     }
 
     /**
@@ -74,6 +92,8 @@ public class Controller extends Group {
      * Finds all public methods of the visualized data structure and initializes corresponding method triggers with them.
      */
     private void initializeMethodTriggers() {
+        // get panel body
+        FlowPane pane = (FlowPane)panelMethodTrigger.getPanelBody();
         // find all public methods of visualDS
         Method[] methods = visualDS.getClass().getDeclaredMethods();
         // initialize method triggers
@@ -91,7 +111,7 @@ public class Controller extends Group {
 //            System.out.println(method.getName() + " : " + Arrays.toString(method.getParameterTypes()));
             MethodTrigger methodTrigger = new MethodTrigger(method);
             methodTriggers.add(methodTrigger);
-            paneMethodTrigger.getChildren().add(methodTrigger);
+            pane.getChildren().add(methodTrigger);
         }
         // initialize event listener for method triggers
         for (MethodTrigger methodTrigger : methodTriggers) {
@@ -140,25 +160,28 @@ public class Controller extends Group {
      * Initializes animation controllers.
      */
     private void initializeAnimationControllers() {
+        // get panel body
+        FlowPane pane = (FlowPane)panelAnimationController.getPanelBody();
         //
         Button btnPlay = new Button("play animation");
+        btnPlay.getStyleClass().setAll("btn", "btn-success");
         btnPlay.setOnAction((event) -> {
             Director.getInstance().playAnimation();
         });
-        paneAnimationController.getChildren().add(btnPlay);
+        pane.getChildren().add(btnPlay);
         Button btnPause = new Button("pause animation");
+        btnPause.getStyleClass().setAll("btn", "btn-danger");
         btnPause.setOnAction((event) -> {
             Director.getInstance().pauseAnimation();
         });
-        paneAnimationController.getChildren().add(btnPause);
+        pane.getChildren().add(btnPause);
         //
         for (Button button : new Button[]{btnPlay, btnPause}) {
-            button.setAlignment(Pos.CENTER_LEFT);
-            button.getStyleClass().setAll("btn", "btn-danger");//debug
+            //button.setAlignment(Pos.CENTER_LEFT);
         }
         //
         final Label fff = new Label("Animation Rate : ");
-        paneAnimationController.getChildren().add(fff);
+        pane.getChildren().add(fff);
         Slider slider = new Slider(Director.MIN_ANIMATION_RATE, Director.MAX_ANIMATION_RATE, Director.DEFAULT_ANIMATION_RATE);
         slider.setPrefWidth(160);
         slider.setShowTickLabels(false);
@@ -167,13 +190,13 @@ public class Controller extends Group {
         slider.setMajorTickUnit(slider.getMax() - slider.getMin() - 1);
         slider.setMinorTickCount((int)(slider.getMajorTickUnit() / Director.UNIT_ANIMATION_RATE));
         slider.setBlockIncrement(Director.UNIT_ANIMATION_RATE);
-        paneAnimationController.getChildren().add(slider);
+        pane.getChildren().add(slider);
         slider.valueProperty().addListener((observable, oldValue, newValue) -> {
             Director.getInstance().setAnimationRate(slider.getValue());
         });
         //
         final Label fff2 = new Label("Action Type : ");
-        paneAnimationController.getChildren().add(fff2);
+        pane.getChildren().add(fff2);
         final ToggleGroup group = new ToggleGroup();
         RadioButton rb1 = new RadioButton("Single Step");
         rb1.setToggleGroup(group);
@@ -182,7 +205,7 @@ public class Controller extends Group {
         rb2.setToggleGroup(group);
         rb2.setUserData(false);
         (Director.getInstance().isSingleStep() ? rb1 : rb2).setSelected(true);
-        paneAnimationController.getChildren().addAll(rb1, rb2);
+        pane.getChildren().addAll(rb1, rb2);
         group.selectedToggleProperty().addListener((observableValue, oldValue, newValue) -> {
             if (group.getSelectedToggle() != null) {
                 Director.getInstance().setSingleStep((boolean)group.getSelectedToggle().getUserData());
