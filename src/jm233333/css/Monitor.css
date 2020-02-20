@@ -1,0 +1,6 @@
+#monitor {
+  -fx-background-color: #EEE; /*#4A65BC;*/
+}
+.visual > * {
+  -fx-font-size: 27px;
+}

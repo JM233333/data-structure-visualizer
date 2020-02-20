@@ -1,6 +1,5 @@
 package jm233333.visualized;
 
-import javafx.animation.Timeline;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -105,7 +104,7 @@ public abstract class VisualizedDataStructure {
         text.setFont(Font.font(18));
         text.setOpacity(0);
         outputBox.getChildren().add(text);
-        Visual.createAnimation(1.0, text.opacityProperty(), 1);
+        Director.getInstance().createAnimation(1.0, text.opacityProperty(), 1);
     }
     /**
      * Clears the output box.

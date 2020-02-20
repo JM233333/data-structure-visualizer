@@ -3,6 +3,7 @@ package jm233333;
 import javafx.application.Application;
 import javafx.scene.*;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import jm233333.ui.SceneMenu;
 
@@ -16,6 +17,8 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
+        // load resources
+        Font.loadFont(getClass().getResourceAsStream("/resource/font/PT-Sans.ttf"), 12);
         // initialize director
         Director.getInstance().setPrimaryStage(primaryStage);
         // initialize data structure

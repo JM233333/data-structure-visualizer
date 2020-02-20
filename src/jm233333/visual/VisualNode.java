@@ -1,13 +1,12 @@
 package jm233333.visual;
 
 import javafx.geometry.VPos;
-import javafx.scene.Group;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import jm233333.Director;
 
-public abstract class VisualNode extends Group {
+public abstract class VisualNode extends Visual {
 
     private static int nextId = 0;
 
@@ -18,11 +17,13 @@ public abstract class VisualNode extends Group {
 
     public VisualNode() {
         resetId();
+        this.getStyleClass().add("visual-node");
         isFilled = false;
         value = 0;
     }
     public VisualNode(int value) {
         resetId();
+        this.getStyleClass().add("visual-node");
         isFilled = true;
         this.value = value;
     }
@@ -35,7 +36,6 @@ public abstract class VisualNode extends Group {
 
     void initializeText() {
         text = new Text();
-        text.setFont(Font.font("Tahoma", FontWeight.NORMAL, 22));
         text.setTextAlignment(TextAlignment.CENTER);
         text.setTextOrigin(VPos.CENTER);
         text.setWrappingWidth(64);
@@ -62,7 +62,7 @@ public abstract class VisualNode extends Group {
     }
 
     public void setText(String str) {
-        Visual.createAnimationText(text, str);
+        Director.getInstance().createAnimationText(text, str);
     }
     public final Text getText() {
         return text;

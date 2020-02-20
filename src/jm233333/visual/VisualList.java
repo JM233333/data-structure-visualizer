@@ -33,7 +33,7 @@ public class VisualList extends Group {
     public void insertCachedNode(int index) {
         if (cachedNode != null) {
             arrayNode.add(index, cachedNode);
-            Visual.createAnimation(1.0, cachedNode.layoutYProperty(), 0);
+            Director.getInstance().createAnimation(1.0, cachedNode.layoutYProperty(), 0);
             cachedNode = null;
         }
     }
@@ -45,10 +45,10 @@ public class VisualList extends Group {
     }
     public void moveRestNodes(int begin, int distance) {
         VisualListNode lastNode = arrayNode.get(begin);
-        Visual.createAnimation(1.0, lastNode.layoutXProperty(), lastNode.getLayoutX() + 128 * distance);
+        Director.getInstance().createAnimation(1.0, lastNode.layoutXProperty(), lastNode.getLayoutX() + 128 * distance);
         for (int i = begin + 1; i < arrayNode.size(); i ++) {
             VisualListNode node = arrayNode.get(i);
-            Visual.updateAnimation(1.0, node.layoutXProperty(), node.getLayoutX() + 128 * distance);
+            Director.getInstance().updateAnimation(1.0, node.layoutXProperty(), node.getLayoutX() + 128 * distance);
         }
     }
 
@@ -61,8 +61,8 @@ public class VisualList extends Group {
     }
     private void removeNode(int index) {
         VisualListNode node = arrayNode.remove(index);
-        Visual.createAnimation(1.0, node.scaleXProperty(), 0);
-        Visual.updateAnimation(1.0, node.scaleYProperty(), 0);
+        Director.getInstance().createAnimation(1.0, node.scaleXProperty(), 0);
+        Director.getInstance().updateAnimation(1.0, node.scaleYProperty(), 0);
         Director.getInstance().getLastTimeline().setOnFinished((event) -> {
             this.getChildren().remove(node);
         });
@@ -77,15 +77,15 @@ public class VisualList extends Group {
             VisualListNode lastNode = arrayNode.get(0);
             newNode.setPointer(lastNode);
             // move old nodes
-            Visual.createAnimation(1.0, lastNode.layoutXProperty(), lastNode.getLayoutX() + 128);
+            Director.getInstance().createAnimation(1.0, lastNode.layoutXProperty(), lastNode.getLayoutX() + 128);
             for (int i = 1; i < arrayNode.size(); i ++) {
                 VisualListNode node = arrayNode.get(i);
-                Visual.updateAnimation(1.0, node.layoutXProperty(), node.getLayoutX() + 128);
+                Director.getInstance().updateAnimation(1.0, node.layoutXProperty(), node.getLayoutX() + 128);
             }
         }
         // insert new node
         arrayNode.add(0, newNode);
-        Visual.createAnimation(1.0, newNode.layoutYProperty(), 0);
+        Director.getInstance().createAnimation(1.0, newNode.layoutYProperty(), 0);
         Director.getInstance().playAnimation();
     }
 
@@ -107,15 +107,15 @@ public class VisualList extends Group {
         // move old nodes
         if (index < arrayNode.size()) {
             VisualListNode lastNode = arrayNode.get(index);
-            Visual.createAnimation(1.0, lastNode.layoutXProperty(), lastNode.getLayoutX() + 128);
+            Director.getInstance().createAnimation(1.0, lastNode.layoutXProperty(), lastNode.getLayoutX() + 128);
             for (int i = index + 1; i < arrayNode.size(); i ++) {
                 VisualListNode node = arrayNode.get(i);
-                Visual.updateAnimation(1.0, node.layoutXProperty(), node.getLayoutX() + 128);
+                Director.getInstance().updateAnimation(1.0, node.layoutXProperty(), node.getLayoutX() + 128);
             }
         }
         // insert new node
         arrayNode.add(index, newNode);
-        Visual.createAnimation(1.0, newNode.layoutYProperty(), 0);
+        Director.getInstance().createAnimation(1.0, newNode.layoutYProperty(), 0);
         Director.getInstance().playAnimation();
     }
 
@@ -127,14 +127,14 @@ public class VisualList extends Group {
     public void popFrontNode() {
         // get erased node
         VisualListNode erasedNode = arrayNode.get(0);
-        Visual.createAnimation(1.0, erasedNode.layoutYProperty(), 96);
+        Director.getInstance().createAnimation(1.0, erasedNode.layoutYProperty(), 96);
         // move rest nodes
         if (arrayNode.size() > 1) {
             VisualListNode lastNode = arrayNode.get(1);
-            Visual.createAnimation(1.0, lastNode.layoutXProperty(), lastNode.getLayoutX() - 128);
+            Director.getInstance().createAnimation(1.0, lastNode.layoutXProperty(), lastNode.getLayoutX() - 128);
             for (int i = 2; i < arrayNode.size(); i ++) {
                 VisualListNode node = arrayNode.get(i);
-                Visual.updateAnimation(1.0, node.layoutXProperty(), node.getLayoutX() - 128);
+                Director.getInstance().updateAnimation(1.0, node.layoutXProperty(), node.getLayoutX() - 128);
             }
         }
         // remove erased node
@@ -150,7 +150,7 @@ public class VisualList extends Group {
         }
         // get erased node
         VisualListNode erasedNode = arrayNode.get(index);
-        Visual.createAnimation(1.0, erasedNode.layoutYProperty(), 96);
+        Director.getInstance().createAnimation(1.0, erasedNode.layoutYProperty(), 96);
         // set pointer
         VisualListNode prvNode = arrayNode.get(index - 1);
         if (index + 1 < arrayNode.size()) {
@@ -162,10 +162,10 @@ public class VisualList extends Group {
         // move rest nodes
         if (index + 1 < arrayNode.size()) {
             VisualListNode lastNode = arrayNode.get(index + 1);
-            Visual.createAnimation(1.0, lastNode.layoutXProperty(), lastNode.getLayoutX() - 128);
+            Director.getInstance().createAnimation(1.0, lastNode.layoutXProperty(), lastNode.getLayoutX() - 128);
             for (int i = index + 2; i < arrayNode.size(); i ++) {
                 VisualListNode node = arrayNode.get(i);
-                Visual.updateAnimation(1.0, node.layoutXProperty(), node.getLayoutX() - 128);
+                Director.getInstance().updateAnimation(1.0, node.layoutXProperty(), node.getLayoutX() - 128);
             }
         }
         // remove erased node

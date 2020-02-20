@@ -2,12 +2,22 @@ package jm233333;
 
 import java.util.*;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.BooleanPropertyBase;
+import javafx.beans.value.WritableValue;
+import javafx.css.Styleable;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * The {@code Director} class is a singleton class that maintains global data and controls the overall program.
@@ -22,6 +32,9 @@ public class Director {
             MIN_ANIMATION_RATE = UNIT_ANIMATION_RATE,
             MAX_ANIMATION_RATE = 15 * UNIT_ANIMATION_RATE,
             DEFAULT_ANIMATION_RATE = 500;
+    /**
+     * animation waiting list.
+     */
     private ArrayList<Timeline> animationWaitingList, animationPlayingList;
     private int animationCurrentIndex;
     private BooleanProperty animationPlayingProperty;
@@ -61,11 +74,50 @@ public class Director {
         setPrimaryStage(primaryStage);
     }
 
+    /**
+     * Sets the primary stage.
+     *
+     * @param primaryStage the new primary stage.
+     */
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
+
+    /**
+     * Gets the primary stage.
+     *
+     * @return the primary stage.
+     */
     public final Stage getPrimaryStage() {
         return primaryStage;
+    }
+
+    /**
+     * Creates a new timeline with an animation.
+     * calls {@code addEmptyTimeline} and {@code updateAnimation}.
+     */
+    public <T> void createAnimation(double timeScaleRate, WritableValue<T> property, T value) {
+        addEmptyTimeline();
+        updateAnimation(timeScaleRate, property, value);
+    }
+    public <T> void updateAnimation(double timeScaleRate, WritableValue<T> property, T value) {
+        Timeline timeline = Director.getInstance().getLastTimeline();
+        assert timeline != null;
+        KeyValue keyValue = new KeyValue(property, value);
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(Director.getInstance().getAnimationRate() * timeScaleRate), keyValue);
+        timeline.getKeyFrames().add(keyFrame);
+    }
+    public void createAnimationText(Text text, String str) {
+        // change text
+        createAnimation(0.1, text.textProperty(), str);
+        updateAnimation(0.1, text.fillProperty(), Color.RED);
+        // emphasize
+        updateAnimation(0.5, text.scaleXProperty(), 2.0);
+        updateAnimation(0.5, text.scaleYProperty(), 2.0);
+        // resume
+        createAnimation(0.5, text.scaleXProperty(), 1.0);
+        updateAnimation(0.5, text.scaleYProperty(), 1.0);
+        updateAnimation(0.5, text.fillProperty(), Color.BLACK);
     }
 
     /**
@@ -73,8 +125,15 @@ public class Director {
      *
      * @param timeline the {@code Timeline} that will be added
      */
-    public void addTimeline(Timeline timeline) {
+    private void addTimeline(Timeline timeline) {
         animationWaitingList.add(timeline);
+    }
+
+    /**
+     * Adds an empty {@code Timeline} to the animation waiting list.
+     */
+    private void addEmptyTimeline() {
+        animationWaitingList.add(new Timeline());
     }
 
     /**
@@ -108,7 +167,6 @@ public class Director {
             return;
         }
         // set event listeners
-        System.out.println("CONTAIN? " + stepPointSet.contains(7));
         for (int i = 0; i < animationPlayingList.size(); i ++) {
             final int index = i;
             Timeline timeline = animationPlayingList.get(index);
@@ -175,9 +233,16 @@ public class Director {
         return animationPlayingProperty().getValue();
     }
 
+    /**
+     * Adds a step point after current last timeline.
+     */
     public void addStepPoint() {
         stepPointSet.add(animationWaitingList.size() - 1);
     }
+
+    /**
+     * Sets the animation playing module.
+     */
     public void setSingleStep(boolean flag) {
         this.isSingleStep = flag;
     }

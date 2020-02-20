@@ -8,7 +8,7 @@ DataStructureVisualizer is an application that provides visual graphic interface
 
 - JDK 1.8 update 60
 
-- JavaFX 2.0
+- JavaFX in JDK 1.8
 
 - IntelliJ IDEA 2019.2.4 (Community Edition) (not necessary)
 

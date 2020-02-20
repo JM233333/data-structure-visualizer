@@ -53,8 +53,8 @@ public class VisualListNode extends VisualNode {
 
         this.setScaleX(0);
         this.setScaleY(0);
-        Visual.createAnimation(1.0, this.scaleXProperty(), 1);
-        Visual.updateAnimation(1.0, this.scaleYProperty(), 1);
+        Director.getInstance().createAnimation(1.0, this.scaleXProperty(), 1);
+        Director.getInstance().updateAnimation(1.0, this.scaleYProperty(), 1);
     }
 
     public void clear() {
@@ -69,14 +69,14 @@ public class VisualListNode extends VisualNode {
     public void setPointer(VisualListNode node) {
         //
         if (node != null) {
-            Visual.createAnimation(1.0, pointer.getBody().endXProperty(),
+            Director.getInstance().createAnimation(1.0, pointer.getBody().endXProperty(),
                     node.getLayoutX() + node.boxValue.getLayoutX() - this.getLayoutX());
-            Visual.updateAnimation(1.0, pointer.getBody().endYProperty(),
+            Director.getInstance().updateAnimation(1.0, pointer.getBody().endYProperty(),
                     node.getLayoutY() + node.boxValue.getLayoutY() - this.getLayoutY() + 32);
         } else {
-            Visual.createAnimation(1.0, pointer.getBody().endXProperty(),
+            Director.getInstance().createAnimation(1.0, pointer.getBody().endXProperty(),
                     pointer.getBody().getStartX() + 8);
-            Visual.updateAnimation(1.0, pointer.getBody().endYProperty(),
+            Director.getInstance().updateAnimation(1.0, pointer.getBody().endYProperty(),
                     pointer.getBody().getStartY());
         }
         //

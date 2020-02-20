@@ -4,6 +4,7 @@ import javafx.scene.Group;
 import javafx.scene.shape.*;
 import javafx.scene.text.*;
 import jm233333.Direction;
+import jm233333.Director;
 
 public class VisualArrayIndex extends Group {
     private String name;
@@ -24,7 +25,7 @@ public class VisualArrayIndex extends Group {
         this.getChildren().add(new VisualEmptyBox(64, 64));
 
         text = new Text(name);
-        text.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
+        text.setFont(Font.font(16));
         text.setTextAlignment(TextAlignment.CENTER);
         text.setWrappingWidth(64);
         text.setLayoutY(56);
@@ -37,7 +38,7 @@ public class VisualArrayIndex extends Group {
 
     public void setValue(int value) {
         this.value = value;
-        Visual.createAnimation(1.0, this.layoutXProperty(), 64 * value);
+        Director.getInstance().createAnimation(1.0, this.layoutXProperty(), 64 * value);
     }
     public int getValue() {
         return value;

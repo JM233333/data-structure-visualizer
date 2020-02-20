@@ -9,6 +9,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+import jm233333.Director;
 import jm233333.visual.Visual;
 
 import java.io.BufferedReader;
@@ -110,22 +111,22 @@ public class CodeTracker extends ScrollPane {
     public void setCurrentLineIndex(int nLineIndex) {
         if (currentLineIndex != nLineIndex) {
             if (currentLineIndex == -1) {
-                Visual.createAnimation(1.0, currentLineSymbol.opacityProperty(), 1);
+                Director.getInstance().createAnimation(1.0, currentLineSymbol.opacityProperty(), 1);
             } else {
-                Visual.createAnimation(1.0, getCurrentLine().fillProperty(), Color.BLACK);
+                Director.getInstance().createAnimation(1.0, getCurrentLine().fillProperty(), Color.BLACK);
             }
             currentLineIndex = nLineIndex;
-            Visual.updateAnimation(0.5, currentLineSymbol.layoutYProperty(), getCurrentLine().getLayoutY() + 4);
+            Director.getInstance().updateAnimation(0.5, currentLineSymbol.layoutYProperty(), getCurrentLine().getLayoutY() + 4);
             if (currentLineIndex == -1) {
-                Visual.updateAnimation(1.0, currentLineSymbol.opacityProperty(), 0);
+                Director.getInstance().updateAnimation(1.0, currentLineSymbol.opacityProperty(), 0);
             } else {
-                Visual.updateAnimation(0.5, getCurrentLine().fillProperty(), Color.BLUE);
+                Director.getInstance().updateAnimation(0.5, getCurrentLine().fillProperty(), Color.BLUE);
             }
             // pause debug
             if (currentLineIndex == -1) {
-                Visual.createAnimation(0.2, currentLineSymbol.opacityProperty(), 0);
+                Director.getInstance().createAnimation(0.2, currentLineSymbol.opacityProperty(), 0);
             } else {
-                Visual.createAnimation(0.2, currentLineSymbol.opacityProperty(), 1);
+                Director.getInstance().createAnimation(0.2, currentLineSymbol.opacityProperty(), 1);
             }
         }
     }

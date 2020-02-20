@@ -42,12 +42,13 @@ public class SceneVisualizer extends Scene {
      * Initializes the SceneVisualizer.
      */
     private void initialize() {
-        //
+        // initialize root
         root.setId("root");
         root.setMaxHeight(768);
         root.getStyleClass().add("bg-info");
-        //
+        // initialize CSS
         initializeCSS();
+        // initialize sub regions
         initializeMonitor();     // center
         initializeCodeTracker(); // right
         initializeController();  // bottom
@@ -57,12 +58,16 @@ public class SceneVisualizer extends Scene {
             p.getStyleClass().addAll("panel", "panel-primary");
         }
     }
+
+    /**
+     * Initializes CSS.
+     */
     private void initializeCSS() {
         Class cls = this.getClass();
-        String fullName = cls.getName();
-        String lastName = fullName.substring(fullName.lastIndexOf('.') + 1);
         this.getStylesheets().add(cls.getResource("/lib/bootstrapfx.css").toExternalForm());
         this.getStylesheets().add(cls.getResource("/jm233333/css/overall.css").toExternalForm());
+        String fullName = cls.getName();
+        String lastName = fullName.substring(fullName.lastIndexOf('.') + 1);
         this.getStylesheets().add(cls.getResource("/jm233333/css/" + lastName + ".css").toExternalForm());
     }
     private void initializeController() {

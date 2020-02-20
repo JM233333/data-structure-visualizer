@@ -9,10 +9,9 @@
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 
-/*
 * {
-  -fx-font-family: 'sans-serif'; }
-*/
+  -fx-font-family: 'PT Sans', 'sans-serif';
+}
 
 .b,
 .strong {

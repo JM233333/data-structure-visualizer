@@ -1,7 +1,5 @@
 package jm233333.visual;
 
-import javafx.scene.Group;
-
 import java.util.*;
 
 /**
@@ -9,17 +7,17 @@ import java.util.*;
  * Used in subclasses of {@code VisualizedDataStructure}.
  * Extended from JavaFX class {@code Group} only for UI layout.
  */
-public class VisualArray extends Group {
+public class VisualArray extends Visual {
 
-    private String name;
     private ArrayList<VisualArrayNode> arrayNode;
     private HashMap<String, VisualArrayIndex> mapIndexField;
     
     public VisualArray(String name, int n) {
         // super
-        super();
+        super(name);
         // initialize
-        this.name = name;
+        this.getStyleClass().add("visual-array");
+        // initialize data
         arrayNode = new ArrayList<>();
         mapIndexField = new HashMap<>();
         // add empty nodes

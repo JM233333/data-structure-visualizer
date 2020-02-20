@@ -38,8 +38,10 @@ public class Monitor extends Pane {
      * Creates a Monitor.
      */
     public Monitor() {
-        // initialize
+        // super
         super();
+        // initialize CSS
+        initializeCSS();
         // initialize canvas
         canvas = new Group();
         this.getChildren().add(canvas);
@@ -51,6 +53,16 @@ public class Monitor extends Pane {
 //        fieldMap.computeIfAbsent(type, k -> new HashMap<>());
 //        fieldMap.get(type).put(name, value);
 //    }
+
+    /**
+     * Initializes CSS.
+     */
+    private void initializeCSS() {
+        Class cls = this.getClass();
+        String fullName = cls.getName();
+        String lastName = fullName.substring(fullName.lastIndexOf('.') + 1);
+        this.getStylesheets().add(cls.getResource("/jm233333/css/" + lastName + ".css").toExternalForm());
+    }
 
     /**
      * Gets the visual component by name.

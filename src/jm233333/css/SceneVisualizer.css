@@ -1,8 +1,5 @@
 #controller {
-    -fx-padding: 16;
-    -fx-min-height: 320;
-    -fx-alignment: TOP-LEFT;
-}
-#monitor {
-    -fx-padding: 16;
+  -fx-padding: 16;
+  -fx-min-height: 320;
+  -fx-alignment: TOP-LEFT;
 }
