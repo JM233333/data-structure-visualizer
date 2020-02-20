@@ -3,4 +3,5 @@
 }
 .visual > * {
   -fx-font-size: 27px;
+  -fx-font-weight: bold;
 }

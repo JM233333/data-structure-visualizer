@@ -1,17 +1,13 @@
 package jm233333.visual;
 
 import javafx.scene.Group;
-import javafx.scene.shape.*;
 import javafx.scene.text.*;
-import jm233333.Direction;
 import jm233333.Director;
 
 public class VisualArrayIndex extends Group {
     private String name;
     private int value;
     private Text text;
-    private Line line;
-    private Direction direction;
     public VisualArrayIndex(String name) {
         this(name, 0);
     }
@@ -21,24 +17,20 @@ public class VisualArrayIndex extends Group {
         initialize();
     }
     private void initialize() {
-        this.setLayoutX(64 * value);
-        this.getChildren().add(new VisualEmptyBox(64, 64));
+        this.setLayoutX(VisualNode.BOX_SIZE * value);
+        this.getChildren().add(new VisualEmptyBox(VisualNode.BOX_SIZE, VisualNode.BOX_SIZE));
 
         text = new Text(name);
-        text.setFont(Font.font(16));
+        text.setFont(Font.font(20));
         text.setTextAlignment(TextAlignment.CENTER);
-        text.setWrappingWidth(64);
-        text.setLayoutY(56);
-
-        line = new Line(32, 8, 32, 40);
-        line.setStrokeWidth(4);
-        direction = Direction.UP;
-        this.getChildren().addAll(text, line);
+        text.setWrappingWidth(VisualNode.BOX_SIZE);
+        text.setLayoutY(VisualNode.BOX_SIZE / 2);
+        this.getChildren().add(text);
     }
 
     public void setValue(int value) {
         this.value = value;
-        Director.getInstance().createAnimation(1.0, this.layoutXProperty(), 64 * value);
+        Director.getInstance().createAnimation(1.0, this.layoutXProperty(), VisualNode.BOX_SIZE * value);
     }
     public int getValue() {
         return value;

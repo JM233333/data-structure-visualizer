@@ -32,22 +32,22 @@ public class VisualListNode extends VisualNode {
         nextListenerX = null;
         nextListenerY = null;
 
-        boxValue = new Rectangle(64, 64);
+        boxValue = new Rectangle(BOX_SIZE, BOX_SIZE);
         boxValue.setLayoutX(0);
-        boxPointer = new Rectangle(32, 64);
-        boxPointer.setLayoutX(64);
+        boxPointer = new Rectangle(BOX_SIZE, BOX_SIZE);
+        boxPointer.setLayoutX(BOX_SIZE);
         for (Rectangle box : new Rectangle[]{boxValue, boxPointer}) {
-            box.setFill(Color.rgb(255, 255, 255));
-            box.setStroke(Color.BLACK);
-            box.setStrokeType(StrokeType.INSIDE);
-            box.setStrokeWidth(2);
+            box.setFill(Color.TRANSPARENT);
+            box.setStroke(Color.grayRgb(51));
+            box.setStrokeType(StrokeType.CENTERED);
+            box.setStrokeWidth(4);
             this.getChildren().add(box);
         }
 
         pointer = new VisualPointer();
-        pointer.getBody().setStartX(64 + 16);
-        pointer.getBody().setStartY(32);
-        pointer.getBody().setEndX(pointer.getBody().getStartX() + 8);
+        pointer.getBody().setStartX(BOX_SIZE * 3 / 2);
+        pointer.getBody().setStartY(BOX_SIZE / 2);
+        pointer.getBody().setEndX(pointer.getBody().getStartX() + BOX_SIZE / 4);
         pointer.getBody().setEndY(pointer.getBody().getStartY());
         this.getChildren().add(pointer);
 
@@ -72,10 +72,10 @@ public class VisualListNode extends VisualNode {
             Director.getInstance().createAnimation(1.0, pointer.getBody().endXProperty(),
                     node.getLayoutX() + node.boxValue.getLayoutX() - this.getLayoutX());
             Director.getInstance().updateAnimation(1.0, pointer.getBody().endYProperty(),
-                    node.getLayoutY() + node.boxValue.getLayoutY() - this.getLayoutY() + 32);
+                    node.getLayoutY() + node.boxValue.getLayoutY() - this.getLayoutY() + BOX_SIZE / 2);
         } else {
             Director.getInstance().createAnimation(1.0, pointer.getBody().endXProperty(),
-                    pointer.getBody().getStartX() + 8);
+                    pointer.getBody().getStartX() + BOX_SIZE / 4);
             Director.getInstance().updateAnimation(1.0, pointer.getBody().endYProperty(),
                     pointer.getBody().getStartY());
         }
@@ -93,7 +93,7 @@ public class VisualListNode extends VisualNode {
                     pointer.getBody().setEndX(node.getLayoutX() + node.boxValue.getLayoutX() - thisNode.getLayoutX());
                 };
                 nextListenerY = (observable, oldValue, newValue) -> {
-                    pointer.getBody().setEndY(node.getLayoutY() + node.boxValue.getLayoutY() - thisNode.getLayoutY() + 32);
+                    pointer.getBody().setEndY(node.getLayoutY() + node.boxValue.getLayoutY() - thisNode.getLayoutY() + BOX_SIZE / 2);
                 };
                 node.layoutXProperty().addListener(nextListenerX);
                 thisNode.layoutXProperty().addListener(nextListenerX);

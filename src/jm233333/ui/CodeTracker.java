@@ -5,12 +5,11 @@ import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 import jm233333.Director;
-import jm233333.visual.Visual;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -35,6 +34,8 @@ public class CodeTracker extends ScrollPane {
     private int currentLineIndex;
 
     public CodeTracker() {
+        // initialize CSS
+        initializeCSS();
         // initialize content
         contentRoot = new Group();
         this.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -46,7 +47,6 @@ public class CodeTracker extends ScrollPane {
         // initialize the current-line symbol
         currentLineSymbol = new Polygon(0, 0, 16, 8, 0, 16);
         currentLineSymbol.setFill(Color.ORANGE);
-        currentLineSymbol.setOpacity(0);
         currentLineSymbol.setLayoutX(8);
         contentRoot.getChildren().add(currentLineSymbol);
         // initialize data
@@ -54,6 +54,17 @@ public class CodeTracker extends ScrollPane {
         currentMethod = "";
         currentLineIndex = -1;
     }
+
+    /**
+     * Initializes CSS.
+     */
+    private void initializeCSS() {
+        Class cls = this.getClass();
+        String fullName = cls.getName();
+        String lastName = fullName.substring(fullName.lastIndexOf('.') + 1);
+        this.getStylesheets().add(cls.getResource("/jm233333/css/" + lastName + ".css").toExternalForm());
+    }
+
     public void readFile(final String name) {
         // clear
         codeBoard.getChildren().clear();
@@ -67,7 +78,7 @@ public class CodeTracker extends ScrollPane {
                 String[] args = in.readLine().split("\\s*" + delimiter + "\\s*", 2);
                 // add code text
                 Text text = new Text(args[0] + "\n");
-                text.setFont(Font.font(18));
+                text.getStyleClass().add("code");
                 codeBoard.getChildren().add(text);
                 // set entrance
                 if (args.length > 1) {
@@ -77,12 +88,6 @@ public class CodeTracker extends ScrollPane {
             in.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        // debug
-        for (HashMap.Entry<String, Integer> entry : mapEntrance.entrySet()) {
-            Text text = new Text(" > " + entry.getKey() + " " + entry.getValue() + "\n");
-            text.setFont(Font.font(18));
-            codeBoard.getChildren().add(text);
         }
     }
 
@@ -110,24 +115,24 @@ public class CodeTracker extends ScrollPane {
     }
     public void setCurrentLineIndex(int nLineIndex) {
         if (currentLineIndex != nLineIndex) {
-            if (currentLineIndex == -1) {
-                Director.getInstance().createAnimation(1.0, currentLineSymbol.opacityProperty(), 1);
-            } else {
-                Director.getInstance().createAnimation(1.0, getCurrentLine().fillProperty(), Color.BLACK);
-            }
+            // update current line index
+            final Text prvCurrentLine = getCurrentLine();
             currentLineIndex = nLineIndex;
-            Director.getInstance().updateAnimation(0.5, currentLineSymbol.layoutYProperty(), getCurrentLine().getLayoutY() + 4);
-            if (currentLineIndex == -1) {
-                Director.getInstance().updateAnimation(1.0, currentLineSymbol.opacityProperty(), 0);
-            } else {
-                Director.getInstance().updateAnimation(0.5, getCurrentLine().fillProperty(), Color.BLUE);
-            }
-            // pause debug
-            if (currentLineIndex == -1) {
-                Director.getInstance().createAnimation(0.2, currentLineSymbol.opacityProperty(), 0);
-            } else {
-                Director.getInstance().createAnimation(0.2, currentLineSymbol.opacityProperty(), 1);
-            }
+            final Text newCurrentLine = getCurrentLine();
+            // create animation
+            double ny = (newCurrentLine == null ? 8 : newCurrentLine.getLayoutY() + 4);
+            Director.getInstance().createAnimation(0.5, currentLineSymbol.layoutYProperty(), ny);
+            Director.getInstance().getLastTimeline().setOnFinished((event) -> {
+                if (prvCurrentLine != null) {
+                    prvCurrentLine.setFill(Color.BLACK);
+                    prvCurrentLine.setStyle("-fx-font-weight: normal;");
+                }
+                if (newCurrentLine != null) {
+                    newCurrentLine.setFill(Color.BLUE);
+                    newCurrentLine.setStyle("-fx-font-weight: bold;");
+                }
+            });
+            Director.getInstance().createAnimation(0.5, currentLineSymbol.opacityProperty(), 1);
         }
     }
     public int getCurrentLineIndex() {

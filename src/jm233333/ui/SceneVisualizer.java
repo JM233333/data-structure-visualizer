@@ -65,7 +65,7 @@ public class SceneVisualizer extends Scene {
     private void initializeCSS() {
         Class cls = this.getClass();
         this.getStylesheets().add(cls.getResource("/lib/bootstrapfx.css").toExternalForm());
-        this.getStylesheets().add(cls.getResource("/jm233333/css/overall.css").toExternalForm());
+        this.getStylesheets().add(cls.getResource("/jm233333/css/_common.css").toExternalForm());
         String fullName = cls.getName();
         String lastName = fullName.substring(fullName.lastIndexOf('.') + 1);
         this.getStylesheets().add(cls.getResource("/jm233333/css/" + lastName + ".css").toExternalForm());

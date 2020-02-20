@@ -82,10 +82,25 @@ public abstract class VisualizedDataStructure {
     public void trackCodeMethodBeginning(String name) {
         codeTracker.setCurrentMethod(name);
     }
+
     /**
-     * Tracks to the code line that the specified entrance represents.
+     * Tracks to the code line that the specified entrance represents, and sets a step point on the current timeline.
+     *
+     * @param name name of the code entrance
      */
     public void trackCodeEntrance(String name) {
+        trackCodeEntrance(name, true);
+    }
+    /**
+     * Tracks to the code line that the specified entrance represents.
+     *
+     * @param name name of the code entrance
+     * @param isStepPoint whether exists a step point on the current timeline or not
+     */
+    public void trackCodeEntrance(String name, boolean isStepPoint) {
+        if (isStepPoint) {
+            Director.getInstance().addStepPoint();
+        }
         codeTracker.gotoEntrance(name);
     }
 
@@ -111,10 +126,6 @@ public abstract class VisualizedDataStructure {
      */
     public void clearOutputBox() {
         outputBox.getChildren().clear();
-    }
-
-    public void addStepPoint() {
-        Director.getInstance().addStepPoint();
     }
 
     /**

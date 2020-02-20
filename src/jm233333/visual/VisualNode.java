@@ -1,7 +1,6 @@
 package jm233333.visual;
 
 import javafx.geometry.VPos;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import jm233333.Director;
@@ -9,6 +8,7 @@ import jm233333.Director;
 public abstract class VisualNode extends Visual {
 
     private static int nextId = 0;
+    static final double BOX_SIZE = 48;
 
     private boolean isFilled;
     private int value;
@@ -38,8 +38,8 @@ public abstract class VisualNode extends Visual {
         text = new Text();
         text.setTextAlignment(TextAlignment.CENTER);
         text.setTextOrigin(VPos.CENTER);
-        text.setWrappingWidth(64);
-        text.setLayoutY(32);
+        text.setWrappingWidth(BOX_SIZE);
+        text.setLayoutY(VisualNode.BOX_SIZE / 2);
         this.getChildren().add(text);
     }
 

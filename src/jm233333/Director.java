@@ -112,8 +112,8 @@ public class Director {
         createAnimation(0.1, text.textProperty(), str);
         updateAnimation(0.1, text.fillProperty(), Color.RED);
         // emphasize
-        updateAnimation(0.5, text.scaleXProperty(), 2.0);
-        updateAnimation(0.5, text.scaleYProperty(), 2.0);
+        updateAnimation(0.5, text.scaleXProperty(), 1.5);
+        updateAnimation(0.5, text.scaleYProperty(), 1.5);
         // resume
         createAnimation(0.5, text.scaleXProperty(), 1.0);
         updateAnimation(0.5, text.scaleYProperty(), 1.0);
@@ -132,18 +132,19 @@ public class Director {
     /**
      * Adds an empty {@code Timeline} to the animation waiting list.
      */
-    private void addEmptyTimeline() {
+    public void addEmptyTimeline() {
         animationWaitingList.add(new Timeline());
     }
 
     /**
      * Gets the last {@code Timeline} in the animation waiting list.
+     * If the waiting list is empty, create an empty {@code Timeline} and return it.
      *
      * @return the last {@code Timeline}
      */
     public final Timeline getLastTimeline() {
         if (animationWaitingList.isEmpty()) {
-            return null;
+            addEmptyTimeline();
         }
         return animationWaitingList.get(animationWaitingList.size() - 1);
     }
