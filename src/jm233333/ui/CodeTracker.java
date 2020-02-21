@@ -5,7 +5,6 @@ import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -90,10 +89,6 @@ public class CodeTracker extends ScrollPane {
             e.printStackTrace();
         }
     }
-
-    public void resetCurrentMethod() {
-        currentMethod = null;
-    }
     public void setCurrentMethod(String nMethod) {
         currentMethod = nMethod;
         setCurrentLineIndex(mapEntrance.get(nMethod));
@@ -139,10 +134,10 @@ public class CodeTracker extends ScrollPane {
         return currentLineIndex;
     }
 
-    public final Text getLine(int index) {
+    private final Text getLine(int index) {
         return (Text)codeBoard.getChildren().get(index);
     }
-    public final Text getCurrentLine() {
+    private final Text getCurrentLine() {
         if (currentLineIndex == -1) {
             return null;
         }

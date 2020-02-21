@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * Used in subclasses of {@code VisualizedDataStructure}.
  * Extended from JavaFX class {@code Group} only for UI layout.
  */
-public class VisualList extends Group {
+public class VisualList extends Visual {
 
     public static final int CACHED_NODE = -1;
 

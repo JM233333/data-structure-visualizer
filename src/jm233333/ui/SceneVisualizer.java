@@ -16,9 +16,9 @@ import jm233333.visualized.VisualizedDataStructure;
 public class SceneVisualizer extends Scene {
 
     private BorderPane root;
-    private Controller controller;
     private Monitor monitor;
     private CodeTracker codeTracker;
+    private Controller controller;
     private FlowPane menu;
 
     private VisualizedDataStructure visualDS;
@@ -70,14 +70,6 @@ public class SceneVisualizer extends Scene {
         String lastName = fullName.substring(fullName.lastIndexOf('.') + 1);
         this.getStylesheets().add(cls.getResource("/jm233333/css/" + lastName + ".css").toExternalForm());
     }
-    private void initializeController() {
-        // initialize controller
-        controller = new Controller(visualDS);
-        controller.setId("controller");
-        root.setBottom(controller); // root.getChildren().add(controller);
-        visualDS.setOutputBox(controller.getOutputBox());
-//        controller.setGridLinesVisible(true); // debug
-    }
     private void initializeMonitor() {
         // initialize monitor
         monitor = new Monitor();
@@ -91,6 +83,14 @@ public class SceneVisualizer extends Scene {
         codeTracker.setId("code-tracker");
         root.setRight(codeTracker);
         visualDS.setCodeTracker(codeTracker);
+    }
+    private void initializeController() {
+        // initialize controller
+        controller = new Controller(visualDS);
+        controller.setId("controller");
+        root.setBottom(controller); // root.getChildren().add(controller);
+        visualDS.setOutputBox(controller.getOutputBox());
+//        controller.setGridLinesVisible(true); // debug
     }
     private void initializeMenu() {
         // initialize menu

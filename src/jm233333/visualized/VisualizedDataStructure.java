@@ -50,32 +50,6 @@ public abstract class VisualizedDataStructure {
         setName(name);
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-    public final String getName() {
-        return name;
-    }
-
-    public void setMonitor(Monitor monitor) {
-        this.monitor = monitor;
-        createVisual();
-//        Field[] fs = this.getClass().getDeclaredFields();
-//        for (Field field : fs) {
-//            Class fieldType = field.getType();
-//            String typeName = fieldType.getName();
-//            String fieldName = field.getName();
-//            System.out.println(typeName + " " + fieldName);
-//        }
-    }
-    public void setCodeTracker(CodeTracker codeTracker) {
-        codeTracker.readFile(name);
-        this.codeTracker = codeTracker;
-    }
-    public void setOutputBox(TextFlow outputBox) {
-        this.outputBox = outputBox;
-    }
-
     /**
      * Tracks to the beginning code line of the specified method.
      */
@@ -152,5 +126,31 @@ public abstract class VisualizedDataStructure {
     }
     final VisualList getVisualList(String name) {
         return (VisualList)monitor.getVisual(name);
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    public final String getName() {
+        return name;
+    }
+
+    public void setMonitor(Monitor monitor) {
+        this.monitor = monitor;
+        createVisual();
+//        Field[] fs = this.getClass().getDeclaredFields();
+//        for (Field field : fs) {
+//            Class fieldType = field.getType();
+//            String typeName = fieldType.getName();
+//            String fieldName = field.getName();
+//            System.out.println(typeName + " " + fieldName);
+//        }
+    }
+    public void setCodeTracker(CodeTracker codeTracker) {
+        codeTracker.readFile(name);
+        this.codeTracker = codeTracker;
+    }
+    public void setOutputBox(TextFlow outputBox) {
+        this.outputBox = outputBox;
     }
 }

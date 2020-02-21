@@ -24,7 +24,6 @@ public class Controller extends Group {
 
     private HBox root;
     private PanelConsole panelMethodTrigger, panelAnimationController, panelOutputBox, panelFileReader;
-    private ScrollPane paneOutputBox, paneFileReader;
     private TextFlow outputBox;
     private VisualizedDataStructure visualDS;
 

@@ -24,7 +24,7 @@ public class Monitor extends Pane {
      * key: name of the array
      * value: reference to the corresponding visual array
      */
-    private HashMap<String, Group> mapVisual;
+    private HashMap<String, Visual> mapVisual;
 
     /**
      * Records all relationships of (index field -> array).
@@ -69,7 +69,7 @@ public class Monitor extends Pane {
      *
      * @param name name of the visual component
      */
-    public final Group getVisual(String name) {
+    public final Visual getVisual(String name) {
         return mapVisual.get(name);
     }
 
@@ -78,7 +78,7 @@ public class Monitor extends Pane {
      *
      * @param name name of the index field
      */
-    public final Group getVisualByIndexFieldName(String name) {
+    public final Visual getVisualByIndexFieldName(String name) {
         String nameVisual = mapIndexFieldConnection.get(name);
         System.out.println("NAME VISUAL " + nameVisual);
         return mapVisual.get(nameVisual);

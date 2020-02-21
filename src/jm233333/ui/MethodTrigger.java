@@ -47,7 +47,7 @@ public class MethodTrigger extends HBox {
         // get parameter names
         String[] nameParameters = new String[parameters.length];
         for (int i = 0; i < parameters.length; i ++) {
-            nameParameters[i] = new String(parameters[i].getName());
+            nameParameters[i] = parameters[i].getName();
         }
         // initialize
         initialize(nameMethod, nameParameters);

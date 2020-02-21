@@ -11,84 +11,150 @@ namespace ui {
         - void initializeList()
         - void addButton(String name)
     }
+
     class SceneVisualizer {
+        extends Scene
+        --
         - BorderPane root
-        - Controller controller
-        - VisualDataStructure visualDS
         - Monitor monitor
+        - CodeTracker codeTracker
+        - Controller controller
         - FlowPane menu
-        + SceneVisualizer(BorderPane root, double width, double height, VDS vDS)
+        ..
+        - VisualDataStructure visualDS
+        --
+        + SceneVisualizer(BorderPane root, double width, double height, VisualDataStructure visualDS)
         - void initialize()
         - void initializeCSS()
-        - void initializeController()
         - void initializeMonitor()
+        - void initializeCodeTracker()
+        - void initializeController()
         - void initializeMenu()
     }
-
-    class Controller #wheat {
-        - FlowPane flowPane
-        - VisualDataStructure visualDS
-        + Controller(VisualizedDataStructure visualDS)
-        - void initializeMethodTriggers()
-    }
-    class MethodTrigger {
-        - String name
-        - Button button
-        - ArrayList<TextField> textFields
-        + MethodTrigger(String nameMethod, String... nameParameters)
-        + MethodTrigger(Method method)
-        - void initialize(String nameMethod, String... nameParameters)
-        + final String getName()
-        + final Button getButton()
-        + ArrayList<Integer> getParameters()
-    }
+    
     class Monitor #wheat {
+        extends Pane
+        --
         - final Group canvas
-        - HashMap<String, Group> mapVisual
+        ..
+        - HashMap<String, Visual> mapVisual
         - HashMap<String, String> mapIndexFieldConnection
+        --
         + Monitor()
-        + final Group getVisual(String name)
-        + final Group getVisualByIndexFieldName(String name)
+        - void initializeCSS()
+        ..
+        + final Visual getVisual(String name)
+        + final Visual getVisualByIndexFieldName(String name)
+        ..
         + void createVisualArray(String name, int n)
         + void addIndexFieldConnection(String name, String nameArray)
         + void createVisualList(String name)
         + void createVisualBinaryTree(String name)
     }
+
     class CodeTracker #wheat {
+        extends ScrollPane
+        --
+        + {static} static final String NEXT_LINE
+        + {static} static final String REMAIN
+        ..
+        - Group contentRoot
         - TextFlow codeBoard
+        - Polygon currentLineSymbol
+        ..
         - HashMap<String, Integer> mapEntrance
-        - int lineIndex
+        - String currentMethod
+        - int currentLineIndex
+        --
         + CodeTracker()
-        + final Text getLine()
-        + void setLineIndex(int lineIndex)
-        + int getLineIndex()
+        - void initializeCSS()
+        ..
+        + void readFile(final String name)
+        ..
+        + void setCurrentMethod(String nMethod)
+        + final String getCurrentMethod()
+        + void gotoEntrance(String name)
+        + void setCurrentLineIndex(int nLineIndex)
+        + int getCurrentLineIndex()
+        - final Text getLine(int index)
+        - final Text getCurrentLine()
+    }
+
+    class Controller #wheat {
+        extends Group
+        --
+        - HBox root
+        - PanelConsole panelMethodTrigger
+        - PanelConsole panelAnimationController
+        - PanelConsole panelOutputBox
+        - PanelConsole panelFileReader
+        - TextFlow outputBox
+        ..
+        - VisualizedDataStructure visualDS
+        --
+        + Controller(VisualDataStructure visualDS)
+        - void initializeMethodTriggers()
+        - void initializeAnimationControllers()
+        ..
+        + final TextFlow getOutputBox()
+    }
+    class MethodTrigger {
+        extends HBox
+        --
+        - String name
+        - Button button
+        ..
+        - ArrayList<TextField> textFields
+        --
+        + MethodTrigger(String nameMethod, String... nameParameters)
+        + MethodTrigger(Method method)
+        - void initialize(String nameMethod, String... nameParameters)
+        ..
+        + final String getName()
+        + final Button getButton()
+        + final ArrayList<TextField> getTextFields()
+        + ArrayList<Integer> getParameters()
     }
 
     SceneVisualizer *- Controller
     SceneVisualizer *-- Monitor
     SceneVisualizer *-- CodeTracker
     Controller *- MethodTrigger
-    Monitor -right[hidden]-> CodeTracker
 
 }
 
 namespace visualized {
 
     abstract class VisualizedDataStructure #wheat {
+        - String name
+        ..
         - ui::Monitor monitor
-        - HashMap<String, int[]> mapAssociatedArray
+        - ui::CodeTracker codeTracker
+        - TextFlow outputBox
+        --
         + VisualizedDataStructure()
-        + void setMonitor(Monitor monitor)
-        + void setCodeTracker(CodeTracker codeTracker)
-        + {abstract} abstract void createVisual()
+        + VisualizedDataStructure(String name)
+        ..
+        + void trackCodeMethodBeginning(String name)
+        + void trackCodeEntrance(String name)
+        + void trackCodeEntrance(String name, boolean isStepPoint)
+        + final String getCodeCurrentMethod()
+        ..
+        + void outputMessage(String message)
+        ..
+        ~ {abstract} abstract void createVisual()
         ~ void createVisualArray(String name, int n, Pair<String, Integer>... indexFields)
         ~ void createVisualIndexField(String nameArray, Pair<String, Integer> indexField)
         ~ void createVisualList(String name, Pair<String, Integer>... indexFields)
         ~ final VisualArray getVisualArray(String name)
         ~ final VisualList getVisualList(String name)
-        ~ void updateArrayElement(String name, int index, int value)
-        ~ void eraseArrayElement(String name, int index)
-        ~ void updateIndexField(String name, int value)
+        ..
+        + void setName(String name)
+        + final String getName()
+        ..
+        + void setMonitor(Monitor monitor)
+        + void setCodeTracker(CodeTracker codeTracker)
+        + void setOutputBox(TextFlow outputBox)
     }
     class VisualizedStack {
         ;
@@ -103,38 +169,64 @@ namespace visualized {
 namespace visual {
 
     abstract class Visual {
-        + {static} static <T> void createAnimation(double deltaTime, WritableValue<T> property, T value)
-        + {static} static <T> void updateAnimation(double deltaTime, WritableValue<T> property, T value)
-        + {static} static void createAnimationText(Text text, String str)
-    }
-    class VisualArray {
+        extends Group
+        --
         - String name
-        - ArrayList<VisualArrayNode> arrayNode
-        - HashMap<String, VisualArrayIndex> mapIndexField
-        + VisualArray(String name, int n)
-        + void addIndexField(String name, int value)
-        + void updateIndexField(String name, int value)
-        + void updateArrayElement(int index, int value)
-        + void eraseArrayElement(int index)
-    }
-    class VisualArrayIndex {
-        - String name
-        - int value
-        - Text text
-        - Line line
-        + VisualArrayIndex(String name)
-        + VisualArrayIndex(String name, int value)
-        - void initialize()
-        + void setValue(int value)
-        + int getValue()
-    }
-    class VisualArrayNode {
-        ;
+        --
+        + Visual()
+        + Visual(String name)
+        ..
+        + void setName(String name)
+        + final String getName()
     }
 
-    VisualArray *-- VisualArrayIndex
+    abstract class VisualNode {
+        - {static} static int nextId
+        - {static} static final double BOX_SIZE
+        ..
+        - boolean isFilled
+        - int value
+        ..
+        - Text text;
+        --
+        + VisualNode()
+        + VisualNode(int value)
+        - void resetId()
+        ~ void initializeText()
+        ..
+        + void clear()
+        + boolean isFilled()
+        + void setValue(int value)
+        + int getValue()
+        ..
+        + void setText(String str)
+        + final Text getText()
+    }
+
+    class VisualArray {
+        - ArrayList<VisualArrayNode> arrayNode
+        - HashMap<String, VisualArrayIndex> mapIndexField
+        --
+        + VisualArray(String name, int n)
+        ..
+        + void addIndexField(String name, int value)
+        + void updateIndexField(String name, int value)
+        + void updateElement(int index, int value)
+        + void eraseElement(int index)
+    }
+
+    Visual --|> VisualNode
+    Visual --|> VisualArray
+    Visual --|> VisualList
+    Visual --|> VisualBinaryTree
+
+    VisualNode --|> VisualArrayNode
+    VisualNode --|> VisualListNode
+    VisualNode --|> VisualTreeNode
+
     VisualArray *-- VisualArrayNode
-    VisualList o-- VisualListNode
+    VisualList *-- VisualListNode
+    VisualBinaryTree *-- VisualTreeNode
 }
 
 class Main {
@@ -158,6 +250,10 @@ class Director {
     + void playAnimation()
     + final BooleanProperty animationPlayingProperty()
     + boolean isAnimationPlaying()
+
+    + {static} static <T> void createAnimation(double deltaTime, WritableValue<T> property, T value)
+    + {static} static <T> void updateAnimation(double deltaTime, WritableValue<T> property, T value)
+    + {static} static void createAnimationText(Text text, String str)
 }
 
 Main o-- ui::SceneMenu
@@ -168,8 +264,7 @@ ui::Controller -down-> visualized::VisualizedDataStructure
 visualized::VisualizedDataStructure -up-> ui::Monitor
 visualized::VisualizedDataStructure -up-> ui::CodeTracker
 
-ui::Monitor *-- visual::VisualArray
-ui::Monitor *-- visual::VisualList
+ui::Monitor *--- visual::Visual
 
 visualized::VisualizedDataStructure -left[hidden]-> visual::VisualArray
 
