@@ -2,7 +2,6 @@ package jm233333.ui;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -25,6 +24,7 @@ public class Controller extends Group {
     private HBox root;
     private PanelConsole panelMethodTrigger, panelAnimationController, panelOutputBox, panelFileReader;
     private TextFlow outputBox;
+
     private VisualizedDataStructure visualDS;
 
     /**

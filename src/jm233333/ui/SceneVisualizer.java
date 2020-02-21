@@ -70,6 +70,7 @@ public class SceneVisualizer extends Scene {
         String lastName = fullName.substring(fullName.lastIndexOf('.') + 1);
         this.getStylesheets().add(cls.getResource("/jm233333/css/" + lastName + ".css").toExternalForm());
     }
+
     private void initializeMonitor() {
         // initialize monitor
         monitor = new Monitor();

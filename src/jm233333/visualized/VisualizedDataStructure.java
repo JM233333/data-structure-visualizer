@@ -11,7 +11,7 @@ import jm233333.ui.Monitor;
 import jm233333.visual.*;
 
 /**
- * The {@code VisualizedDataStructure} class provides common properties for all types of visualized data structures.
+ * The {@code VisualizedDataStructure} abstract class provides common properties for all types of visualized data structures.
  */
 public abstract class VisualizedDataStructure {
 
@@ -46,6 +46,7 @@ public abstract class VisualizedDataStructure {
     public VisualizedDataStructure() {
         //mapAssociatedArray = new HashMap<>();
     }
+
     public VisualizedDataStructure(String name) {
         setName(name);
     }
@@ -65,6 +66,7 @@ public abstract class VisualizedDataStructure {
     public void trackCodeEntrance(String name) {
         trackCodeEntrance(name, true);
     }
+
     /**
      * Tracks to the code line that the specified entrance represents.
      *

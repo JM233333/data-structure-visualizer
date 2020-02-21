@@ -17,6 +17,7 @@ public class MethodTrigger extends HBox {
 
     private String name;
     private Button button;
+
     private ArrayList<TextField> textFields;
 
     /**
