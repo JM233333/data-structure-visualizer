@@ -5,10 +5,17 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import jm233333.Director;
 
+/**
+ * The {@code VisualNode} abstract class provides common properties for graphic nodes.
+ */
 public abstract class VisualNode extends Visual {
 
     private static int nextId = 0;
-    static final double BOX_SIZE = 48;
+
+    /**
+     * The width and height of every graphic nodes.
+     */
+    static final double BOX_SIZE = 64;
 
     private boolean isFilled;
     private int value;

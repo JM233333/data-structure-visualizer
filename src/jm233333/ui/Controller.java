@@ -155,6 +155,9 @@ public class Controller extends Group {
                 }
             });
         }
+        // initialize the mode selector
+        ModeSelector modeSelector = new ModeSelector();
+        ;
     }
 
     /**

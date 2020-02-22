@@ -15,7 +15,7 @@ public class VisualizedList extends VisualizedDataStructure {
         Node next;
         Node(int value) {
             this.value = value;
-            this.next = null;
+            next = null;
         }
     }
 
@@ -56,6 +56,7 @@ public class VisualizedList extends VisualizedDataStructure {
     public void insert(int index, int value) {
         // special judge
         if (index <= 0) {
+            trackCodeMethodBeginning("pushFront");
             pushFront(value);
             return;
         }
@@ -78,7 +79,7 @@ public class VisualizedList extends VisualizedDataStructure {
         node.next = p.next;
         p.next = node;
         // play animation
-        getVisualList("list").insertNode(index, value);
+        getVisualList("List").insertNode(index, value);
     }
 
     public void popFront() {
@@ -90,7 +91,7 @@ public class VisualizedList extends VisualizedDataStructure {
         // pop front
         head = head.next;
         // play animation
-        getVisualList("list").popFrontNode();
+        getVisualList("List").popFrontNode();
     }
 
     public void erase(int index) {
@@ -115,6 +116,6 @@ public class VisualizedList extends VisualizedDataStructure {
         // erase
         p.next = p.next.next;
         // play animation
-        getVisualList("list").eraseNode(index);
+        getVisualList("List").eraseNode(index);
     }
 }

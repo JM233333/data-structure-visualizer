@@ -1,28 +1,25 @@
 package jm233333.visual;
 
-import javafx.scene.Group;
-import jm233333.Director;
-
 import java.util.ArrayList;
+
+import jm233333.Director;
 
 /**
  * The {@code VisualList} class defines the graphic components of a list that is displayed on the monitor.
  * Used in subclasses of {@code VisualizedDataStructure}.
- * Extended from JavaFX class {@code Group} only for UI layout.
  */
 public class VisualList extends Visual {
 
     public static final int CACHED_NODE = -1;
 
-    private String name;
     private ArrayList<VisualListNode> arrayNode = new ArrayList<>();
     private VisualListNode cachedNode = null;
 
     public VisualList(String name) {
         // super
-        super();
+        super(name);
         // initialize
-        this.name = name;
+        this.getStyleClass().add("visual-array");
     }
 
     public void cacheNode(int index, int value) {
@@ -41,7 +38,7 @@ public class VisualList extends Visual {
     public void setPointer(int indexFrom, int indexTo) {
         VisualListNode nodeFrom = (indexFrom == CACHED_NODE ? cachedNode : arrayNode.get(indexFrom));
         VisualListNode nodeTo = (indexTo == CACHED_NODE ? cachedNode : arrayNode.get(indexTo));
-        nodeFrom.setPointer(nodeTo);
+        nodeFrom.setNext(nodeTo);
     }
     public void moveRestNodes(int begin, int distance) {
         VisualListNode lastNode = arrayNode.get(begin);
@@ -75,7 +72,7 @@ public class VisualList extends Visual {
         if (!arrayNode.isEmpty()) {
             // set pointer
             VisualListNode lastNode = arrayNode.get(0);
-            newNode.setPointer(lastNode);
+            newNode.setNext(lastNode);
             // move old nodes
             Director.getInstance().createAnimation(1.0, lastNode.layoutXProperty(), lastNode.getLayoutX() + 128);
             for (int i = 1; i < arrayNode.size(); i ++) {
@@ -99,10 +96,10 @@ public class VisualList extends Visual {
         VisualListNode newNode = createNode(index, value);
         // set pointer
         VisualListNode prvNode = arrayNode.get(index - 1);
-        prvNode.setPointer(newNode);
+        prvNode.setNext(newNode);
         if (index < arrayNode.size()) {
             VisualListNode nxtNode = arrayNode.get(index);
-            newNode.setPointer(nxtNode);
+            newNode.setNext(nxtNode);
         }
         // move old nodes
         if (index < arrayNode.size()) {
@@ -155,9 +152,9 @@ public class VisualList extends Visual {
         VisualListNode prvNode = arrayNode.get(index - 1);
         if (index + 1 < arrayNode.size()) {
             VisualListNode nxtNode = arrayNode.get(index + 1);
-            prvNode.setPointer(nxtNode);
+            prvNode.setNext(nxtNode);
         } else {
-            prvNode.setPointer(null);
+            prvNode.setNext(null);
         }
         // move rest nodes
         if (index + 1 < arrayNode.size()) {

@@ -4,6 +4,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 
+/**
+ * The {@code VisualArrayNode} class defines graphic nodes in {@code VisualArray}.
+ */
 public class VisualArrayNode extends VisualNode {
 
     private Rectangle box;

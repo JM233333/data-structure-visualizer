@@ -1,30 +1,33 @@
 package jm233333.visual;
 
-import javafx.scene.Group;
-import javafx.scene.text.*;
+import javafx.geometry.VPos;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import jm233333.Director;
 
-public class VisualArrayIndex extends Group {
-    private String name;
+public class VisualIndex extends Visual {
+
     private int value;
     private Text text;
-    public VisualArrayIndex(String name) {
+
+    public VisualIndex(String name) {
         this(name, 0);
     }
-    public VisualArrayIndex(String name, int value) {
-        this.name = name;
+    public VisualIndex(String name, int value) {
+        super(name);
         this.value = value;
         initialize();
     }
     private void initialize() {
-        this.setLayoutX(VisualNode.BOX_SIZE * value);
-        this.getChildren().add(new VisualEmptyBox(VisualNode.BOX_SIZE, VisualNode.BOX_SIZE));
-
-        text = new Text(name);
-        text.setFont(Font.font(20));
+        // initialize
+        this.getStyleClass().add("visual-index-field");
+        // initialize graphics
+        text = new Text(getName());
+        text.setFont(Font.font(12));
         text.setTextAlignment(TextAlignment.CENTER);
         text.setWrappingWidth(VisualNode.BOX_SIZE);
-        text.setLayoutY(VisualNode.BOX_SIZE / 2);
+        text.setTextOrigin(VPos.TOP);
         this.getChildren().add(text);
     }
 

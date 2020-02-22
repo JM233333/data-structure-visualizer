@@ -8,6 +8,9 @@ import javafx.scene.Group;
  */
 public class Visual extends Group {
 
+    /**
+     * The name of the graphic component.
+     */
     private String name;
 
     Visual() {
@@ -16,6 +19,15 @@ public class Visual extends Group {
     Visual(String name) {
         this.name = name;
         this.getStyleClass().add("visual");
+        this.initializeCSS();
+    }
+
+    /**
+     * Initializes CSS.
+     */
+    private void initializeCSS() {
+        Class cls = this.getClass();
+        this.getStylesheets().add(cls.getResource("/jm233333/css/Visual.css").toExternalForm());
     }
 
     public void setName(String name) {

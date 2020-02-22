@@ -1,21 +1,31 @@
 package jm233333.visual;
 
-import javafx.scene.Group;
+import javafx.beans.value.ChangeListener;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
+import jm233333.Director;
 
 /**
- * The {@code VisualPointer} class defines the graphic components of a pointer that is displayed on the monitor.
- * Used in subclasses of {@code VisualizedDataStructure}.
- * Extended from JavaFX class {@code Group} only for UI layout.
+ * The {@code VisualPointer} generic class defines a graphic pointer that is displayed on the monitor.
  */
-public class VisualPointer extends Group {
+public class VisualPointer <T extends VisualNode> extends Visual {
+
+    private final T holder;
+    private T target;
+    private ChangeListener<Number> targetListenerX, targetListenerY;
 
     private Line body;
     private Line hatLeft, hatRight;
 
-    public VisualPointer() {
+    public VisualPointer(T holder) {
         // initialize
+        this.getStyleClass().add("visual-pointer");
+        // initialize data
+        this.holder = holder;
+        target = null;
+        targetListenerX = null;
+        targetListenerY = null;
+        // initialize graphics
         body = new Line();
         hatLeft = new Line();
         hatRight = new Line();
@@ -31,27 +41,69 @@ public class VisualPointer extends Group {
         body.endYProperty().addListener((observable, oldValue, newValue) -> updateDirection());
     }
 
+    public final T getHolder() {
+        return holder;
+    }
+
+    public void setTarget(T node) {
+        //
+        if (node != null) {
+            Director.getInstance().createAnimation(1.0, body.endXProperty(),
+                    node.getLayoutX() - holder.getLayoutX());
+            Director.getInstance().updateAnimation(1.0, body.endYProperty(),
+                    node.getLayoutY() - holder.getLayoutY() + VisualNode.BOX_SIZE / 2);
+        } else {
+            Director.getInstance().createAnimation(1.0, body.endXProperty(),
+                    body.getStartX() + VisualNode.BOX_SIZE / 4);
+            Director.getInstance().updateAnimation(1.0, body.endYProperty(),
+                    body.getStartY());
+        }
+        //
+        Director.getInstance().getLastTimeline().setOnFinished((event) -> {
+            if (target != null) {
+                holder.layoutXProperty().removeListener(targetListenerX);
+                target.layoutXProperty().removeListener(targetListenerX);
+                holder.layoutYProperty().removeListener(targetListenerY);
+                target.layoutYProperty().removeListener(targetListenerY);
+            }
+            if (node != null) {
+                targetListenerX = (observable, oldValue, newValue) -> {
+                    body.setEndX(node.getLayoutX() - holder.getLayoutX());
+                };
+                targetListenerY = (observable, oldValue, newValue) -> {
+                    body.setEndY(node.getLayoutY() - holder.getLayoutY() + VisualNode.BOX_SIZE / 2);
+                };
+                holder.layoutXProperty().addListener(targetListenerX);
+                node.layoutXProperty().addListener(targetListenerX);
+                holder.layoutYProperty().addListener(targetListenerY);
+                node.layoutYProperty().addListener(targetListenerY);
+            }
+            target = node;
+        });
+    }
+    public final T getTarget() {
+        return target;
+    }
+
     public final Line getBody() {
         return body;
     }
 
     private void updateDirection() {
-        double sx = getBody().getStartX() - getBody().getEndX();
-        double sy = getBody().getStartY() - getBody().getEndY();
-        double bodyLength = Math.sqrt(sx*sx + sy*sy);
-        double bodyAngleX = Math.acos(sx / bodyLength);
-        double bodyAngleY = Math.asin(sy / bodyLength);
+        double sx = body.getStartX() - body.getEndX();
+        double sy = body.getStartY() - body.getEndY();
+        double angle = Math.asin(sy / Math.sqrt(sx*sx + sy*sy));
+        double bodyAngle = (sx > 0 ? angle : Math.PI - angle);
         double hatLength = 8;
         for (Line line : new Line[]{hatLeft, hatRight}) {
             int direction = (line == hatLeft ? 1 : -1);
-            double hatAngleX = bodyAngleX + (direction * Math.PI / 4);
-            double hatAngleY = bodyAngleY + (direction * Math.PI / 4);
-            double ex = hatLength * Math.cos(hatAngleX);
-            double ey = hatLength * Math.sin(hatAngleY);
-            line.setStartX(getBody().getEndX());
-            line.setStartY(getBody().getEndY());
-            line.setEndX(getBody().getEndX() + ex);
-            line.setEndY(getBody().getEndY() + ey);
+            double hatAngle = bodyAngle + (direction * Math.PI / 4);
+            double hx = hatLength * Math.cos(hatAngle);
+            double hy = hatLength * Math.sin(hatAngle);
+            line.setStartX(body.getEndX());
+            line.setStartY(body.getEndY());
+            line.setEndX(body.getEndX() + hx);
+            line.setEndY(body.getEndY() + hy);
         }
     }
 }

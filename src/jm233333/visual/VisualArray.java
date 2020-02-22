@@ -5,22 +5,18 @@ import java.util.*;
 /**
  * The {@code VisualArray} class defines the graphic components of an array that is displayed on the monitor.
  * Used in subclasses of {@code VisualizedDataStructure}.
- * Extended from JavaFX class {@code Group} only for UI layout.
  */
 public class VisualArray extends Visual {
 
-    private ArrayList<VisualArrayNode> arrayNode;
-    private HashMap<String, VisualArrayIndex> mapIndexField;
+    private ArrayList<VisualArrayNode> arrayNode = new ArrayList<>();
+    private HashMap<String, VisualIndex> mapIndexField = new HashMap<>();
     
     public VisualArray(String name, int n) {
         // super
         super(name);
         // initialize
         this.getStyleClass().add("visual-array");
-        // initialize data
-        arrayNode = new ArrayList<>();
-        mapIndexField = new HashMap<>();
-        // add empty nodes
+        // initialize nodes
         for (int i = 0; i < n; i ++) {
             VisualArrayNode node = new VisualArrayNode();
             node.setLayoutX(node.getWidth() * i);
@@ -30,15 +26,16 @@ public class VisualArray extends Visual {
     }
 
     public void addIndexField(String name, int value) {
-        VisualArrayIndex indexField = new VisualArrayIndex(name, value);
-        indexField.setLayoutX(arrayNode.get(0).getWidth() * value);
-        indexField.setLayoutY(arrayNode.get(0).getHeight());
+        VisualIndex indexField = new VisualIndex(name, value);
+        VisualArrayNode firstNode = arrayNode.get(0);
+        indexField.setLayoutX(firstNode.getLayoutX() + firstNode.getWidth() * value);
+        indexField.setLayoutY(firstNode.getLayoutY() + firstNode.getHeight());
         mapIndexField.put(name, indexField);
         this.getChildren().add(indexField);
     }
 
     public void updateIndexField(String name, int value) {
-        VisualArrayIndex indexField = mapIndexField.get(name);
+        VisualIndex indexField = mapIndexField.get(name);
         indexField.setValue(value);
     }
 

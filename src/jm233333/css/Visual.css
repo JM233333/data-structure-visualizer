@@ -1,0 +1,7 @@
+.visual-node > * {
+  -fx-font-size: 29px;
+  -fx-font-weight: bold;
+}
+.visual-index-field > * {
+  -fx-font-size: 23px;
+}
