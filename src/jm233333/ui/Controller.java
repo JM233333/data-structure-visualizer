@@ -10,6 +10,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextFlow;
 import jm233333.Director;
+import jm233333.visualized.Mode;
+import jm233333.visualized.ModeStack;
 import jm233333.visualized.VisualizedDataStructure;
 
 import java.lang.reflect.*;
@@ -157,7 +159,20 @@ public class Controller extends Group {
         }
         // initialize the mode selector
         ModeSelector modeSelector = new ModeSelector();
-        ;
+        pane.getChildren().add(modeSelector);
+        // initialize buttons for modes
+        Class<? extends Mode> modeClass = visualDS.getModeClass();
+        if (modeClass != null) {
+            Mode[] modes = modeClass.getEnumConstants();
+            for (Mode mode : modes) {
+                String modeName = mode.toString();
+                Button button = new Button(modeName);
+                button.setOnAction((event) -> {
+                    visualDS.setMode(mode);
+                });
+                modeSelector.addButton(button);
+            }
+        }
     }
 
     /**

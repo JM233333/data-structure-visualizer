@@ -21,15 +21,12 @@ public class MethodTrigger extends HBox {
     private ArrayList<TextField> textFields;
 
     /**
-     * Creates a MethodTrigger with the name data of a specified method.
+     * Creates a MethodTrigger with the name and parameter list of a specified method.
      *
      * @param nameMethod The name of the method
      * @param nameParameters The name list of parameters of the method
      */
     public MethodTrigger(String nameMethod, String... nameParameters) {
-        // super
-        super();
-        // initialize
         initialize(nameMethod, nameParameters);
     }
 
@@ -39,8 +36,6 @@ public class MethodTrigger extends HBox {
      * @param method The reference to the method
      */
     public MethodTrigger(Method method) {
-        // super
-        super();
         // get method metadata
         String nameMethod = method.getName();
         Parameter[] parameters = method.getParameters();
@@ -61,7 +56,7 @@ public class MethodTrigger extends HBox {
      * @param nameParameters The name list of parameters of the method
      */
     private void initialize(String nameMethod, String... nameParameters) {
-        // initialize layout of this
+        // initialize
         this.setPadding(new Insets(0, 16, 0, 16));
         this.setSpacing(32);
         this.setAlignment(Pos.CENTER_LEFT);

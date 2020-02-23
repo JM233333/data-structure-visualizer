@@ -21,6 +21,11 @@ public abstract class VisualizedDataStructure {
     private String name = "";
 
     /**
+     * The mode of the visualized data structure.
+     */
+    private Mode mode = null;
+
+    /**
      * The reference to the monitor in which the visualized data structure is displayed.
      */
     private Monitor monitor = null;
@@ -135,6 +140,26 @@ public abstract class VisualizedDataStructure {
     }
     public final String getName() {
         return name;
+    }
+
+    public void setMode(Mode mode) {
+        System.out.println(name + " setMode " + mode.toString());
+        this.mode = mode;
+    }
+    public final Mode getMode() {
+        return mode;
+    }
+    public final Class<? extends Mode> getModeClass() {
+        String fullName = this.getClass().getName();
+        String lastName = fullName.substring(fullName.lastIndexOf('.') + 1);
+        String dsName = lastName.split("Visualized")[1];
+        try {
+            Class<? extends Mode> modeClass = Class.forName("jm233333.visualized.Mode" + dsName).asSubclass(Mode.class);
+            return modeClass;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void setMonitor(Monitor monitor) {
