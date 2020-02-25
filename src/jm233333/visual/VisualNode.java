@@ -74,4 +74,7 @@ public abstract class VisualNode extends Visual {
     public final Text getText() {
         return text;
     }
+
+    public abstract double getWidth();
+    public abstract double getHeight();
 }

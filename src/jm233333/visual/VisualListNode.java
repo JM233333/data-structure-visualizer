@@ -23,8 +23,8 @@ public class VisualListNode extends VisualNode {
         getText().setText(String.valueOf(value));
     }
 
-    void initialize() {
-        // initialize graphics
+    private void initialize() {
+        // initialize box
         boxValue = new Rectangle(BOX_SIZE, BOX_SIZE);
         boxValue.setLayoutX(0);
         boxPointer = new Rectangle(BOX_SIZE, BOX_SIZE);

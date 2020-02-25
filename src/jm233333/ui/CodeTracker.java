@@ -33,8 +33,9 @@ public class CodeTracker extends ScrollPane {
     private int currentLineIndex;
 
     public CodeTracker() {
-        // initialize CSS
-        initializeCSS();
+        // initialize
+        this.getStylesheets().add(this.getClass().getResource("/jm233333/css/CodeTracker.css").toExternalForm());
+        this.getStyleClass().add("code-tracker");
         // initialize content
         contentRoot = new Group();
         this.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -52,16 +53,6 @@ public class CodeTracker extends ScrollPane {
         mapEntrance = new HashMap<>();
         currentMethod = "";
         currentLineIndex = -1;
-    }
-
-    /**
-     * Initializes CSS.
-     */
-    private void initializeCSS() {
-        Class cls = this.getClass();
-        String fullName = cls.getName();
-        String lastName = fullName.substring(fullName.lastIndexOf('.') + 1);
-        this.getStylesheets().add(cls.getResource("/jm233333/css/" + lastName + ".css").toExternalForm());
     }
 
     public void readFile(final String name) {

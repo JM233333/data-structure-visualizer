@@ -38,10 +38,9 @@ public class Monitor extends Pane {
      * Creates a Monitor.
      */
     public Monitor() {
-        // super
-        super();
-        // initialize CSS
-        initializeCSS();
+        // initialize
+        this.getStylesheets().add(this.getClass().getResource("/jm233333/css/Monitor.css").toExternalForm());
+        this.setId("monitor");
         // initialize canvas
         canvas = new Group();
         this.getChildren().add(canvas);
@@ -53,16 +52,6 @@ public class Monitor extends Pane {
 //        fieldMap.computeIfAbsent(type, k -> new HashMap<>());
 //        fieldMap.get(type).put(name, value);
 //    }
-
-    /**
-     * Initializes CSS.
-     */
-    private void initializeCSS() {
-        Class cls = this.getClass();
-        String fullName = cls.getName();
-        String lastName = fullName.substring(fullName.lastIndexOf('.') + 1);
-        this.getStylesheets().add(cls.getResource("/jm233333/css/" + lastName + ".css").toExternalForm());
-    }
 
     /**
      * Gets the visual component by name.
@@ -126,7 +115,11 @@ public class Monitor extends Pane {
      *
      * @param name name of the binary tree
      */
-    public void createVisualBinaryTree(String name) {
-        ;
+    public void createVisualBinarySearchTree(String name) {
+        VisualBinarySearchTree visualBST = new VisualBinarySearchTree(name);
+        visualBST.setLayoutX(64);
+        visualBST.setLayoutY(64);
+        canvas.getChildren().add(visualBST);
+        mapVisual.put(name, visualBST);
     }
 }

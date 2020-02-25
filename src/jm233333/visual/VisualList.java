@@ -19,34 +19,7 @@ public class VisualList extends Visual {
         // super
         super(name);
         // initialize
-        this.getStyleClass().add("visual-array");
-    }
-
-    public void cacheNode(int index, int value) {
-        if (cachedNode == null) {
-            cachedNode = createNode(index, value);
-        }
-    }
-    public void insertCachedNode(int index) {
-        if (cachedNode != null) {
-            arrayNode.add(index, cachedNode);
-            Director.getInstance().createAnimation(1.0, cachedNode.layoutYProperty(), 0);
-            cachedNode = null;
-        }
-    }
-
-    public void setPointer(int indexFrom, int indexTo) {
-        VisualListNode nodeFrom = (indexFrom == CACHED_NODE ? cachedNode : arrayNode.get(indexFrom));
-        VisualListNode nodeTo = (indexTo == CACHED_NODE ? cachedNode : arrayNode.get(indexTo));
-        nodeFrom.setNext(nodeTo);
-    }
-    public void moveRestNodes(int begin, int distance) {
-        VisualListNode lastNode = arrayNode.get(begin);
-        Director.getInstance().createAnimation(1.0, lastNode.layoutXProperty(), lastNode.getLayoutX() + 128 * distance);
-        for (int i = begin + 1; i < arrayNode.size(); i ++) {
-            VisualListNode node = arrayNode.get(i);
-            Director.getInstance().updateAnimation(1.0, node.layoutXProperty(), node.getLayoutX() + 128 * distance);
-        }
+        this.getStyleClass().add("visual-list");
     }
 
     private VisualListNode createNode(int index, int value) {
@@ -65,53 +38,58 @@ public class VisualList extends Visual {
         });
     }
 
-    public void pushFrontNode(int value) {
-        // create node
-        VisualListNode newNode = createNode(0, value);
-        // set pointer and move old nodes
-        if (!arrayNode.isEmpty()) {
-            // set pointer
-            VisualListNode lastNode = arrayNode.get(0);
-            newNode.setNext(lastNode);
-            // move old nodes
-            Director.getInstance().createAnimation(1.0, lastNode.layoutXProperty(), lastNode.getLayoutX() + 128);
-            for (int i = 1; i < arrayNode.size(); i ++) {
-                VisualListNode node = arrayNode.get(i);
-                Director.getInstance().updateAnimation(1.0, node.layoutXProperty(), node.getLayoutX() + 128);
-            }
+    public void cacheNode(int index, int value) {
+        if (cachedNode == null) {
+            cachedNode = createNode(index, value);
         }
-        // insert new node
-        arrayNode.add(0, newNode);
-        Director.getInstance().createAnimation(1.0, newNode.layoutYProperty(), 0);
-        Director.getInstance().playAnimation();
+    }
+    public void insertCachedNode(int index) {
+        if (cachedNode != null) {
+            arrayNode.add(index, cachedNode);
+            Director.getInstance().createAnimation(1.0, cachedNode.layoutYProperty(), 0);
+            cachedNode = null;
+        }
     }
 
-    public void insertNode(int index, int value) {
-        // special judge
-        if (index == 0) {
-            pushFrontNode(value);
-            return;
-        }
-        // create node
-        VisualListNode newNode = createNode(index, value);
-        // set pointer
-        VisualListNode prvNode = arrayNode.get(index - 1);
-        prvNode.setNext(newNode);
-        if (index < arrayNode.size()) {
-            VisualListNode nxtNode = arrayNode.get(index);
-            newNode.setNext(nxtNode);
-        }
-        // move old nodes
-        if (index < arrayNode.size()) {
-            VisualListNode lastNode = arrayNode.get(index);
-            Director.getInstance().createAnimation(1.0, lastNode.layoutXProperty(), lastNode.getLayoutX() + 128);
-            for (int i = index + 1; i < arrayNode.size(); i ++) {
+    public void setPointerNext(int indexFrom, int indexTo) {
+        VisualListNode nodeFrom = (indexFrom == CACHED_NODE ? cachedNode : arrayNode.get(indexFrom));
+        VisualListNode nodeTo = (indexTo == CACHED_NODE ? cachedNode : arrayNode.get(indexTo));
+        nodeFrom.setNext(nodeTo);
+    }
+    public void setPointerNextToNull(int index) {
+        VisualListNode node = (index == CACHED_NODE ? cachedNode : arrayNode.get(index));
+        node.setNext(null);
+    }
+
+    public void moveRestNodes(int begin, int distance) {
+        if (begin < arrayNode.size()) {
+            VisualListNode lastNode = arrayNode.get(begin);
+            double unitLength = lastNode.getWidth() + VisualNode.BOX_SIZE / 2;
+            Director.getInstance().createAnimation(1.0, lastNode.layoutXProperty(), lastNode.getLayoutX() + unitLength * distance);
+            for (int i = begin + 1; i < arrayNode.size(); i++) {
                 VisualListNode node = arrayNode.get(i);
-                Director.getInstance().updateAnimation(1.0, node.layoutXProperty(), node.getLayoutX() + 128);
+                Director.getInstance().updateAnimation(1.0, node.layoutXProperty(), node.getLayoutX() + unitLength * distance);
             }
         }
+    }
+
+    public void pushFrontNode(int value) {
+        insertNode(0, value);
+    }
+    public void insertNode(int index, int value) {
         // insert new node
+        VisualListNode newNode = createNode(index, value);
         arrayNode.add(index, newNode);
+        // set pointer next
+        if (index > 0) {
+            setPointerNext(index - 1, index);
+        }
+        if (index + 1 < arrayNode.size()) {
+            setPointerNext(index, index + 1);
+        }
+        // move rest nodes
+        moveRestNodes(index + 1, 1);
+        // play animation
         Director.getInstance().createAnimation(1.0, newNode.layoutYProperty(), 0);
         Director.getInstance().playAnimation();
     }
@@ -122,51 +100,24 @@ public class VisualList extends Visual {
     }
 
     public void popFrontNode() {
-        // get erased node
-        VisualListNode erasedNode = arrayNode.get(0);
-        Director.getInstance().createAnimation(1.0, erasedNode.layoutYProperty(), 96);
-        // move rest nodes
-        if (arrayNode.size() > 1) {
-            VisualListNode lastNode = arrayNode.get(1);
-            Director.getInstance().createAnimation(1.0, lastNode.layoutXProperty(), lastNode.getLayoutX() - 128);
-            for (int i = 2; i < arrayNode.size(); i ++) {
-                VisualListNode node = arrayNode.get(i);
-                Director.getInstance().updateAnimation(1.0, node.layoutXProperty(), node.getLayoutX() - 128);
-            }
-        }
-        // remove erased node
-        removeNode(0);
-        Director.getInstance().playAnimation();
+        eraseNode(0);
     }
-
     public void eraseNode(int index) {
-        // special judge
-        if (index == 0) {
-            popFrontNode();
-            return;
-        }
         // get erased node
         VisualListNode erasedNode = arrayNode.get(index);
-        Director.getInstance().createAnimation(1.0, erasedNode.layoutYProperty(), 96);
+        removeNode(index);
         // set pointer
-        VisualListNode prvNode = arrayNode.get(index - 1);
-        if (index + 1 < arrayNode.size()) {
-            VisualListNode nxtNode = arrayNode.get(index + 1);
-            prvNode.setNext(nxtNode);
-        } else {
-            prvNode.setNext(null);
-        }
-        // move rest nodes
-        if (index + 1 < arrayNode.size()) {
-            VisualListNode lastNode = arrayNode.get(index + 1);
-            Director.getInstance().createAnimation(1.0, lastNode.layoutXProperty(), lastNode.getLayoutX() - 128);
-            for (int i = index + 2; i < arrayNode.size(); i ++) {
-                VisualListNode node = arrayNode.get(i);
-                Director.getInstance().updateAnimation(1.0, node.layoutXProperty(), node.getLayoutX() - 128);
+        if (index > 0) {
+            if (index < arrayNode.size()) {
+                setPointerNext(index - 1, index);
+            } else {
+                setPointerNextToNull(index - 1);
             }
         }
-        // remove erased node
-        removeNode(index);
+        // move rest nodes
+        moveRestNodes(index, -1);
+        // play animation
+        Director.getInstance().createAnimation(1.0, erasedNode.layoutYProperty(), 96);
         Director.getInstance().playAnimation();
     }
 }

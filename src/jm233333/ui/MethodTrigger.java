@@ -15,6 +15,8 @@ import javafx.scene.control.*;
  */
 public class MethodTrigger extends HBox {
 
+    private final double HEIGHT = 36;
+
     private String name;
     private Button button;
 
@@ -57,27 +59,34 @@ public class MethodTrigger extends HBox {
      */
     private void initialize(String nameMethod, String... nameParameters) {
         // initialize
-        this.setPadding(new Insets(0, 16, 0, 16));
-        this.setSpacing(32);
+        this.setPadding(new Insets(0, 16, 0, 0));
+        this.setSpacing(16);
         this.setAlignment(Pos.CENTER_LEFT);
-        this.setMinHeight(32);
-        this.setMaxHeight(32);
-        // initialize name
+        this.setMinHeight(HEIGHT);
+        this.setMaxHeight(HEIGHT);
+        this.getStyleClass().add("method-trigger");
+        // initialize data
         this.name = nameMethod;
         // initialize button
         button = new Button(nameMethod);
+        button.getStyleClass().addAll("btn", "btn-primary");
+        button.setMinHeight(HEIGHT);
         this.getChildren().add(button);
         // initialize textFields
         textFields = new ArrayList<>();
         for (String nameParameter : nameParameters) {
             // initialize label
             Label label = new Label(nameParameter);
+            label.getStyleClass().addAll("lbl", "lbl-default");
+            label.setMinHeight(HEIGHT);
             // initialize textField
             TextField textField = new TextField();
+            textField.getStyleClass().addAll("text-field");
             textField.setPrefWidth(48);
+            textField.setMinHeight(HEIGHT);
             // set layout of nodes
             HBox box = new HBox();
-            box.setSpacing(8);
+            box.setSpacing(0);
             box.setAlignment(Pos.CENTER_LEFT);
             box.getChildren().addAll(label, textField);
             // add nodes to this

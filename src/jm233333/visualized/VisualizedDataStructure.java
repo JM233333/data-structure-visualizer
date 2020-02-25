@@ -157,7 +157,6 @@ public abstract class VisualizedDataStructure {
             Class<? extends Mode> modeClass = Class.forName("jm233333.visualized.Mode" + dsName).asSubclass(Mode.class);
             return modeClass;
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
             return null;
         }
     }

@@ -2,6 +2,7 @@ package jm233333.ui;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -11,7 +12,6 @@ import javafx.scene.layout.*;
 import javafx.scene.text.TextFlow;
 import jm233333.Director;
 import jm233333.visualized.Mode;
-import jm233333.visualized.ModeStack;
 import jm233333.visualized.VisualizedDataStructure;
 
 import java.lang.reflect.*;
@@ -35,8 +35,9 @@ public class Controller extends Group {
      * @param visualDS The reference to the visualized data structure
      */
     public Controller(VisualizedDataStructure visualDS) {
-        // super
-        super();
+        // initialize
+        this.getStylesheets().add(this.getClass().getResource("/jm233333/css/Controller.css").toExternalForm());
+        this.setId("controller");
         // initialize root
         root = new HBox();
         root.setPadding(new Insets(16));
@@ -44,7 +45,7 @@ public class Controller extends Group {
         //root.getStyleClass().setAll("panel", "panel-default");
         this.getChildren().add(root);
         // set ui layout data
-        final double padding = 16, height = 32;
+        final double padding = 16, height = 36;
         final int columnSize = 4;
         final double panelHeadingHeight = height + 2 * padding;
         final double panelBodyHeight = (height + padding) * columnSize + padding;
@@ -158,19 +159,32 @@ public class Controller extends Group {
             });
         }
         // initialize the mode selector
-        ModeSelector modeSelector = new ModeSelector();
+        VBox modeSelector = new VBox();
+        modeSelector.setPadding(new Insets(0, 16, 0, 16));
+        modeSelector.setSpacing(16);
+        modeSelector.setAlignment(Pos.CENTER_LEFT);
         pane.getChildren().add(modeSelector);
-        // initialize buttons for modes
         Class<? extends Mode> modeClass = visualDS.getModeClass();
         if (modeClass != null) {
+            final Label label = new Label("Select Mode : ");
+            modeSelector.getChildren().add(label);
+            final ToggleGroup toggleGroup = new ToggleGroup();
             Mode[] modes = modeClass.getEnumConstants();
-            for (Mode mode : modes) {
-                String modeName = mode.toString();
-                Button button = new Button(modeName);
-                button.setOnAction((event) -> {
-                    visualDS.setMode(mode);
+            int n = modes.length;
+            if (n > 0) {
+                RadioButton[] radioButtons = new RadioButton[n];
+                for (int i = 0; i < n; i++) {
+                    radioButtons[i] = new RadioButton(modes[i].toString());
+                    radioButtons[i].setToggleGroup(toggleGroup);
+                    radioButtons[i].setUserData(modes[i]);
+                    modeSelector.getChildren().add(radioButtons[i]);
+                }
+                radioButtons[0].setSelected(true);
+                toggleGroup.selectedToggleProperty().addListener((observableValue, oldValue, newValue) -> {
+                    if (toggleGroup.getSelectedToggle() != null) {
+                        visualDS.setMode((Mode)toggleGroup.getSelectedToggle().getUserData());
+                    }
                 });
-                modeSelector.addButton(button);
             }
         }
     }

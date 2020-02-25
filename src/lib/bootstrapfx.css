@@ -206,7 +206,7 @@ a.bg-danger:focused {
   -fx-border-style: solid;
   -fx-background-insets: 0, 0, -1, 0;
   -fx-padding: 6px 12px 6px 12px;
-  -fx-font-size: 14px;
+  -fx-font-size: 16px; /* 14px */
   -fx-border-radius: 4px;
   -fx-background-radius: 4px;
   -fx-min-width: 80; }
@@ -847,7 +847,7 @@ a.bg-danger:focused {
 
 .lbl {
   -fx-padding: .2em .6em .3em .6em;
-  -fx-font-size: 75%;
+  -fx-font-size: 14px; /* 75% */
   -fx-font-weight: bold;
   -fx-text-fill: #fff;
   -fx-fill: #fff;

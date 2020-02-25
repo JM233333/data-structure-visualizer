@@ -32,6 +32,32 @@ public class VisualizedBinarySearchTree extends VisualizedDataStructure {
     }
 
     public void insert(int value) {
-        ;
+        if (root == null) {
+            root = new Node(value);
+            return;
+        }
+        insert(root, value);
+    }
+    private void insert(Node p, int value) {
+        // assert
+        assert (p != null);
+        // deal with duplication
+        if (value == p.value) {
+            return;
+        }
+        // discussion
+        if (value < p.value) {
+            if (p.left == null) {
+                p.left = new Node(value);
+            } else {
+                insert(p.left, value);
+            }
+        } else {
+            if (p.right == null) {
+                p.right = new Node(value);
+            } else {
+                insert(p.right, value);
+            }
+        }
     }
 }

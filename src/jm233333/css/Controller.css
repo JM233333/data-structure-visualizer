@@ -1,0 +1,13 @@
+.text-field {
+  -fx-font-size: 14px;
+  -fx-fill: #fff;
+  -fx-text-alignment: center;
+  -fx-alignment: center;
+  -fx-border-color: #cdcdcd;
+  -fx-background-color: #efefef;
+  -fx-border-radius: .25em;
+  -fx-background-radius: .25em;
+}
+.text-field:hover, .text-field:focused {
+  -fx-border-color: #888;
+}

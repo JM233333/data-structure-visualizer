@@ -43,7 +43,7 @@ public class VisualizedList extends VisualizedDataStructure {
             trackCodeEntrance(getCodeCurrentMethod() + "_if/else");
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             node.next = head.next;
-            getVisualList(getName()).setPointer(VisualList.CACHED_NODE, 0);
+            getVisualList(getName()).setPointerNext(VisualList.CACHED_NODE, 0);
             getVisualList(getName()).moveRestNodes(0, 1);
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             head.next = node;
