@@ -127,12 +127,18 @@ public abstract class VisualizedDataStructure {
     void createVisualList(String name) {//, Pair<String, Integer>... indexFields) {
         monitor.createVisualList(name);
     }
+    void createVisualBST(String name) {
+        monitor.createVisualBST(name);
+    }
 
     final VisualArray getVisualArray(String name) {
         return (VisualArray)monitor.getVisual(name);
     }
     final VisualList getVisualList(String name) {
         return (VisualList)monitor.getVisual(name);
+    }
+    final VisualBinarySearchTree getVisualBST(String name) {
+        return (VisualBinarySearchTree)monitor.getVisual(name);
     }
 
     public void setName(String name) {

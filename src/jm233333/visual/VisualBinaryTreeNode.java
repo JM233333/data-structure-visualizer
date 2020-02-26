@@ -35,17 +35,43 @@ public class VisualBinaryTreeNode extends VisualNode {
             this.getChildren().add(pointer);
         }
         // initialize box
-        box = new Circle(BOX_SIZE);
-        box.setFill(Color.TRANSPARENT);
+        box = new Circle(BOX_SIZE / 2);
+        box.setFill(Color.valueOf("#EEE"));
         box.setStroke(Color.grayRgb(51));
         box.setStrokeType(StrokeType.CENTERED);
         box.setStrokeWidth(4);
+        box.setLayoutX(BOX_SIZE / 2);
+        box.setLayoutY(BOX_SIZE / 2);
         this.getChildren().add(box);
         // add creating animation
         this.setScaleX(0);
         this.setScaleY(0);
         Director.getInstance().createAnimation(1.0, this.scaleXProperty(), 1);
         Director.getInstance().updateAnimation(1.0, this.scaleYProperty(), 1);
+    }
+
+    public void setLeft(VisualBinaryTreeNode node) {
+        left.setTarget(node);
+    }
+    public final VisualBinaryTreeNode getLeft() {
+        return left.getTarget();
+    }
+
+    public void setRight(VisualBinaryTreeNode node) {
+        right.setTarget(node);
+    }
+    public final VisualBinaryTreeNode getRight() {
+        return right.getTarget();
+    }
+
+    @Override
+    public double getPointedX(final VisualNode holder) {
+        return getLayoutX() + box.getLayoutX();
+    }
+
+    @Override
+    public double getPointedY(final VisualNode holder) {
+        return getLayoutY() + box.getLayoutY();
     }
 
     @Override

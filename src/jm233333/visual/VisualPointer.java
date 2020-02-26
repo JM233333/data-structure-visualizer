@@ -49,9 +49,9 @@ public class VisualPointer <T extends VisualNode> extends Visual {
         //
         if (node != null) {
             Director.getInstance().createAnimation(1.0, body.endXProperty(),
-                    node.getLayoutX() - holder.getLayoutX());
+                    node.getPointedX(holder) - holder.getLayoutX());
             Director.getInstance().updateAnimation(1.0, body.endYProperty(),
-                    node.getLayoutY() - holder.getLayoutY() + VisualNode.BOX_SIZE / 2);
+                    node.getPointedY(holder) - holder.getLayoutY());
         } else {
             Director.getInstance().createAnimation(1.0, body.endXProperty(),
                     body.getStartX() + VisualNode.BOX_SIZE / 4);
@@ -68,10 +68,10 @@ public class VisualPointer <T extends VisualNode> extends Visual {
             }
             if (node != null) {
                 targetListenerX = (observable, oldValue, newValue) -> {
-                    body.setEndX(node.getLayoutX() - holder.getLayoutX());
+                    body.setEndX(node.getPointedX(holder) - holder.getLayoutX());
                 };
                 targetListenerY = (observable, oldValue, newValue) -> {
-                    body.setEndY(node.getLayoutY() - holder.getLayoutY() + VisualNode.BOX_SIZE / 2);
+                    body.setEndY(node.getPointedY(holder) - holder.getLayoutY());
                 };
                 holder.layoutXProperty().addListener(targetListenerX);
                 node.layoutXProperty().addListener(targetListenerX);

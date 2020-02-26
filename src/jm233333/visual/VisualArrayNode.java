@@ -34,9 +34,20 @@ public class VisualArrayNode extends VisualNode {
         initializeText();
     }
 
+    @Override
+    public double getPointedX(final VisualNode holder) {
+        return getLayoutX();
+    }
+    @Override
+    public double getPointedY(final VisualNode holder) {
+        return getLayoutY() + BOX_SIZE / 2;
+    }
+
+    @Override
     public double getWidth() {
         return box.getWidth();
     }
+    @Override
     public double getHeight() {
         return box.getHeight();
     }

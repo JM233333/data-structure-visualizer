@@ -115,7 +115,7 @@ public class Monitor extends Pane {
      *
      * @param name name of the binary tree
      */
-    public void createVisualBinarySearchTree(String name) {
+    public void createVisualBST(String name) {
         VisualBinarySearchTree visualBST = new VisualBinarySearchTree(name);
         visualBST.setLayoutX(64);
         visualBST.setLayoutY(64);

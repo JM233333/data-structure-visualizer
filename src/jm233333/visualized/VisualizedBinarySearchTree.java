@@ -24,7 +24,7 @@ public class VisualizedBinarySearchTree extends VisualizedDataStructure {
 
     @Override
     void createVisual() {
-//        createVisualBinarySearchTree();
+        createVisualBST(getName());
     }
 
     public Node find(int value) {
@@ -34,9 +34,11 @@ public class VisualizedBinarySearchTree extends VisualizedDataStructure {
     public void insert(int value) {
         if (root == null) {
             root = new Node(value);
+            getVisualBST(getName()).insertNode(value);
             return;
         }
         insert(root, value);
+        getVisualBST(getName()).insertNode(value);
     }
     private void insert(Node p, int value) {
         // assert

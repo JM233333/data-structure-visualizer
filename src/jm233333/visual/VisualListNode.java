@@ -57,9 +57,21 @@ public class VisualListNode extends VisualNode {
         return next.getTarget();
     }
 
+
+    @Override
+    public double getPointedX(final VisualNode holder) {
+        return getLayoutX();
+    }
+    @Override
+    public double getPointedY(final VisualNode holder) {
+        return getLayoutY() + BOX_SIZE / 2;
+    }
+
+    @Override
     public double getWidth() {
         return boxValue.getWidth() + boxPointer.getWidth();
     }
+    @Override
     public double getHeight() {
         return boxValue.getHeight();
     }
