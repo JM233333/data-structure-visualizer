@@ -18,12 +18,13 @@ public class VisualBinarySearchTree extends Visual {
     public static final boolean RIGHT_CHILD = true;
 
     private static final double[] localization = new double[] {
-            256, 54,
-            108, 48,
-            44, 36,
-            16, 32,
-            8, 24
+            256, 54,  0,
+            108, 48,  0,
+            44,  36,  0,
+            16,  32,  0,
+            8,   24,  0
     };
+    private static final int maxDepth = 5;
 
     private VisualBinaryTreeNode rootNode = null;
     private HashMap<String, VisualBinaryTreeNode> mapNode = new HashMap<>();
@@ -35,6 +36,12 @@ public class VisualBinarySearchTree extends Visual {
         super(name);
         // initialize
         this.getStyleClass().add("visual-binary-search-tree");
+        // pre-calculate localization info
+        for (int depth = 0; depth < 5; depth ++) {
+            double dx = localization[3 * depth];
+            double dy = localization[3 * depth + 1];
+            localization[3 * depth + 2] = Math.atan(dy / dx);
+        }
     }
 
     private VisualBinaryTreeNode createNode(int value) {
@@ -46,8 +53,9 @@ public class VisualBinarySearchTree extends Visual {
             path.push(cachedPath.pop());
         }
         for (int depth = 0; !path.empty(); depth ++) {
-            double dx = localization[2 * depth];
-            double dy = localization[2 * depth + 1];
+            double angle = localization[3 * depth + 2];
+            double dx = VisualNode.BOX_SIZE * Math.cos(angle) + localization[3 * depth];
+            double dy = VisualNode.BOX_SIZE * Math.sin(angle) + localization[3 * depth + 1];
             int direction = (path.pop() == LEFT_CHILD ? -1 : 1);
             x += dx * direction;
             y += dy;

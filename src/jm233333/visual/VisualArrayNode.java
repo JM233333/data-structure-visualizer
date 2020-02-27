@@ -35,11 +35,11 @@ public class VisualArrayNode extends VisualNode {
     }
 
     @Override
-    public double getPointedX(final VisualNode holder) {
+    public double getPointedX() {
         return getLayoutX();
     }
     @Override
-    public double getPointedY(final VisualNode holder) {
+    public double getPointedY() {
         return getLayoutY() + BOX_SIZE / 2;
     }
 

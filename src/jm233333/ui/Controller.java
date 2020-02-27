@@ -10,10 +10,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextFlow;
+import javafx.stage.FileChooser;
 import jm233333.Director;
 import jm233333.visualized.Mode;
 import jm233333.visualized.VisualizedDataStructure;
 
+import java.io.File;
 import java.lang.reflect.*;
 import java.util.*;
 
@@ -24,7 +26,7 @@ import java.util.*;
 public class Controller extends Group {
 
     private HBox root;
-    private PanelConsole panelMethodTrigger, panelAnimationController, panelOutputBox, panelFileReader;
+    private PanelConsole panelMethodTrigger, panelAnimationController, panelOutputBox, panelBatchProcessor;
     private TextFlow outputBox;
 
     private VisualizedDataStructure visualDS;
@@ -54,8 +56,8 @@ public class Controller extends Group {
         panelMethodTrigger = new PanelConsole(new FlowPane(), "Method Triggers");
         panelAnimationController = new PanelConsole(new FlowPane(), "Animation Controller");
         panelOutputBox = new PanelConsole(new ScrollPane(), "Output Box");
-        panelFileReader = new PanelConsole(new ScrollPane(), "File Reader");
-        for (PanelConsole panel : new PanelConsole[]{panelMethodTrigger, panelAnimationController, panelOutputBox, panelFileReader}) {
+        panelBatchProcessor = new PanelConsole(new FlowPane(), "File Reader");
+        for (PanelConsole panel : new PanelConsole[]{panelMethodTrigger, panelAnimationController, panelOutputBox, panelBatchProcessor}) {
             panel.setMaxHeight(panelHeight);
             panel.getStyleClass().add("panel-primary");
             root.getChildren().add(panel);
@@ -89,6 +91,9 @@ public class Controller extends Group {
         outputBox.setMinHeight(panelBodyHeight - 32 + 2);
         outputBox.getStyleClass().addAll("bg-default");
         ((ScrollPane)panelOutputBox.getPanelBody()).setContent(outputBox);
+        visualDS.setOutputBox(outputBox);
+        // initialize batch processor
+        initializeBatchProcessor();
     }
 
     /**
@@ -247,9 +252,43 @@ public class Controller extends Group {
     }
 
     /**
-     * Gets the output box.
+     * Initializes the batch processor.
      */
-    public final TextFlow getOutputBox() {
-        return outputBox;
+    private void initializeBatchProcessor() {
+        // get panel body
+        FlowPane pane = (FlowPane)panelBatchProcessor.getPanelBody();
+        pane.setHgap(16);
+        pane.setVgap(16);
+        pane.setMinWidth(256);
+        pane.setMaxWidth(256);
+        //
+        TextArea textArea = new TextArea();
+        textArea.setMinWidth(pane.getMinWidth() - 32 + 2);
+        textArea.setMaxWidth(pane.getMaxWidth() - 32 + 2);
+        textArea.setMinHeight(outputBox.getMinHeight() - 48);
+        textArea.setMaxHeight(outputBox.getMinHeight() - 48);
+        pane.getChildren().add(textArea);
+        //
+        Button btnRun = new Button("Run");
+        btnRun.getStyleClass().setAll("btn", "btn-success");
+        btnRun.setOnAction((event) -> {
+            Director.getInstance().playAnimation();
+        });
+        //
+        Button btnReadFile = new Button("Read File");
+        btnReadFile.getStyleClass().setAll("btn", "btn-warning");
+        btnReadFile.setAlignment(Pos.CENTER);
+        btnReadFile.setOnAction((event) -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Choose Any Text File : ");
+            fileChooser.setInitialDirectory(new File("."));
+            File result = fileChooser.showOpenDialog(Director.getInstance().getPrimaryStage());
+            System.out.print(result.getAbsolutePath());
+        });
+        for (Button btn : new Button[]{btnRun, btnReadFile}) {
+            btn.setPrefWidth((textArea.getMaxWidth() - pane.getHgap()) / 2);
+            btn.setAlignment(Pos.CENTER);
+            pane.getChildren().add(btn);
+        }
     }
 }

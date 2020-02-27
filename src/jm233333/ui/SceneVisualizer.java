@@ -84,13 +84,15 @@ public class SceneVisualizer extends Scene {
         codeTracker.setId("code-tracker");
         root.setRight(codeTracker);
         visualDS.setCodeTracker(codeTracker);
+//        codeTracker.widthProperty().addListener((observable, oldValue, newValue) -> {
+//            System.out.println(codeTracker.widthProperty().getValue());
+//        });
     }
     private void initializeController() {
         // initialize controller
         controller = new Controller(visualDS);
         controller.setId("controller");
         root.setBottom(controller); // root.getChildren().add(controller);
-        visualDS.setOutputBox(controller.getOutputBox());
 //        controller.setGridLinesVisible(true); // debug
     }
     private void initializeMenu() {

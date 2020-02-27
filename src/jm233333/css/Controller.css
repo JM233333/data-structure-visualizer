@@ -1,4 +1,4 @@
-.text-field {
+.text-field, .text-area {
   -fx-font-size: 14px;
   -fx-fill: #fff;
   -fx-text-alignment: center;
@@ -8,6 +8,6 @@
   -fx-border-radius: .25em;
   -fx-background-radius: .25em;
 }
-.text-field:hover, .text-field:focused {
+.text-field:hover, .text-field:focused, .text-area:hover, .text-area:focused {
   -fx-border-color: #888;
 }

@@ -15,7 +15,7 @@ public abstract class VisualNode extends Visual {
     /**
      * The width and height of every graphic nodes.
      */
-    static final double BOX_SIZE = 64;
+    static final double BOX_SIZE = 48;
 
     private boolean isFilled;
     private int value;
@@ -75,8 +75,8 @@ public abstract class VisualNode extends Visual {
         return text;
     }
 
-    public abstract double getPointedX(final VisualNode holder);
-    public abstract double getPointedY(final VisualNode holder);
+    public abstract double getPointedX();
+    public abstract double getPointedY();
 
     public abstract double getWidth();
     public abstract double getHeight();
