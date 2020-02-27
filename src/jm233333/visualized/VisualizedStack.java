@@ -42,13 +42,11 @@ public class VisualizedStack extends VisualizedDataStructure {
         top ++;
         getVisualArray(getName()).updateIndexField("top", top);
         trackCodeEntrance(CodeTracker.NEXT_LINE);
-        Director.getInstance().playAnimation();
     }
 
     public void pop() {
         if (_isEmpty()) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
-            Director.getInstance().playAnimation();
             return;
         }
         trackCodeEntrance(getCodeCurrentMethod() + "_main_begin");
@@ -56,32 +54,27 @@ public class VisualizedStack extends VisualizedDataStructure {
         getVisualArray(getName()).updateIndexField("top", top);
         getVisualArray(getName()).eraseElement(top);
         trackCodeEntrance(CodeTracker.NEXT_LINE);
-        Director.getInstance().playAnimation();
     }
 
     public int top() {
         if (_isEmpty()) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
-            Director.getInstance().playAnimation();
             return 0;
         }
         trackCodeEntrance(getCodeCurrentMethod() + "_main_begin");
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         outputMessage(getCodeCurrentMethod() + " " + data[top - 1]);
-        Director.getInstance().playAnimation();
         return data[top - 1];
     }
 
     public boolean isEmpty() {
         boolean flag = (top == 0);
         outputMessage(getCodeCurrentMethod() + " " + (flag ? "true" : "false"));
-        Director.getInstance().playAnimation();
         return flag;
     }
     public boolean isFull() {
         boolean flag = (top == data.length);
         outputMessage(getCodeCurrentMethod() + " " + (flag ? "true" : "false"));
-        Director.getInstance().playAnimation();
         return flag;
     }
 

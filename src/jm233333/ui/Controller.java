@@ -9,13 +9,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import jm233333.Director;
 import jm233333.visualized.Mode;
 import jm233333.visualized.VisualizedDataStructure;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.*;
 import java.util.*;
 
@@ -150,6 +154,7 @@ public class Controller extends Group {
                     visualDS.trackCodeMethodBeginning(name);
                     Method method = visualDS.getClass().getDeclaredMethod(name, parameterTypes);
                     method.invoke(visualDS, parameters.toArray());
+                    Director.getInstance().playAnimation();
                 } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
@@ -272,6 +277,47 @@ public class Controller extends Group {
         Button btnRun = new Button("Run");
         btnRun.getStyleClass().setAll("btn", "btn-success");
         btnRun.setOnAction((event) -> {
+            String[] operations = textArea.getText().split("\n");
+            for (String operation : operations) {
+                if (operation.isEmpty()) {
+                    continue;
+                }
+                String[] optParam = operation.split(" ");
+                String name = optParam[0];
+                ArrayList<Integer> arguments = new ArrayList<>();
+                for (int i = 1; i < optParam.length; i ++) {
+                    try {
+                        int argument = Integer.parseInt(optParam[i]);
+                        arguments.add(argument);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Error : illegal argument in function " + name);
+                        arguments.add(0); // return null;
+                    }
+                }
+                Class<?>[] parameterTypes = new Class<?>[arguments.size()];
+                // debug
+                StringBuilder s = new StringBuilder(name);
+                for (int arg : arguments) {
+                    s.append(" ").append(arg);
+                }
+                System.out.println(s);
+                for (int i = 0; i < arguments.size(); i ++) {
+                    Class cls = arguments.get(i).getClass();
+                    try {
+                        Field field = cls.getDeclaredField("TYPE");
+                        parameterTypes[i] = (Class<?>) field.get(arguments.get(i));
+                    } catch (NoSuchFieldException | IllegalAccessException e) {
+                        parameterTypes[i] = cls;
+                    }
+                }
+                visualDS.trackCodeMethodBeginning(name);
+                try {
+                    Method method = visualDS.getClass().getDeclaredMethod(name, parameterTypes);
+                    method.invoke(visualDS, arguments.toArray());
+                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
             Director.getInstance().playAnimation();
         });
         //
@@ -283,7 +329,21 @@ public class Controller extends Group {
             fileChooser.setTitle("Choose Any Text File : ");
             fileChooser.setInitialDirectory(new File("."));
             File result = fileChooser.showOpenDialog(Director.getInstance().getPrimaryStage());
-            System.out.print(result.getAbsolutePath());
+            if (result != null) {
+                System.out.print(result.getAbsolutePath());
+                StringBuilder str = new StringBuilder();
+                try {
+                    BufferedReader in = new BufferedReader(new FileReader(result.getAbsolutePath()));
+                    while (in.ready()) {
+                        str.append(in.readLine());
+                        str.append('\n');
+                    }
+                    in.close();
+                    textArea.setText(str.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         });
         for (Button btn : new Button[]{btnRun, btnReadFile}) {
             btn.setPrefWidth((textArea.getMaxWidth() - pane.getHgap()) / 2);
