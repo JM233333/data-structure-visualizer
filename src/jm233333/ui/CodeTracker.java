@@ -11,6 +11,7 @@ import javafx.scene.text.TextFlow;
 import jm233333.Director;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
@@ -34,7 +35,6 @@ public class CodeTracker extends ScrollPane {
 
     public CodeTracker() {
         // initialize
-        this.getStylesheets().add(this.getClass().getResource("/jm233333/css/CodeTracker.css").toExternalForm());
         this.getStyleClass().add("code-tracker");
         // initialize content
         contentRoot = new Group();
@@ -60,8 +60,18 @@ public class CodeTracker extends ScrollPane {
         codeBoard.getChildren().clear();
         mapEntrance.clear();
         // read from the source file
+        BufferedReader in;
         try {
-            BufferedReader in = new BufferedReader(new FileReader("src/data/code/" + name + ".cpp"));
+            in = new BufferedReader(new FileReader("custom/code/" + name + ".cpp"));
+        } catch (FileNotFoundException ex) {
+            try {
+                in = new BufferedReader(new FileReader(this.getClass().getResource("/default/code/" + name + ".cpp").getFile()));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                return;
+            }
+        }
+        try {
             for (int row = 0; in.ready(); row ++) {
                 // read a line from the source file and split it as []{code, entrance}
                 String delimiter = "//#/";

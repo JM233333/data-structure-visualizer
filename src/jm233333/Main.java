@@ -17,9 +17,9 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        // load resources
-        Font.loadFont(getClass().getResourceAsStream("/resource/font/PT-Sans.ttf"), 12);
-        Font.loadFont(getClass().getResourceAsStream("/resource/font/PT-Sans-Bold.ttf"), 12);
+        // load font resources
+        Font.loadFont(getClass().getResourceAsStream("/font/PT-Sans.ttf"), 12);
+        Font.loadFont(getClass().getResourceAsStream("/font/PT-Sans-Bold.ttf"), 12);
         // initialize director
         Director.getInstance().setPrimaryStage(primaryStage);
         // initialize data structure

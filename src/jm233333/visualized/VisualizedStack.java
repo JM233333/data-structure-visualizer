@@ -32,7 +32,6 @@ public class VisualizedStack extends VisualizedDataStructure {
     public void push(int value) {
         if (_isFull()) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
-            Director.getInstance().playAnimation();
             return;
         }
         trackCodeEntrance(getCodeCurrentMethod() + "_main_begin");

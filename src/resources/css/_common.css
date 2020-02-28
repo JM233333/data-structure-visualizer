@@ -1,0 +1,27 @@
+.bg-default {
+  -fx-background-color: #fff;
+}
+
+.text-field, .text-area {
+  -fx-font-size: 14px;
+  -fx-fill: #fff;
+  -fx-text-alignment: center;
+  -fx-alignment: center;
+  -fx-border-color: #cdcdcd;
+  -fx-background-color: #efefef;
+  -fx-border-radius: .25em;
+  -fx-background-radius: .25em;
+}
+.text-field:hover, .text-field:focused, .text-area:hover, .text-area:focused {
+  -fx-border-color: #888;
+}
+
+.scroll-pane {
+  -fx-background-color: transparent;
+}
+.scroll-pane:focused {
+  -fx-background-color: transparent;
+}
+.scroll-pane > .content {
+  -fx-background-color: transparent;
+}

@@ -1,3 +1,0 @@
-Stack 10
-List
-BinarySearchTree

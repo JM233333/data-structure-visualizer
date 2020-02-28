@@ -1,27 +1,19 @@
 package jm233333.ui;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
+import java.io.*;
+import java.lang.reflect.*;
+import java.util.*;
+
+import javafx.geometry.*;
 import javafx.scene.Group;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
+import javafx.scene.text.*;
 import javafx.stage.FileChooser;
+
 import jm233333.Director;
 import jm233333.visualized.Mode;
 import jm233333.visualized.VisualizedDataStructure;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.lang.reflect.*;
-import java.util.*;
 
 /**
  * The {@code Controller} class is the user interface in which the user can manipulate the visualized data structure.
@@ -29,8 +21,16 @@ import java.util.*;
  */
 public class Controller extends Group {
 
+    private final double padding = 16, height = 36;
+    private final int columnSize = 4;
+    private final double panelHeadingHeight = height + 2 * padding;
+    private final double panelBodyWidth = 256 + 16;
+    private final double panelBodyHeight = (height + padding) * columnSize + padding;
+    private final double panelHeight = panelHeadingHeight + panelBodyHeight + 2 * padding;
+
     private HBox root;
     private PanelConsole panelMethodTrigger, panelAnimationController, panelOutputBox, panelBatchProcessor;
+    private Slider animationRateSlider;
     private TextFlow outputBox;
 
     private VisualizedDataStructure visualDS;
@@ -42,62 +42,50 @@ public class Controller extends Group {
      */
     public Controller(VisualizedDataStructure visualDS) {
         // initialize
-        this.getStylesheets().add(this.getClass().getResource("/jm233333/css/Controller.css").toExternalForm());
         this.setId("controller");
         // initialize root
         root = new HBox();
-        root.setPadding(new Insets(16));
-        root.setSpacing(16);
+        root.setPadding(new Insets(padding));
+        root.setSpacing(padding);
         //root.getStyleClass().setAll("panel", "panel-default");
         this.getChildren().add(root);
-        // set ui layout data
-        final double padding = 16, height = 36;
-        final int columnSize = 4;
-        final double panelHeadingHeight = height + 2 * padding;
-        final double panelBodyHeight = (height + padding) * columnSize + padding;
-        final double panelHeight = panelHeadingHeight + panelBodyHeight + 2 * padding;
         // initialize panels
         panelMethodTrigger = new PanelConsole(new FlowPane(), "Method Triggers");
         panelAnimationController = new PanelConsole(new FlowPane(), "Animation Controller");
         panelOutputBox = new PanelConsole(new ScrollPane(), "Output Box");
-        panelBatchProcessor = new PanelConsole(new FlowPane(), "File Reader");
+        panelBatchProcessor = new PanelConsole(new FlowPane(), "Batch Processor");
         for (PanelConsole panel : new PanelConsole[]{panelMethodTrigger, panelAnimationController, panelOutputBox, panelBatchProcessor}) {
-            panel.setMaxHeight(panelHeight);
             panel.getStyleClass().add("panel-primary");
+            panel.setMaxHeight(panelHeight);
             root.getChildren().add(panel);
-        }
-        for (PanelConsole panel : new PanelConsole[]{panelMethodTrigger, panelAnimationController}) {
-            FlowPane pane = (FlowPane)panel.getPanelBody();
-            pane.setOrientation(Orientation.VERTICAL);
-            pane.setPrefHeight(panelBodyHeight);
-            pane.setMaxHeight(panelBodyHeight);
-            pane.setPadding(new Insets(padding));
-            pane.setVgap(padding);
-        }
-//        paneAnimationController.setMinWidth(256);
-        for (PanelConsole panel : new PanelConsole[]{panelOutputBox}) {
-            ScrollPane pane = (ScrollPane)panel.getPanelBody();
-            pane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-            pane.setMinWidth(256);
-            pane.setMaxWidth(256);
-            pane.setMaxHeight(panelBodyHeight);
-            pane.setPrefHeight(panelBodyHeight);
         }
         // set reference to the interrelated visual data structure
         this.visualDS = visualDS;
-        // initialize method triggers
+        // initialize sub interfaces
         initializeMethodTriggers();
-        // initialize animation controllers
         initializeAnimationControllers();
-        // initialize output box
-        outputBox = new TextFlow();
-        outputBox.setMinWidth(256 - 32 + 2);
-        outputBox.setMinHeight(panelBodyHeight - 32 + 2);
-        outputBox.getStyleClass().addAll("bg-default");
-        ((ScrollPane)panelOutputBox.getPanelBody()).setContent(outputBox);
-        visualDS.setOutputBox(outputBox);
-        // initialize batch processor
+        initializeOutputBox();
         initializeBatchProcessor();
+        // prohibit partial operations while playing animation
+        Director.getInstance().animationPlayingProperty().addListener((event) -> {
+            for (PanelConsole panel : new PanelConsole[]{panelMethodTrigger, panelBatchProcessor}) {
+                panel.setDisable(Director.getInstance().isAnimationPlaying());
+            }
+            animationRateSlider.setDisable(Director.getInstance().isAnimationPlaying());
+        });
+        // initialize width property
+        final PanelConsole[] panels = new PanelConsole[]{panelMethodTrigger, panelAnimationController, panelOutputBox, panelBatchProcessor};
+//        for (PanelConsole panel : panels) {
+        panelBatchProcessor.widthProperty().addListener((observable, oldValue, newValue) -> {
+            double sumWidth = 5 * padding + 20;
+            for (PanelConsole iPanel : panels) {
+                sumWidth += iPanel.widthProperty().getValue();
+            }
+            System.out.println(sumWidth);
+            Director.getInstance().getPrimaryStage().minWidthProperty().setValue(sumWidth);
+            Director.getInstance().getPrimaryStage().maxWidthProperty().setValue(sumWidth);
+        });
+//        }
     }
 
     /**
@@ -105,8 +93,14 @@ public class Controller extends Group {
      * Finds all public methods of the visualized data structure and initializes corresponding method triggers with them.
      */
     private void initializeMethodTriggers() {
-        // get panel body
+        // initialize panel body
         FlowPane pane = (FlowPane)panelMethodTrigger.getPanelBody();
+        pane.setOrientation(Orientation.VERTICAL);
+        pane.setPadding(new Insets(padding));
+        pane.setVgap(padding);
+        pane.setMinHeight(panelBodyHeight);
+        pane.setMaxHeight(panelBodyHeight);
+        pane.setPrefHeight(panelBodyHeight);
         // find all public methods of visualDS
         Method[] methods = visualDS.getClass().getDeclaredMethods();
         // initialize method triggers
@@ -159,19 +153,12 @@ public class Controller extends Group {
                     e.printStackTrace();
                 }
             });
-            // prohibit operating while playing animation
-            Director.getInstance().animationPlayingProperty().addListener((event) -> {
-                if (Director.getInstance().isAnimationPlaying()) {
-                    methodTrigger.setDisable(true);
-                } else {
-                    methodTrigger.setDisable(false);
-                }
-            });
         }
         // initialize the mode selector
         VBox modeSelector = new VBox();
-        modeSelector.setPadding(new Insets(0, 16, 0, 16));
-        modeSelector.setSpacing(16);
+        modeSelector.getStyleClass().addAll("panel", "panel-default");
+        modeSelector.setPadding(new Insets(padding / 2));
+        modeSelector.setSpacing(padding);
         modeSelector.setAlignment(Pos.CENTER_LEFT);
         pane.getChildren().add(modeSelector);
         Class<? extends Mode> modeClass = visualDS.getModeClass();
@@ -203,43 +190,47 @@ public class Controller extends Group {
      * Initializes animation controllers.
      */
     private void initializeAnimationControllers() {
-        // get panel body
+        // initialize panel body
         FlowPane pane = (FlowPane)panelAnimationController.getPanelBody();
-        //
-        Button btnPlay = new Button("play animation");
-        btnPlay.getStyleClass().setAll("btn", "btn-success");
-        btnPlay.setOnAction((event) -> {
-            Director.getInstance().playAnimation();
-        });
-        pane.getChildren().add(btnPlay);
-        Button btnPause = new Button("pause animation");
-        btnPause.getStyleClass().setAll("btn", "btn-danger");
-        btnPause.setOnAction((event) -> {
-            Director.getInstance().pauseAnimation();
-        });
-        pane.getChildren().add(btnPause);
-        //
-        for (Button button : new Button[]{btnPlay, btnPause}) {
-            //button.setAlignment(Pos.CENTER_LEFT);
-        }
-        //
-        final Label fff = new Label("Animation Rate : ");
-        pane.getChildren().add(fff);
+        pane.setOrientation(Orientation.HORIZONTAL);
+        pane.setPadding(new Insets(padding));
+        pane.setHgap(padding);
+        pane.setVgap(padding);
+        pane.setMinWidth(panelBodyWidth);
+        pane.setMaxWidth(panelBodyWidth);
+        pane.setPrefWidth(panelBodyWidth);
+        pane.setMinHeight(panelBodyHeight);
+        pane.setMaxHeight(panelBodyHeight);
+        pane.setPrefHeight(panelBodyHeight);
+        // initialize rate-control
+        final VBox vBoxRate = new VBox();
+        vBoxRate.getStyleClass().addAll("panel", "panel-default");
+        vBoxRate.setPadding(new Insets(padding / 2));
+        vBoxRate.setSpacing(padding);
+        pane.getChildren().add(vBoxRate);
+        final Label labelRate = new Label("Animation Rate : ");
+        vBoxRate.getChildren().add(labelRate);
         Slider slider = new Slider(Director.MIN_ANIMATION_RATE, Director.MAX_ANIMATION_RATE, Director.DEFAULT_ANIMATION_RATE);
-        slider.setPrefWidth(160);
+        slider.setPrefWidth(panelBodyWidth - 3 * padding - 2);
         slider.setShowTickLabels(false);
         slider.setShowTickMarks(true);
         slider.setSnapToTicks(true);
         slider.setMajorTickUnit(slider.getMax() - slider.getMin() - 1);
         slider.setMinorTickCount((int)(slider.getMajorTickUnit() / Director.UNIT_ANIMATION_RATE));
         slider.setBlockIncrement(Director.UNIT_ANIMATION_RATE);
-        pane.getChildren().add(slider);
+        vBoxRate.getChildren().add(slider);
         slider.valueProperty().addListener((observable, oldValue, newValue) -> {
             Director.getInstance().setAnimationRate(slider.getValue());
         });
-        //
-        final Label fff2 = new Label("Action Type : ");
-        pane.getChildren().add(fff2);
+        animationRateSlider = slider;
+        // initialize type-control
+        final HBox hBoxType = new HBox();
+        hBoxType.getStyleClass().addAll("panel", "panel-default");
+        hBoxType.setAlignment(Pos.CENTER);
+        hBoxType.setPadding(new Insets(padding / 2));
+        hBoxType.setSpacing(padding);
+        hBoxType.setMinWidth(panelBodyWidth - 2 * padding);
+        pane.getChildren().add(hBoxType);
         final ToggleGroup group = new ToggleGroup();
         RadioButton rb1 = new RadioButton("Single Step");
         rb1.setToggleGroup(group);
@@ -248,12 +239,51 @@ public class Controller extends Group {
         rb2.setToggleGroup(group);
         rb2.setUserData(false);
         (Director.getInstance().isSingleStep() ? rb1 : rb2).setSelected(true);
-        pane.getChildren().addAll(rb1, rb2);
         group.selectedToggleProperty().addListener((observableValue, oldValue, newValue) -> {
             if (group.getSelectedToggle() != null) {
                 Director.getInstance().setSingleStep((boolean)group.getSelectedToggle().getUserData());
             }
         });
+        hBoxType.getChildren().addAll(rb1, rb2);
+        // initialize state-control
+        Button btnPlay = new Button("Play");
+        btnPlay.getStyleClass().setAll("btn", "btn-success");
+        btnPlay.setOnAction((event) -> {
+            Director.getInstance().playAnimation();
+        });
+        Button btnPause = new Button("Pause");
+        btnPause.getStyleClass().setAll("btn", "btn-warning");
+        btnPause.setOnAction((event) -> {
+            Director.getInstance().pauseAnimation();
+        });
+        for (Button btn : new Button[]{btnPlay, btnPause}) {
+            btn.setPrefWidth((pane.getMaxWidth() - 3 * pane.getHgap()) / 2);
+            btn.setAlignment(Pos.CENTER);
+            pane.getChildren().add(btn);
+        }
+    }
+
+    /**
+     * Initializes the output box.
+     */
+    private void initializeOutputBox() {
+        // initialize panel body
+        ScrollPane pane = (ScrollPane)panelOutputBox.getPanelBody();
+        pane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        pane.setMinWidth(panelBodyWidth);
+        pane.setMaxWidth(panelBodyWidth);
+        pane.setPrefWidth(panelBodyWidth);
+        pane.setMinHeight(panelBodyHeight);
+        pane.setMaxHeight(panelBodyHeight);
+        pane.setPrefHeight(panelBodyHeight);
+        // initialize output box
+        outputBox = new TextFlow();
+        outputBox.setMinWidth(panelBodyWidth - 2 * padding + 2);
+        outputBox.setMinHeight(panelBodyHeight - 2 * padding + 2);
+        outputBox.getStyleClass().addAll("bg-default");
+        ((ScrollPane)panelOutputBox.getPanelBody()).setContent(outputBox);
+        // bind with the visualized data structure
+        visualDS.setOutputBox(outputBox);
     }
 
     /**
@@ -262,10 +292,11 @@ public class Controller extends Group {
     private void initializeBatchProcessor() {
         // get panel body
         FlowPane pane = (FlowPane)panelBatchProcessor.getPanelBody();
-        pane.setHgap(16);
-        pane.setVgap(16);
-        pane.setMinWidth(256);
-        pane.setMaxWidth(256);
+        pane.setHgap(padding);
+        pane.setVgap(padding);
+        pane.setMinWidth(panelBodyWidth);
+        pane.setMaxWidth(panelBodyWidth);
+        pane.setPrefWidth(panelBodyWidth);
         //
         TextArea textArea = new TextArea();
         textArea.setMinWidth(pane.getMinWidth() - 32 + 2);
@@ -322,7 +353,7 @@ public class Controller extends Group {
         });
         //
         Button btnReadFile = new Button("Read File");
-        btnReadFile.getStyleClass().setAll("btn", "btn-warning");
+        btnReadFile.getStyleClass().setAll("btn", "btn-info");
         btnReadFile.setAlignment(Pos.CENTER);
         btnReadFile.setOnAction((event) -> {
             FileChooser fileChooser = new FileChooser();

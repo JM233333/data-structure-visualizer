@@ -27,12 +27,10 @@ public class SceneVisualizer extends Scene {
      * Creates a SceneVisualizer with a specific size and a specific data structure that will be visualized.
      *
      * @param root The root node of the scene graph
-     * @param width The width of the scene
-     * @param height The height of the scene
      * @param visualDS The data structure that will be visualized
      */
-    public SceneVisualizer(BorderPane root, double width, double height, VisualizedDataStructure visualDS) {
-        super(root, width, height, Color.WHITE);
+    public SceneVisualizer(BorderPane root, VisualizedDataStructure visualDS) {
+        super(root, Color.WHITE);
         this.root = root;
         this.visualDS = visualDS;
         initialize();
@@ -57,6 +55,9 @@ public class SceneVisualizer extends Scene {
         for (Parent p : new Parent[]{controller, monitor, codeTracker, menu}) {
             p.getStyleClass().addAll("panel", "panel-primary");
         }
+        widthProperty().addListener((ov, t, t1) -> {
+            System.out.println("Window Size Change:" + t.toString() + "," + t1.toString());
+        });
     }
 
     /**
@@ -64,11 +65,11 @@ public class SceneVisualizer extends Scene {
      */
     private void initializeCSS() {
         Class cls = this.getClass();
-        this.getStylesheets().add(cls.getResource("/lib/bootstrapfx.css").toExternalForm());
-        this.getStylesheets().add(cls.getResource("/jm233333/css/_common.css").toExternalForm());
+        this.getStylesheets().add(cls.getResource("/css/bootstrapfx.css").toExternalForm());
+        this.getStylesheets().add(cls.getResource("/css/_common.css").toExternalForm());
         String fullName = cls.getName();
         String lastName = fullName.substring(fullName.lastIndexOf('.') + 1);
-        this.getStylesheets().add(cls.getResource("/jm233333/css/" + lastName + ".css").toExternalForm());
+        this.getStylesheets().add(cls.getResource("/css/" + lastName + ".css").toExternalForm());
     }
 
     private void initializeMonitor() {

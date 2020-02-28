@@ -202,6 +202,18 @@ public class Director {
     }
 
     /**
+     *
+     */
+    public void forceClearAllAnimation() {
+        animationWaitingList.clear();
+        animationPlayingList.get(animationCurrentIndex).stop();
+        animationPlayingList.clear();
+        animationCurrentIndex = -1;
+        animationPlayingProperty().setValue(false);
+        stepPointSet.clear();
+    }
+
+    /**
      * a {@code BooleanProperty} that represents the animation status.
      * means PLAYING when the value is {@code true}, or PAUSED while {@code false}.
      */

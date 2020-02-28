@@ -27,7 +27,7 @@ public class Visual extends Group {
      */
     private void initializeCSS() {
         Class cls = this.getClass();
-        this.getStylesheets().add(cls.getResource("/jm233333/css/Visual.css").toExternalForm());
+        this.getStylesheets().add(cls.getResource("/css/Visual.css").toExternalForm());
     }
 
     public void setName(String name) {

@@ -39,7 +39,6 @@ public class Monitor extends Pane {
      */
     public Monitor() {
         // initialize
-        this.getStylesheets().add(this.getClass().getResource("/jm233333/css/Monitor.css").toExternalForm());
         this.setId("monitor");
         // initialize canvas
         canvas = new Group();
