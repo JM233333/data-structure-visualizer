@@ -28,9 +28,7 @@ public class Director {
             MIN_ANIMATION_RATE = UNIT_ANIMATION_RATE,
             MAX_ANIMATION_RATE = 15 * UNIT_ANIMATION_RATE,
             DEFAULT_ANIMATION_RATE = 500;
-    /**
-     * animation waiting list.
-     */
+
     private ArrayList<Timeline> animationWaitingList, animationPlayingList;
     private int animationCurrentIndex;
     private BooleanProperty animationPlayingProperty;
@@ -86,6 +84,12 @@ public class Director {
      */
     public final Stage getPrimaryStage() {
         return primaryStage;
+    }
+
+    public final String getRootPath() {
+        String pathJar = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+//        return pathJar.substring(0, pathJar.lastIndexOf('/') + 1);
+        return "/F:/Java/DataStructureVisualizer/";
     }
 
     /**

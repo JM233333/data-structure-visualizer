@@ -1,6 +1,7 @@
-package jm233333.visualized;
+package custom.visualized;
 
 import javafx.util.Pair;
+import jm233333.visualized.VisualizedDataStructure;
 import jm233333.Director;
 import jm233333.ui.CodeTracker;
 
@@ -26,7 +27,7 @@ public class VisualizedQueue extends VisualizedDataStructure {
     }
 
     @Override
-    void createVisual() {
+    public void createVisual() {
         createVisualArray(getName(), data.length, new Pair<>("front", 0), new Pair<>("back", 0));
     }
 

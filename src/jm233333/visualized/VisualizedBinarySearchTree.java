@@ -25,7 +25,7 @@ public class VisualizedBinarySearchTree extends VisualizedDataStructure {
     }
 
     @Override
-    void createVisual() {
+    public void createVisual() {
         createVisualBST(getName());
     }
 

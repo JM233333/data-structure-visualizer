@@ -14,9 +14,13 @@ import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
+import com.sun.tools.javac.api.JavacTool;
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Arrays;
 
 /**
@@ -25,6 +29,7 @@ import java.util.Arrays;
  */
 public class SceneMenu extends Scene {
 
+    private static boolean isStarted = false;
     private FlowPane root;
     private ScrollBar scrollBar;
 
@@ -48,6 +53,7 @@ public class SceneMenu extends Scene {
         scrollBar = new ScrollBar();
         root.getChildren().add(scrollBar);
         initializeList();
+        isStarted = true;
     }
     private void initializeList() {
 //        File file = new File(".");
@@ -86,21 +92,25 @@ public class SceneMenu extends Scene {
             classType = Class.forName("jm233333.visualized." + className);
         } catch (ClassNotFoundException ex) {
             try {
-                root.getChildren().add(new Label("GG"));
-//                if (!new File("./custom/visualized/" + className + ".java").exists()) {
-//                    throw new IOException();
-//                }
-                JavaCompiler javac = ToolProvider.getSystemJavaCompiler();
-                int status = javac.run(null, null, null,
-                        "-d",
-                        this.getClass().getResource("/").getPath(),
-                        "custom/visualized/" + className + ".java"
-                );
-                classType = Class.forName("jm233333.visualized." + className);
-                root.getChildren().add(new Label(classType.getName()));
-                return;
-            } catch (ClassNotFoundException e) {
-                root.getChildren().add(new Label(e.getClass().getName()));
+                String rootPath = Director.getInstance().getRootPath();
+                if (!new File(rootPath + "custom/visualized/" + className + ".java").exists()) {
+                    root.getChildren().add(new Label("FILE NOT FOUND " + className));
+                    return;
+                }
+//                JavaCompiler javac = ToolProvider.getSystemJavaCompiler();
+                if (!isStarted) {
+                    JavaCompiler javac = new JavacTool();
+                    int status = javac.run(null, null, null, "custom/visualized/" + className + ".java", "-parameters");
+                    if (status != 0) {
+                        root.getChildren().add(new Label("COMPILE ERROR for " + className));
+                        return;
+                    }
+                }
+                URL url = new URL("file:/" + rootPath);
+                URLClassLoader classLoader = new URLClassLoader(new URL[]{url});
+                classType = classLoader.loadClass("custom.visualized." + className);
+            } catch (ClassNotFoundException | MalformedURLException e) {
+                root.getChildren().add(new Label(e.getClass().getName() + " " + e.getMessage()));
                 return;
             }
 

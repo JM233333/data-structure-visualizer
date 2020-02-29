@@ -1,0 +1,78 @@
+@startuml demo
+
+set namespaceSeparator ::
+
+namespace ui {
+
+    class SceneMenu
+
+    class SceneVisualizer
+    
+    class Monitor #wheat
+
+    class CodeTracker #wheat
+
+    class Controller #wheat
+    class MethodTrigger
+
+    SceneVisualizer *- Controller
+    SceneVisualizer *-- Monitor
+    SceneVisualizer *-- CodeTracker
+    Controller *- MethodTrigger
+
+}
+
+namespace visualized {
+
+    abstract class VisualizedDataStructure #wheat
+
+    VisualizedDataStructure --|> VisualizedStack
+    VisualizedDataStructure --|> VisualizedQueue
+    VisualizedDataStructure --|> VisualizedList
+    VisualizedDataStructure --|> VisualizedBinarySearchTree
+}
+
+namespace visual {
+
+    abstract class Visual
+
+    abstract class VisualNode
+
+    class VisualArray
+
+    Visual --|> VisualNode
+    Visual --|> VisualArray
+    Visual --|> VisualList
+    Visual --|> VisualBinaryTree
+
+    VisualNode --|> VisualArrayNode
+    VisualNode --|> VisualListNode
+    VisualNode --|> VisualTreeNode
+
+    VisualArray *-- VisualArrayNode
+    VisualList *-- VisualListNode
+    VisualBinaryTree *-- VisualTreeNode
+}
+
+namespace custom {
+}
+
+class Main
+
+class Director
+
+Main o-- ui::SceneMenu
+Main o-- ui::SceneVisualizer
+
+ui::SceneVisualizer *-- visualized::VisualizedDataStructure
+ui::Controller -down-> visualized::VisualizedDataStructure
+visualized::VisualizedDataStructure -up-> ui::Monitor
+visualized::VisualizedDataStructure -up-> ui::CodeTracker
+
+ui::Monitor *--- visual::Visual
+
+visualized::VisualizedDataStructure -left[hidden]-> visual::Visual
+
+visualized::VisualizedDataStructure -right-|> custom::VisualizedXXX
+
+@enduml

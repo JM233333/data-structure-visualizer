@@ -23,7 +23,7 @@ namespace ui {
         ..
         - VisualDataStructure visualDS
         --
-        + SceneVisualizer(BorderPane root, double width, double height, VisualDataStructure visualDS)
+        + SceneVisualizer(BorderPane root, double width, double height, VisualizedDataStructure visualDS)
         - void initialize()
         - void initializeCSS()
         - void initializeMonitor()
@@ -41,7 +41,6 @@ namespace ui {
         - HashMap<String, String> mapIndexFieldConnection
         --
         + Monitor()
-        - void initializeCSS()
         ..
         + final Visual getVisual(String name)
         + final Visual getVisualByIndexFieldName(String name)
@@ -49,7 +48,7 @@ namespace ui {
         + void createVisualArray(String name, int n)
         + void addIndexFieldConnection(String name, String nameArray)
         + void createVisualList(String name)
-        + void createVisualBinaryTree(String name)
+        + void createVisualBST(String name)
     }
 
     class CodeTracker #wheat {
@@ -67,7 +66,6 @@ namespace ui {
         - int currentLineIndex
         --
         + CodeTracker()
-        - void initializeCSS()
         ..
         + void readFile(final String name)
         ..
@@ -95,12 +93,14 @@ namespace ui {
         + Controller(VisualDataStructure visualDS)
         - void initializeMethodTriggers()
         - void initializeAnimationControllers()
-        ..
-        + final TextFlow getOutputBox()
+        - void initializeOutputBox()
+        - void initializeBatchProcessor()
     }
     class MethodTrigger {
         extends HBox
         --
+        - {static} static final double HEIGHT
+        ..
         - String name
         - Button button
         ..
@@ -127,6 +127,7 @@ namespace visualized {
 
     abstract class VisualizedDataStructure #wheat {
         - String name
+        - Mode mode
         ..
         - ui::Monitor monitor
         - ui::CodeTracker codeTracker
@@ -142,28 +143,31 @@ namespace visualized {
         ..
         + void outputMessage(String message)
         ..
-        ~ {abstract} abstract void createVisual()
-        ~ void createVisualArray(String name, int n, Pair<String, Integer>... indexFields)
-        ~ void createVisualIndexField(String nameArray, Pair<String, Integer> indexField)
-        ~ void createVisualList(String name, Pair<String, Integer>... indexFields)
-        ~ final VisualArray getVisualArray(String name)
-        ~ final VisualList getVisualList(String name)
+        + {abstract} abstract void createVisual()
+        + void createVisualArray(String name, int n, Pair<String, Integer>... indexFields)
+        + void createVisualIndexField(String nameArray, Pair<String, Integer> indexField)
+        + void createVisualList(String name)
+        + void createVisualBST(String name)
+        + final VisualArray getVisualArray(String name)
+        + final VisualList getVisualList(String name)
+        + final VisualBinarySearchTree getVisualBST(String name)
         ..
         + void setName(String name)
         + final String getName()
+        ..
+        + void setMode(Mode mode)
+        + final Mode getMode()
+        + final Class<? extends Mode> getModeClass()
         ..
         + void setMonitor(Monitor monitor)
         + void setCodeTracker(CodeTracker codeTracker)
         + void setOutputBox(TextFlow outputBox)
     }
-    class VisualizedStack {
-        ;
-    }
 
-    VisualizedDataStructure --|> VisualizedLinkedList
     VisualizedDataStructure --|> VisualizedStack
     VisualizedDataStructure --|> VisualizedQueue
-    VisualizedDataStructure --|> VisualizedTree
+    VisualizedDataStructure --|> VisualizedList
+    VisualizedDataStructure --|> VisualizedBinarySearchTree
 }
 
 namespace visual {
@@ -229,6 +233,9 @@ namespace visual {
     VisualBinaryTree *-- VisualTreeNode
 }
 
+namespace custom {
+}
+
 class Main {
     + void start(Stage primaryStage)
     + {static} static void main(String[] args)
@@ -236,24 +243,47 @@ class Main {
 
 class Director {
     - {static} static Director instance
+    ..
     - Stage primaryStage
+    ..
+    - {static} static final double UNIT_ANIMATION_RATE
+    - {static} static final double MIN_ANIMATION_RATE
+    - {static} static final double MAX_ANIMATION_RATE
+    - {static} static final double DEFAULT_ANIMATION_RATE
+    ..
     - ArrayList<Timeline> animationWaitingList
     - ArrayList<Timeline> animationPlayingList
     - BooleanProperty animationPlayingProperty
+    - double animationRate
+    - HashSet<Integer> stepPointSet
+    - boolean isSingleStep
+    --
     - Director()
     + {static} static Director getInstance()
     + void initialize(Stage primaryStage)
+    ..
     + void setPrimaryStage(Stage primaryStage)
     + final Stage getPrimaryStage()
+    ..
+    + final String getRootPath()
+    ..
+    + <T> void createAnimation(double deltaTime, WritableValue<T> property, T value)
+    + <T> void updateAnimation(double deltaTime, WritableValue<T> property, T value)
+    + void createAnimationText(Text text, String str)
+    ..
     + void addTimeline(Timeline timeline)
+    + void addEmptyTimeline()
     + final Timeline getLastTimeline()
     + void playAnimation()
+    + void pauseAnimation()
+    + void forceClearAllAnimation()
     + final BooleanProperty animationPlayingProperty()
     + boolean isAnimationPlaying()
-
-    + {static} static <T> void createAnimation(double deltaTime, WritableValue<T> property, T value)
-    + {static} static <T> void updateAnimation(double deltaTime, WritableValue<T> property, T value)
-    + {static} static void createAnimationText(Text text, String str)
+    + void addStepPoint()
+    + void setSingleStep(boolean flag)
+    + boolean isSingleStep()
+    + void setAnimationRate(double rate)
+    + double getAnimationRate()
 }
 
 Main o-- ui::SceneMenu
@@ -267,5 +297,7 @@ visualized::VisualizedDataStructure -up-> ui::CodeTracker
 ui::Monitor *--- visual::Visual
 
 visualized::VisualizedDataStructure -left[hidden]-> visual::VisualArray
+
+visualized::VisualizedDataStructure -right-|> custom::VisualizedXXX
 
 @enduml

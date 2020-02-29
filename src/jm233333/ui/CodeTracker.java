@@ -144,8 +144,4 @@ public class CodeTracker extends ScrollPane {
         }
         return getLine(currentLineIndex);
     }
-
-    public double gh() {
-        return ((Text)codeBoard.getChildren().get(0)).getLayoutBounds().getWidth();
-    }
 }

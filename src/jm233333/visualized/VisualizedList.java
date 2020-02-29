@@ -26,7 +26,7 @@ public class VisualizedList extends VisualizedDataStructure {
     }
 
     @Override
-    void createVisual() {
+    public void createVisual() {
         createVisualList(getName());
     }
 

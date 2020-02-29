@@ -25,7 +25,7 @@ public class VisualizedStack extends VisualizedDataStructure {
     }
 
     @Override
-    void createVisual() {
+    public void createVisual() {
         createVisualArray(getName(), data.length, new Pair<>("top", 0));
     }
 

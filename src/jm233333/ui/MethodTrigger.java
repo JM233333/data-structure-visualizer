@@ -15,7 +15,7 @@ import javafx.scene.control.*;
  */
 public class MethodTrigger extends HBox {
 
-    private final double HEIGHT = 36;
+    private static final double HEIGHT = 36;
 
     private String name;
     private Button button;

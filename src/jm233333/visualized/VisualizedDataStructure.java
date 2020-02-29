@@ -112,32 +112,32 @@ public abstract class VisualizedDataStructure {
     /**
      * Creates graphic components of the visualized data structure for displaying.
      */
-    abstract void createVisual();
+    public abstract void createVisual();
 
-    void createVisualArray(String name, int n, Pair<String, Integer>... indexFields) {
+    public void createVisualArray(String name, int n, Pair<String, Integer>... indexFields) {
         monitor.createVisualArray(name, n);
         for (Pair<String, Integer> indexField : indexFields) {
             createVisualIndexField(name, indexField);
         }
     }
-    void createVisualIndexField(String nameArray, Pair<String, Integer> indexField) {
+    public void createVisualIndexField(String nameArray, Pair<String, Integer> indexField) {
         getVisualArray(nameArray).addIndexField(indexField.getKey(), indexField.getValue());
         monitor.addIndexFieldConnection(indexField.getKey(), nameArray);
     }
-    void createVisualList(String name) {//, Pair<String, Integer>... indexFields) {
+    public void createVisualList(String name) {//, Pair<String, Integer>... indexFields) {
         monitor.createVisualList(name);
     }
-    void createVisualBST(String name) {
+    public void createVisualBST(String name) {
         monitor.createVisualBST(name);
     }
 
-    final VisualArray getVisualArray(String name) {
+    public final VisualArray getVisualArray(String name) {
         return (VisualArray)monitor.getVisual(name);
     }
-    final VisualList getVisualList(String name) {
+    public final VisualList getVisualList(String name) {
         return (VisualList)monitor.getVisual(name);
     }
-    final VisualBinarySearchTree getVisualBST(String name) {
+    public final VisualBinarySearchTree getVisualBST(String name) {
         return (VisualBinarySearchTree)monitor.getVisual(name);
     }
 
