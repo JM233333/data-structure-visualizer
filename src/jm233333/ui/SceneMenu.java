@@ -7,6 +7,7 @@ import javafx.scene.control.ScrollBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import jm233333.Director;
 import jm233333.visualized.VisualizedDataStructure;
 
@@ -50,6 +51,10 @@ public class SceneMenu extends Scene {
      * Initializes the SceneMenu.
      */
     private void initialize() {
+        // load font resources
+        Font.loadFont(getClass().getResourceAsStream("/font/PT-Sans.ttf"), 12);
+        Font.loadFont(getClass().getResourceAsStream("/font/PT-Sans-Bold.ttf"), 12);
+        //
         scrollBar = new ScrollBar();
         root.getChildren().add(scrollBar);
         initializeList();
