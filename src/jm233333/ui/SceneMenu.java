@@ -55,6 +55,8 @@ public class SceneMenu extends Scene {
         Font.loadFont(getClass().getResourceAsStream("/font/PT-Sans.ttf"), 12);
         Font.loadFont(getClass().getResourceAsStream("/font/PT-Sans-Bold.ttf"), 12);
         //
+        this.getStylesheets().add(this.getClass().getResource("/css/bootstrapfx.css").toExternalForm());
+        //
         scrollBar = new ScrollBar();
         root.getChildren().add(scrollBar);
         initializeList();
@@ -113,6 +115,8 @@ public class SceneMenu extends Scene {
                 }
                 URL url = new URL("file:/" + rootPath);
                 URLClassLoader classLoader = new URLClassLoader(new URL[]{url});
+                System.out.println(url.toExternalForm());
+                System.out.println(url.getPath());
                 classType = classLoader.loadClass("custom.visualized." + className);
             } catch (ClassNotFoundException | MalformedURLException e) {
                 root.getChildren().add(new Label(e.getClass().getName() + " " + e.getMessage()));

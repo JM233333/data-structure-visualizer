@@ -87,7 +87,8 @@ public class Director {
     }
 
     public final String getRootPath() {
-        String pathJar = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        String pathJar = Main.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        System.out.println(pathJar);
         return pathJar.substring(0, pathJar.lastIndexOf('/') + 1);
 //        return "/F:/Java/DataStructureVisualizer/";
     }
