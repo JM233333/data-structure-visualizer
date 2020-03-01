@@ -41,7 +41,7 @@ public abstract class VisualizedDataStructure {
     private TextFlow outputBox = null;
 
     /**
-     * Records all relationships of (index field -> array).
+     * Records all relationships of (index field, array).
      *
      * key: name of the index field
      * value: reference to the array that the index field points to

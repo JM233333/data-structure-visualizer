@@ -1,2 +1,4 @@
-out/
 .idea/
+__artifacts_temp/
+doc/
+out/

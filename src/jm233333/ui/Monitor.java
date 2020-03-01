@@ -27,7 +27,7 @@ public class Monitor extends Pane {
     private HashMap<String, Visual> mapVisual;
 
     /**
-     * Records all relationships of (index field -> array).
+     * Records all relationships of (index field, array).
      *
      * key: name of the index field
      * value: name of the array that the index field points to

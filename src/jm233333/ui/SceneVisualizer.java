@@ -106,6 +106,7 @@ public class SceneVisualizer extends Scene {
         // initialize buttons
         Button buttonBack = new Button("Return Menu");
         buttonBack.setOnAction((event) -> {
+            Director.getInstance().forceClearAllAnimation();
             Scene scene = new SceneMenu(new FlowPane(), 1024, 768);
             Director.getInstance().getPrimaryStage().setScene(scene);
         });

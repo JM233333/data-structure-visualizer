@@ -93,16 +93,16 @@ public class SceneMenu extends Scene {
         } catch (ClassNotFoundException ex) {
             try {
                 String rootPath = Director.getInstance().getRootPath();
-                if (!new File(rootPath + "custom/visualized/" + className + ".java").exists()) {
-                    root.getChildren().add(new Label("FILE NOT FOUND " + className));
-                    return;
-                }
+//                if (!new File(rootPath + "custom/visualized/" + className + ".java").exists()) {
+//                    root.getChildren().add(new Label("FILE NOT FOUND " + className));
+//                    return;
+//                }
 //                JavaCompiler javac = ToolProvider.getSystemJavaCompiler();
                 if (!isStarted) {
                     JavaCompiler javac = new JavacTool();
                     int status = javac.run(null, null, null, "custom/visualized/" + className + ".java", "-parameters");
                     if (status != 0) {
-                        root.getChildren().add(new Label("COMPILE ERROR for " + className));
+                        root.getChildren().add(new Label("COMPILE ERROR " + className));
                         return;
                     }
                 }

@@ -206,12 +206,16 @@ public class Director {
     }
 
     /**
-     *
+     * Clear all cached animation info in force.
      */
     public void forceClearAllAnimation() {
         animationWaitingList.clear();
-        animationPlayingList.get(animationCurrentIndex).stop();
-        animationPlayingList.clear();
+        if (isAnimationPlaying() && animationCurrentIndex != -1) {
+            animationPlayingList.get(animationCurrentIndex).stop();
+        }
+        if (animationPlayingList != null) {
+            animationPlayingList.clear();
+        }
         animationCurrentIndex = -1;
         animationPlayingProperty().setValue(false);
         stepPointSet.clear();

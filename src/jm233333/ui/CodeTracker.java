@@ -10,10 +10,7 @@ import javafx.scene.text.TextFlow;
 
 import jm233333.Director;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 
 /**
@@ -63,13 +60,9 @@ public class CodeTracker extends ScrollPane {
         BufferedReader in;
         try {
             in = new BufferedReader(new FileReader("custom/code/" + name + ".cpp"));
-        } catch (FileNotFoundException ex) {
-            try {
-                in = new BufferedReader(new FileReader(this.getClass().getResource("/default/code/" + name + ".cpp").getFile()));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                return;
-            }
+        } catch (FileNotFoundException e) {
+            in = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/default/code/" + name + ".cpp")));
+//                in = new BufferedReader(new FileReader(this.getClass().getResource("/default/code/" + name + ".cpp").getFile()));
         }
         try {
             for (int row = 0; in.ready(); row ++) {
