@@ -7,6 +7,8 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.BooleanPropertyBase;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.IntegerPropertyBase;
 import javafx.beans.value.WritableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,6 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import jm233333.visualized.VDSInstantiation;
 
 /**
  * The {@code Director} class is a singleton class that maintains global data and controls the overall program.
@@ -23,6 +26,12 @@ public class Director {
     private static Director instance = new Director();
 
     private Stage primaryStage;
+
+    private ArrayList<String> menuItemsList;
+    private HashMap<String, VDSInstantiation> vdsInstantiationMap;
+    private HashMap<String, ArrayList<String>> vdsCodeMap;
+    private IntegerProperty loadingProgressProperty;
+    private int maxLoadingProgress;
 
     public static final double UNIT_ANIMATION_RATE = 100,
             MIN_ANIMATION_RATE = UNIT_ANIMATION_RATE,
@@ -41,6 +50,13 @@ public class Director {
      */
     private Director() {
         primaryStage = null;
+
+        menuItemsList = new ArrayList<>();
+        vdsInstantiationMap = new HashMap<>();
+        vdsCodeMap = new HashMap<>();
+        loadingProgressProperty().setValue(0);
+        maxLoadingProgress = 1;
+
         animationWaitingList = new ArrayList<>();
         animationPlayingList = null;
         animationCurrentIndex = -1;
@@ -86,11 +102,61 @@ public class Director {
         return primaryStage;
     }
 
+    public void addMenuItem(final String item) {
+        menuItemsList.add(item);
+    }
+    public final ArrayList<String> getMenuItems() {
+        return menuItemsList;
+    }
+    public final HashMap<String, VDSInstantiation> getVDSInstantiationMap() {
+        return vdsInstantiationMap;
+    }
+    public final HashMap<String, ArrayList<String>> getVdsCodeMap() {
+        return vdsCodeMap;
+    }
+
     public final String getRootPath() {
         String pathJar = Main.class.getProtectionDomain().getCodeSource().getLocation().getFile();
-        System.out.println(pathJar);
-        return pathJar.substring(0, pathJar.lastIndexOf('/') + 1);
-//        return "/F:/Java/DataStructureVisualizer/";
+//        return pathJar.substring(0, pathJar.lastIndexOf('/') + 1);
+        return "F:/Java/DataStructureVisualizer/";
+    }
+
+    /**
+     * a {@code BooleanProperty} that represents the animation status.
+     * means PLAYING when the value is {@code true}, or PAUSED while {@code false}.
+     */
+    public final IntegerProperty loadingProgressProperty() {
+        if (loadingProgressProperty == null) {
+            loadingProgressProperty = new IntegerPropertyBase(0) {
+                @Override
+                public Object getBean() {
+                    return this;
+                }
+                @Override
+                public String getName() {
+                    return "loadingProgress";
+                }
+            };
+        }
+        return loadingProgressProperty;
+    }
+
+    public void setMaxLoadingProgress(int maxLoadingProgress) {
+        System.out.println("ADDED MAX " + maxLoadingProgress);
+        this.maxLoadingProgress = maxLoadingProgress;
+    }
+    public int getMaxLoadingProgress() {
+        return maxLoadingProgress;
+    }
+    public boolean isAllLoaded() {
+        return (loadingProgressProperty().getValue() == maxLoadingProgress);
+    }
+
+    public double getLoadingProgress() {
+        if (maxLoadingProgress == 0) {
+            return 0.0;
+        }
+        return ((double)loadingProgressProperty().getValue() / maxLoadingProgress);
     }
 
     /**
@@ -106,6 +172,12 @@ public class Director {
         assert timeline != null;
         KeyValue keyValue = new KeyValue(property, value);
         KeyFrame keyFrame = new KeyFrame(Duration.millis(Director.getInstance().getAnimationRate() * timeScaleRate), keyValue);
+        timeline.getKeyFrames().add(keyFrame);
+    }
+    public void createDelayInvocation(double delay, final EventHandler<ActionEvent> eventHandler) {
+        addEmptyTimeline();
+        Timeline timeline = Director.getInstance().getLastTimeline();
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(delay), eventHandler);
         timeline.getKeyFrames().add(keyFrame);
     }
     public void createAnimationText(Text text, String str) {

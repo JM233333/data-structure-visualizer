@@ -1,5 +1,6 @@
 package jm233333.ui;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
@@ -10,7 +11,7 @@ import javafx.scene.text.TextFlow;
 
 import jm233333.Director;
 
-import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -56,31 +57,24 @@ public class CodeTracker extends ScrollPane {
         // clear
         codeBoard.getChildren().clear();
         mapEntrance.clear();
-        // read from the source file
-        BufferedReader in;
-        try {
-            in = new BufferedReader(new FileReader("custom/code/" + name + ".cpp"));
-        } catch (FileNotFoundException e) {
-            in = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/default/code/" + name + ".cpp")));
-//                in = new BufferedReader(new FileReader(this.getClass().getResource("/default/code/" + name + ".cpp").getFile()));
+        // process the code text
+        ArrayList<String> codeList = Director.getInstance().getVdsCodeMap().get(name);
+        if (codeList == null) {
+            System.err.println("Native Code File Not Found for " + name);
+            return;
         }
-        try {
-            for (int row = 0; in.ready(); row ++) {
-                // read a line from the source file and split it as []{code, entrance}
-                String delimiter = "//#/";
-                String[] args = in.readLine().split("\\s*" + delimiter + "\\s*", 2);
-                // add code text
-                Text text = new Text(args[0] + "\n");
-                text.getStyleClass().add("code");
-                codeBoard.getChildren().add(text);
-                // set entrance
-                if (args.length > 1) {
-                    mapEntrance.put(args[1], row);
-                }
+        for (int i = 0; i < codeList.size(); i ++) {
+            // read a line from the source file and split it as []{code, entrance}
+            String delimiter = "//#/";
+            String[] args = codeList.get(i).split("\\s*" + delimiter + "\\s*", 2);
+            // add code text
+            Text text = new Text(args[0] + "\n");
+            text.getStyleClass().add("code");
+            codeBoard.getChildren().add(text);
+            // set entrance
+            if (args.length > 1) {
+                mapEntrance.put(args[1], i);
             }
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
     public void setCurrentMethod(String nMethod) {
@@ -102,7 +96,11 @@ public class CodeTracker extends ScrollPane {
             setCurrentLineIndex(mapEntrance.get(name));
         }
     }
-    public void setCurrentLineIndex(int nLineIndex) {
+    public void setCurrentLineIndex(Integer nLineIndex) {
+        if (nLineIndex == null || nLineIndex < 0 || nLineIndex >= codeBoard.getChildren().size()) {
+            System.err.println("Code Tracking Error for Line " + nLineIndex);
+            return;
+        }
         if (currentLineIndex != nLineIndex) {
             // update current line index
             final Text prvCurrentLine = getCurrentLine();

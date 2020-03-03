@@ -1,12 +1,11 @@
 package jm233333;
 
 import javafx.application.Application;
-import javafx.scene.*;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import jm233333.ui.SceneMenu;
-import jm233333.ui.SceneTest;
+import jm233333.ui.SceneLoading;
 
 /**
  * The {@code Main} class includes the entrance and the main process of the application.
@@ -19,18 +18,14 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         // load font resources
-//        Font.loadFont(getClass().getResourceAsStream("/font/PT-Sans.ttf"), 12);
-//        Font.loadFont(getClass().getResourceAsStream("/font/PT-Sans-Bold.ttf"), 12);
+        Font.loadFont(getClass().getResourceAsStream("/font/PT-Sans.ttf"), 12);
+        Font.loadFont(getClass().getResourceAsStream("/font/PT-Sans-Bold.ttf"), 12);
         // initialize director
         Director.getInstance().setPrimaryStage(primaryStage);
-        // initialize data structure
-//        VisualizedDataStructure visualDS = new VisualizedStack(10);
         // initialize scene
-//        BorderPane root = new BorderPane();
-//        Scene scene = new SceneVisualizer(root, 1024, 768, visualDS);
-        Scene scene = new SceneTest(new FlowPane(), 1200, 800);
+        Scene scene = new SceneLoading(new VBox(), 1200, 800);
         // initialize stage
-        primaryStage.setTitle("Data Structure Visualizer (under development)");
+        primaryStage.setTitle("Data Structure Visualizer v0.1 (under development)");
         primaryStage.setScene(scene);
         primaryStage.show();
         //

@@ -2,6 +2,13 @@
   -fx-background-color: #fff;
 }
 
+.progress-bar {
+  -fx-border-style: solid;
+  -fx-border-width: 2px;
+  -fx-border-color: #cdcdcd;
+  -fx-border-radius: .25em;
+}
+
 .text-field, .text-area {
   -fx-font-size: 14px;
   -fx-fill: #fff;

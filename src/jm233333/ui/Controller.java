@@ -210,7 +210,7 @@ public class Controller extends Group {
         pane.getChildren().add(vBoxRate);
         final Label labelRate = new Label("Animation Rate : ");
         vBoxRate.getChildren().add(labelRate);
-        Slider slider = new Slider(Director.MIN_ANIMATION_RATE, Director.MAX_ANIMATION_RATE, Director.DEFAULT_ANIMATION_RATE);
+        Slider slider = new Slider(Director.MIN_ANIMATION_RATE, Director.MAX_ANIMATION_RATE, Director.getInstance().getAnimationRate());
         slider.setPrefWidth(panelBodyWidth - 3 * padding - 2);
         slider.setShowTickLabels(false);
         slider.setShowTickMarks(true);
