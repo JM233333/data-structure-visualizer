@@ -8,7 +8,6 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 
 import jm233333.Director;
-import jm233333.ui.PanelConsole;
 import jm233333.visualized.VDSInstantiation;
 
 import javax.tools.JavaCompiler;
@@ -72,7 +71,7 @@ public class ResourceReader {
             try {
                 vdsClassType = Class.forName("jm233333.visualized." + vdsClassName);
             } catch (ClassNotFoundException e) {
-                System.err.println(e.getMessage());
+                System.err.println("Class " + e.getMessage() + " Not Found");
                 return;
             }
         }
@@ -103,7 +102,9 @@ public class ResourceReader {
     private void getCustomVDSClassType(final String vdsClassName) {
 //        JavaCompiler javac = ToolProvider.getSystemJavaCompiler();
         JavaCompiler javac = new JavacTool();
-        int status = javac.run(null, null, null, "custom/visualized/" + vdsClassName + ".java", "-parameters");
+        OutputStream _out = new ByteArrayOutputStream();
+        OutputStream _err = new ByteArrayOutputStream();
+        int status = javac.run(null, _out, _err, "custom/visualized/" + vdsClassName + ".java", "-parameters");
         if (status == 2) {
             System.err.println("Java Source File Not Found for class " + vdsClassName);
         } else if (status != 0) {

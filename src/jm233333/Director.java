@@ -25,6 +25,7 @@ public class Director {
 
     private static Director instance = new Director();
 
+    private final boolean isJar = Main.class.getResource("Main.class").toString().startsWith("jar");
     private Stage primaryStage;
 
     private ArrayList<String> menuItemsList;
@@ -116,8 +117,11 @@ public class Director {
     }
 
     public final String getRootPath() {
-        String pathJar = Main.class.getProtectionDomain().getCodeSource().getLocation().getFile();
-//        return pathJar.substring(0, pathJar.lastIndexOf('/') + 1);
+        if (isJar) {
+            String pathJar = Main.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+            return pathJar.substring(0, pathJar.lastIndexOf('/') + 1);
+        }
+        // debug
         return "F:/Java/DataStructureVisualizer/";
     }
 

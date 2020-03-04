@@ -51,13 +51,13 @@ public class SceneVisualizer extends Scene {
         initializeCodeTracker(); // right
         initializeController();  // bottom
         initializeMenu();        // top
-        //
+        // set common style class
         for (Parent p : new Parent[]{controller, monitor, codeTracker, menu}) {
             p.getStyleClass().addAll("panel", "panel-primary");
         }
-        widthProperty().addListener((ov, t, t1) -> {
-            System.out.println("Window Size Change:" + t.toString() + "," + t1.toString());
-        });
+//        widthProperty().addListener((ov, t, t1) -> {
+//            System.out.println("Window Size Change:" + t.toString() + "," + t1.toString());
+//        });
     }
 
     /**
