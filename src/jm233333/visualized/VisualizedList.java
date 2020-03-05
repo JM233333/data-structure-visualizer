@@ -97,6 +97,7 @@ public class VisualizedList extends VisualizedDataStructure {
     public void erase(int index) {
         // special judge
         if (index <= 0) {
+            trackCodeMethodBeginning("popFront");
             popFront();
             return;
         }

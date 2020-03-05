@@ -2,7 +2,15 @@
 
 set namespaceSeparator ::
 
+namespace io {
+    class ResourceReader
+
+    ui::SceneLoading -left-> ResourceReader
+}
+
 namespace ui {
+
+    class SceneLoading
 
     class SceneMenu
 
@@ -14,6 +22,9 @@ namespace ui {
 
     class Controller #wheat
     class MethodTrigger
+
+    SceneLoading -right[hidden]-> SceneMenu
+    SceneMenu -right[hidden]-> SceneVisualizer
 
     SceneVisualizer *- Controller
     SceneVisualizer *-- Monitor
@@ -61,6 +72,7 @@ class Main
 
 class Director
 
+Main o-- ui::SceneLoading
 Main o-- ui::SceneMenu
 Main o-- ui::SceneVisualizer
 

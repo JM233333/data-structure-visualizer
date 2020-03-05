@@ -52,7 +52,6 @@ public class SceneLoading extends Scene {
         root.getChildren().add(button);
         // set progress listener
         final ChangeListener<Number> changeListener = (observable, oldValue, newValue) -> {
-            System.out.println("PROGRESS " + newValue.toString());
             // update progress bar
             progressBar.setProgress(Director.getInstance().getLoadingProgress());
             // check if resource-loading is finished

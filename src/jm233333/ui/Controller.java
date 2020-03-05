@@ -81,7 +81,6 @@ public class Controller extends Group {
             for (PanelConsole iPanel : panels) {
                 sumWidth += iPanel.widthProperty().getValue();
             }
-            System.out.println(sumWidth);
             Director.getInstance().getPrimaryStage().minWidthProperty().setValue(sumWidth);
             Director.getInstance().getPrimaryStage().maxWidthProperty().setValue(sumWidth);
         });

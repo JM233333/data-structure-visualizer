@@ -22,6 +22,8 @@ public class CodeTracker extends ScrollPane {
     public static final String NEXT_LINE = "__next";
     public static final String REMAIN = "__remain";
 
+    private final double padding = 16;
+
     private Group contentRoot;
     private TextFlow codeBoard;
     private Polygon currentLineSymbol;
@@ -39,7 +41,7 @@ public class CodeTracker extends ScrollPane {
         this.setContent(contentRoot);
         // initialize the code board
         codeBoard = new TextFlow();
-        codeBoard.setPadding(new Insets(16, 32, 16, 32));
+        codeBoard.setPadding(new Insets(padding, 3 * padding, padding, 2 * padding));
         contentRoot.getChildren().add(codeBoard);
         // initialize the current-line symbol
         currentLineSymbol = new Polygon(0, 0, 16, 8, 0, 16);
@@ -50,9 +52,13 @@ public class CodeTracker extends ScrollPane {
         mapEntrance = new HashMap<>();
         currentMethod = "";
         currentLineIndex = -1;
+        //
+//        this.vvalueProperty().addListener((observable, oldValue, newValue) -> {
+//            System.out.println(newValue);
+//        });
     }
 
-    public void readFile(final String name) {
+    public void processCodeList(final String name) {
         // clear
         codeBoard.getChildren().clear();
         mapEntrance.clear();
@@ -77,8 +83,20 @@ public class CodeTracker extends ScrollPane {
         }
     }
     public void setCurrentMethod(String nMethod) {
+        //
+        if (mapEntrance.get(nMethod) == null) {
+            System.err.println("Code Tracking Error for Method Tag " + nMethod);
+            return;
+        }
+        int nLineIndex = mapEntrance.get(nMethod);
+        //
+        double virtualCurHeight = getLine(Math.max(0, nLineIndex - 3)).getLayoutY();
+        double virtualMaxHeight = getLine(codeBoard.getChildren().size() - 1).getLayoutY() - this.heightProperty().getValue();
+        double nScrollPos = virtualCurHeight / virtualMaxHeight;
+        Director.getInstance().createAnimation(0.5, this.vvalueProperty(), Math.min(1.0, Math.max(0.0, nScrollPos)));
+        //
         currentMethod = nMethod;
-        setCurrentLineIndex(mapEntrance.get(nMethod));
+        gotoEntrance(nMethod);
         gotoEntrance(NEXT_LINE);
     }
     public final String getCurrentMethod() {

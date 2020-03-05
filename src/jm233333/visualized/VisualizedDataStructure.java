@@ -179,7 +179,7 @@ public abstract class VisualizedDataStructure {
 //        }
     }
     public void setCodeTracker(CodeTracker codeTracker) {
-        codeTracker.readFile(name);
+        codeTracker.processCodeList(name);
         this.codeTracker = codeTracker;
     }
     public void setOutputBox(TextFlow outputBox) {

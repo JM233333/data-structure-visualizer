@@ -146,7 +146,6 @@ public class Director {
     }
 
     public void setMaxLoadingProgress(int maxLoadingProgress) {
-        System.out.println("ADDED MAX " + maxLoadingProgress);
         this.maxLoadingProgress = maxLoadingProgress;
     }
     public int getMaxLoadingProgress() {
@@ -241,7 +240,7 @@ public class Director {
         animationWaitingList = new ArrayList<>();
         // check empty
         if (animationPlayingList.isEmpty()) {
-            System.out.println("EMPTY ANIMATION TIMELINE LIST");
+//            System.out.println("EMPTY ANIMATION TIMELINE LIST");
             return;
         }
         // set event listeners
