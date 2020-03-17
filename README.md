@@ -42,7 +42,7 @@ However, the extension is limited. At present, the tool only supports VDSs based
 
 - Binary Tree.
 
-Obviously supporting only the above is insufficient, so we plan to add support for the following logical structures in future versions:
+Obviously supporting only the above is insufficient, so I plan to add support for the following logical structures in future versions:
 
 - Two-dimensional nested Linear List (including Sequential List and Linked List, cross-nesting supported);
 
@@ -52,19 +52,51 @@ Obviously supporting only the above is insufficient, so we plan to add support f
 
 ---
 
+## Installation
+
+#### Option 1 : Download the pre-compiled jar package or exe file
+
+In order to help those who have no experience with Java to get started quickly, I prepared pre-compiled jar package and exe file, which can be downloaded from the following URL. However, these may not be the latest version.
+
+[(Download_address_has_not_been_set)](blog.jm233333.com)
+
+For any PC user, you can directly download the compressed package containing the jar package, decompress it, and run the `.jar` file directly to launch the application. However, you must download and configure JRE 1.8+ before you can run the `.jar` file.
+
+If you are a Windows user, you can also directly download the compressed package containing the exe file, decompress it, and run the `.exe` file directly to launch the application. In this way, you don't need to configure the JRE.
+
+*Notice: JRE 1.8 or higher version is required.*
+
+#### Option 2 : Download and compile the source code
+
+If you have experience with Java, you can clone or download the source code from the project's GitHub page, and then build the project using Ant or any IDE (such as Ecllipse, IDEA, etc.).
+
+The easiest way is to compile directly with Ant, but you must first download and configure JDK 1.8+ and Apache Ant 1.10.x. After completing the configuration, go to the root directory of the source code folder, open the CLI, and run the following command:
+
+```
+ant all
+```
+
+If the build is successful, you will see the prompt `BUILD SUCCESSFUL` in the command line, and you can find the following in `out/artifacts/` :
+
+```
+custom/
+lib/
+DataStructureVisualizer.jar
+```
+
+Run the `.jar` file directly to launch the application.
+
+*Notice: JDK 1.8 or higher version is required. If you build the project with Ant, 1.10.x is required.*
+
+---
+
 ## Quick Start
 
 ---
 
-## Development Environment
+## More
 
-- JDK 1.8 update 60
-
-- JavaFX in JDK 1.8
-
-- IntelliJ IDEA 2019.2.4 (Community Edition) (not necessary)
-
-- Markdown, PlantUML (not necessary)
+---
 
 ## Change Log (after 2020.3)
 
