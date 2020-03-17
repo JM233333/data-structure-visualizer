@@ -7,7 +7,7 @@
   <property name="app.name" value="DataStructureVisualizer"/>
   <property name="app.author" value="JM233333"/>
   <property name="app.version" value="1.0"/>
- 
+
   <property name="jdk8.home" value="${env.JAVA_HOME}"/>
   <property name="jdk8.bin" value="${jdk8.home}/bin"/>
 
@@ -24,9 +24,9 @@
     </fileset>
     <!--<pathelement path="${build.output.production.dir}"/>-->
   </path>
- 
+
   <taskdef resource="com/sun/javafx/tools/ant/antlib.xml" uri="javafx:com.sun.javafx.tools.ant" classpath="${jdk8.home}/lib/ant-javafx.jar"/>
- 
+
   <target name="all" depends="clean, compile, jar"/>
 
   <target name="clean">
@@ -72,5 +72,5 @@
       </manifest>
     </fx:jar>
   </target>
- 
+
 </project>
