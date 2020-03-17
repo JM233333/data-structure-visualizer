@@ -2,8 +2,6 @@ English | [简体中文](./README.cn.md)
 
 # DataStructureVisualizer
 
----
-
 ## Introduction
 
 #### Overview
@@ -50,8 +48,6 @@ Obviously supporting only the above is insufficient, so I plan to add support fo
 
 - Graph (simple structure only).
 
----
-
 ## Installation
 
 #### Option 1 : Download the pre-compiled jar package or exe file
@@ -88,15 +84,9 @@ Run the `.jar` file directly to launch the application.
 
 *Notice: JDK 1.8 or higher version is required. If you build the project with Ant, 1.10.x is required.*
 
----
-
 ## Quick Start
 
----
-
 ## More
-
----
 
 ## Change Log (after 2020.3)
 
