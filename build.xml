@@ -2,11 +2,13 @@
  
 <project name="DataStructureVisualizer" default="all" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
 
+  <property environment="env"/>
+
   <property name="app.name" value="DataStructureVisualizer"/>
   <property name="app.author" value="JM233333"/>
   <property name="app.version" value="1.0"/>
  
-  <property name="jdk8.home" value="F:/Java/JDK8u60"/>
+  <property name="jdk8.home" value="${env.JAVA_HOME}"/>
   <property name="jdk8.bin" value="${jdk8.home}/bin"/>
 
   <property name="build.src.dir" value="src"/>
