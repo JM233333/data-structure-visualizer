@@ -4,13 +4,13 @@ English | [简体中文](./README.cn.md)
 
 ## Introduction
 
-#### Overview
+### Overview
 
 **DataStructureVisualizer** is a PC desktop application that provides visualization and interaction of algorithms and data structures, and supports programmers (even newbies) to simply extend it.
 
 *For convenience of description, we will abbreviate the data structure (or algorithm) visualized by the application as **VDS**.*
 
-#### Features
+### Features
 
 With this visualization tool, you can:
 
@@ -50,19 +50,19 @@ Obviously supporting only the above is insufficient, so I plan to add support fo
 
 ## Installation
 
-#### Option 1 : Download the pre-compiled jar package or exe file
+### Option 1 : Download the pre-compiled jar package or exe file
 
 In order to help those who have no experience with Java to get started quickly, I prepared pre-compiled jar package and exe file, which can be downloaded from the following URL. However, these may not be the latest version.
 
 [(Download_address_has_not_been_set)](blog.jm233333.com)
 
-For any PC user, you can directly download the compressed package containing the jar package, decompress it, and run the `.jar` file directly to launch the application. However, you must download and configure JRE 1.8+ before you can run the `.jar` file.
+For any PC user, you can directly download the compressed package containing the jar package, decompress it, and run the `.jar` file directly to launch the application. However, you must download and configure JRE 1.8+ to run the `.jar` file.
 
 If you are a Windows user, you can also directly download the compressed package containing the exe file, decompress it, and run the `.exe` file directly to launch the application. In this way, you don't need to configure the JRE.
 
-*Notice: JRE 1.8 or higher version is required.*
+*Notice: JRE 1.8 or higher version is required for jar package. The exe file must be run in Windows but requires no additional environment configuration.*
 
-#### Option 2 : Download and compile the source code
+### Option 2 : Download and compile the source code
 
 If you have experience with Java, you can clone or download the source code from the project's GitHub page, and then build the project using Ant or any IDE (such as Ecllipse, IDEA, etc.).
 
@@ -82,7 +82,7 @@ DataStructureVisualizer.jar
 
 Run the `.jar` file directly to launch the application.
 
-*Notice: JDK 1.8 or higher version is required. If you build the project with Ant, 1.10.x is required.*
+*Notice: JDK 1.8 or higher version is required. If you build the project with Ant, then 1.10.x is required.*
 
 ## Quick Start
 
