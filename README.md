@@ -56,17 +56,21 @@ In order to help those who have no experience with Java to get started quickly, 
 
 [(Download_address_has_not_been_set)](blog.jm233333.com)
 
-For any PC user, you can directly download the compressed package containing the jar package, decompress it, and run the `.jar` file directly to launch the application. However, you must download and configure JRE 1.8+ to run the `.jar` file.
+For any PC user, you can directly download the compressed package containing the jar package, decompress it, and run the `.jar` file directly to launch the application. However, you must download and configure JRE 8+ to run the `.jar` file.
 
-If you are a Windows user, you can also directly download the compressed package containing the exe file, decompress it, and run the `.exe` file directly to launch the application. In this way, you don't need to configure the JRE.
+If you are a Windows user, you can also directly download the compressed package containing the exe file, decompress it, and run the `.exe` file directly to launch the application. In this way, you don't need to configure the JRE because it has been packaged into this exe file.
 
-*Notice: JRE 1.8 or higher version is required for jar package. The exe file must be run in Windows but requires no additional environment configuration.*
+*Notice:*
+
+- *JRE 8 or higher version is required for jar package. If using JRE 10+, you may need to manually add JavaFX modules to your JRE.*
+
+- *The exe file must be run in Windows but requires no additional environment configuration.*
 
 ### Option 2 : Download and compile the source code
 
 If you have experience with Java, you can clone or download the source code from the project's GitHub page, and then build the project using Ant or any IDE (such as Ecllipse, IDEA, etc.).
 
-The easiest way is to compile directly with Ant, but you must first download and configure JDK 1.8+ and Apache Ant 1.10.x. After completing the configuration, go to the root directory of the source code folder, open the CLI, and run the following command:
+The easiest way is to compile directly with Ant, but you must first download and configure JDK 8+ and Apache Ant 1.10.x, and set the environment variable `JAVA_HOME` to the root directory of JDK. After completing the configuration, go to the root directory of the source code folder, open the CLI, and run the following command:
 
 ```
 ant all
@@ -82,7 +86,11 @@ DataStructureVisualizer.jar
 
 Run the `.jar` file directly to launch the application.
 
-*Notice: JDK 1.8 or higher version is required. If you build the project with Ant, then 1.10.x is required.*
+*Notice:*
+
+- *JDK 8 or higher version is required. If using JDK 10+, you may need to manually add JavaFX modules to your JDK.*
+
+- *If you build the project with Ant, then 1.10.x is required.*
 
 ## Quick Start
 
