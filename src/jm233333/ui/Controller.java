@@ -4,6 +4,8 @@ import java.io.*;
 import java.lang.reflect.*;
 import java.util.*;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.DoublePropertyBase;
 import javafx.geometry.*;
 import javafx.scene.Group;
 import javafx.scene.control.*;
@@ -32,6 +34,8 @@ public class Controller extends Group {
     private PanelConsole panelMethodTrigger, panelAnimationController, panelOutputBox, panelBatchProcessor;
     private Slider animationRateSlider;
     private TextFlow outputBox;
+
+    private DoubleProperty widthProperty;
 
     private VisualizedDataStructure visualDS;
 
@@ -81,8 +85,7 @@ public class Controller extends Group {
             for (PanelConsole iPanel : panels) {
                 sumWidth += iPanel.widthProperty().getValue();
             }
-            Director.getInstance().getPrimaryStage().minWidthProperty().setValue(sumWidth);
-            Director.getInstance().getPrimaryStage().maxWidthProperty().setValue(sumWidth);
+            this.widthProperty().setValue(sumWidth);
         });
 //        }
     }
@@ -380,5 +383,28 @@ public class Controller extends Group {
             btn.setAlignment(Pos.CENTER);
             pane.getChildren().add(btn);
         }
+    }
+
+    /**
+     * a {@code DoubleProperty} that represents the width of the {@code Controller}.
+     */
+    public final DoubleProperty widthProperty() {
+        if (widthProperty == null) {
+            widthProperty = new DoublePropertyBase(0.0) {
+                @Override
+                public Object getBean() {
+                    return this;
+                }
+                @Override
+                public String getName() {
+                    return "width";
+                }
+            };
+        }
+        return widthProperty;
+    }
+
+    public double getHeight() {
+        return panelHeight + 2 * padding;
     }
 }

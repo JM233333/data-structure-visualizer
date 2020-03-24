@@ -15,7 +15,7 @@ public abstract class VisualNode extends Visual {
     /**
      * The width and height of every graphic nodes.
      */
-    static final double BOX_SIZE = 48;
+    public static final double BOX_SIZE = 48;
 
     private boolean isFilled;
     private int value;

@@ -1,5 +1,7 @@
 package jm233333;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.*;
 
 import javafx.animation.KeyFrame;
@@ -46,6 +48,8 @@ public class Director {
     private HashSet<Integer> stepPointSet;
     private boolean isSingleStep;
 
+    private final double screenWidth, screenHeight;
+
     /**
      * Creates the unique instance of {@code Director}.
      */
@@ -65,6 +69,10 @@ public class Director {
         animationRate = DEFAULT_ANIMATION_RATE;
         stepPointSet = new HashSet<>();
         isSingleStep = false;
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        screenWidth = screenSize.getWidth();
+        screenHeight = screenSize.getHeight();
     }
 
     /**
@@ -348,5 +356,12 @@ public class Director {
     }
     public double getAnimationRate() {
         return animationRate;
+    }
+
+    public double getScreenWidth() {
+        return screenWidth;
+    }
+    public double getScreenHeight() {
+        return screenHeight;
     }
 }

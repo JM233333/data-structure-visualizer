@@ -25,6 +25,7 @@ public class Main extends Application {
         // initialize scene
         Scene scene = new SceneLoading(new VBox(), 1200, 800);
         // initialize stage
+        primaryStage.setMinHeight(600);
         primaryStage.setTitle("Data Structure Visualizer v0.1 (under development)");
         primaryStage.setScene(scene);
         primaryStage.show();

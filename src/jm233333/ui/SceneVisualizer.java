@@ -6,6 +6,8 @@ import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.*;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import jm233333.Director;
 import jm233333.visualized.VisualizedDataStructure;
 
@@ -42,8 +44,8 @@ public class SceneVisualizer extends Scene {
     private void initialize() {
         // initialize root
         root.setId("root");
-        root.setMaxHeight(768);
         root.getStyleClass().add("bg-info");
+        root.setPrefHeight(Math.min(800.0, Director.getInstance().getScreenHeight()));
         // initialize CSS
         initializeCSS();
         // initialize sub regions
@@ -51,6 +53,12 @@ public class SceneVisualizer extends Scene {
         initializeCodeTracker(); // right
         initializeController();  // bottom
         initializeMenu();        // top
+        // set clip of the monitor
+//        final Rectangle clip = new Rectangle(Director.getInstance().getScreenWidth(), codeTracker.getHeight() + 4);
+//        monitor.setClip(clip);
+//        Director.getInstance().getPrimaryStage().heightProperty().addListener((observable, oldValue, newValue) -> {
+//            clip.setHeight(codeTracker.getHeight() + 4);
+//        });
         // set common style class
         for (Parent p : new Parent[]{controller, monitor, codeTracker, menu}) {
             p.getStyleClass().addAll("panel", "panel-primary");
@@ -83,7 +91,7 @@ public class SceneVisualizer extends Scene {
         // initialize code tracker
         codeTracker = new CodeTracker();
         codeTracker.setId("code-tracker");
-        root.setRight(codeTracker);
+        root.setLeft(codeTracker);
         visualDS.setCodeTracker(codeTracker);
 //        codeTracker.widthProperty().addListener((observable, oldValue, newValue) -> {
 //            System.out.println(codeTracker.widthProperty().getValue());
@@ -95,6 +103,16 @@ public class SceneVisualizer extends Scene {
         controller.setId("controller");
         root.setBottom(controller); // root.getChildren().add(controller);
 //        controller.setGridLinesVisible(true); // debug
+        // set listener
+        final double maxWidth = Director.getInstance().getScreenWidth();
+        final double minWidth = Math.min(640.0, maxWidth);
+        controller.widthProperty().addListener((observable, oldValue, newValue) -> {
+            final Stage primaryStage = Director.getInstance().getPrimaryStage();
+            primaryStage.minWidthProperty().setValue(newValue);
+            primaryStage.maxWidthProperty().setValue(newValue);
+            primaryStage.minWidthProperty().setValue(minWidth);
+            primaryStage.maxWidthProperty().setValue(maxWidth);
+        });
     }
     private void initializeMenu() {
         // initialize menu

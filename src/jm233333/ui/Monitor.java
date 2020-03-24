@@ -115,10 +115,15 @@ public class Monitor extends Pane {
      * @param name name of the binary tree
      */
     public void createVisualBST(String name) {
+        // create visual
         VisualBinarySearchTree visualBST = new VisualBinarySearchTree(name);
-        visualBST.setLayoutX(64);
         visualBST.setLayoutY(64);
         canvas.getChildren().add(visualBST);
         mapVisual.put(name, visualBST);
+        // set listeners
+//        Director.getInstance().getPrimaryStage().widthProperty().addListener((observable, oldValue, newValue) -> {
+        this.widthProperty().addListener((observable, oldValue, newValue) -> {
+            visualBST.setLayoutX(this.widthProperty().getValue() / 2 - VisualNode.BOX_SIZE / 2);
+        });
     }
 }
