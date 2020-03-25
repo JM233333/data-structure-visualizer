@@ -130,7 +130,7 @@ public class Director {
             return pathJar.substring(0, pathJar.lastIndexOf('/') + 1);
         }
         // debug
-        return "F:/Java/DataStructureVisualizer/";
+        return "F:/DataStructureVisualizer/";
     }
 
     /**

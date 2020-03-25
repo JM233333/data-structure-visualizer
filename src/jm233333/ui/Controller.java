@@ -4,15 +4,13 @@ import java.io.*;
 import java.lang.reflect.*;
 import java.util.*;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.DoublePropertyBase;
 import javafx.geometry.*;
-import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.FileChooser;
 
+import javafx.stage.Stage;
 import jm233333.Director;
 import jm233333.visualized.Mode;
 import jm233333.visualized.VisualizedDataStructure;
@@ -21,7 +19,7 @@ import jm233333.visualized.VisualizedDataStructure;
  * The {@code Controller} class is the user interface in which the user can manipulate the visualized data structure.
  * Extended from JavaFX class {@code FlowPane} only for UI layout.
  */
-public class Controller extends Group {
+public class Controller extends ScrollPane {
 
     private final double padding = 16, height = 36;
     private final int columnSize = 4;
@@ -35,8 +33,6 @@ public class Controller extends Group {
     private Slider animationRateSlider;
     private TextFlow outputBox;
 
-    private DoubleProperty widthProperty;
-
     private VisualizedDataStructure visualDS;
 
     /**
@@ -47,12 +43,13 @@ public class Controller extends Group {
     public Controller(VisualizedDataStructure visualDS) {
         // initialize
         this.setId("controller");
+        this.setVbarPolicy(ScrollBarPolicy.NEVER);
         // initialize root
         root = new HBox();
+        root.setAlignment(Pos.CENTER_LEFT);
         root.setPadding(new Insets(padding));
         root.setSpacing(padding);
-        //root.getStyleClass().setAll("panel", "panel-default");
-        this.getChildren().add(root);
+        this.setContent(root);
         // initialize panels
         panelMethodTrigger = new PanelConsole(new FlowPane(), "Method Triggers");
         panelAnimationController = new PanelConsole(new FlowPane(), "Animation Controller");
@@ -80,12 +77,28 @@ public class Controller extends Group {
         // initialize width property
         final PanelConsole[] panels = new PanelConsole[]{panelMethodTrigger, panelAnimationController, panelOutputBox, panelBatchProcessor};
 //        for (PanelConsole panel : panels) {
-        panelBatchProcessor.widthProperty().addListener((observable, oldValue, newValue) -> {
-            double sumWidth = 5 * padding + 20;
+        panelBatchProcessor.widthProperty().addListener((obs, ov, nv) -> {
+            // get the sum of width
+            double sumWidth = 5 * padding;
             for (PanelConsole iPanel : panels) {
                 sumWidth += iPanel.widthProperty().getValue();
             }
-            this.widthProperty().setValue(sumWidth);
+            root.setMinWidth(sumWidth);
+            final double realWidth = sumWidth + padding + 6;
+            //
+            Director.getInstance().getPrimaryStage().widthProperty().addListener((observable, oldValue, newValue) -> {
+                double height = ((double)newValue >= realWidth ? panelHeight - 10 : panelHeight + 6);
+                this.setMinHeight(height);
+                this.setMaxHeight(height);
+            });
+            //
+            final double maxWidth = Director.getInstance().getScreenWidth();
+            final double minWidth = Math.min(640.0, maxWidth);
+            final Stage primaryStage = Director.getInstance().getPrimaryStage();
+            primaryStage.minWidthProperty().setValue(realWidth);
+            primaryStage.maxWidthProperty().setValue(realWidth);
+            primaryStage.minWidthProperty().setValue(minWidth);
+            primaryStage.maxWidthProperty().setValue(maxWidth);
         });
 //        }
     }
@@ -385,26 +398,4 @@ public class Controller extends Group {
         }
     }
 
-    /**
-     * a {@code DoubleProperty} that represents the width of the {@code Controller}.
-     */
-    public final DoubleProperty widthProperty() {
-        if (widthProperty == null) {
-            widthProperty = new DoublePropertyBase(0.0) {
-                @Override
-                public Object getBean() {
-                    return this;
-                }
-                @Override
-                public String getName() {
-                    return "width";
-                }
-            };
-        }
-        return widthProperty;
-    }
-
-    public double getHeight() {
-        return panelHeight + 2 * padding;
-    }
 }

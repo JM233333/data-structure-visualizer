@@ -1,10 +1,9 @@
 #monitor {
-  -fx-background-color: #EEE; /*#4A65BC;*/
+  -fx-background-color: #F4F4F4; /*#4A65BC;*/
 }
-#controller {
-  -fx-padding: 16;
+#discarded_controller {
   -fx-min-height: 320;
-  -fx-alignment: TOP-LEFT;
+  -fx-alignment: CENTER;
 }
 
 .code {

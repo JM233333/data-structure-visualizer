@@ -103,16 +103,6 @@ public class SceneVisualizer extends Scene {
         controller.setId("controller");
         root.setBottom(controller); // root.getChildren().add(controller);
 //        controller.setGridLinesVisible(true); // debug
-        // set listener
-        final double maxWidth = Director.getInstance().getScreenWidth();
-        final double minWidth = Math.min(640.0, maxWidth);
-        controller.widthProperty().addListener((observable, oldValue, newValue) -> {
-            final Stage primaryStage = Director.getInstance().getPrimaryStage();
-            primaryStage.minWidthProperty().setValue(newValue);
-            primaryStage.maxWidthProperty().setValue(newValue);
-            primaryStage.minWidthProperty().setValue(minWidth);
-            primaryStage.maxWidthProperty().setValue(maxWidth);
-        });
     }
     private void initializeMenu() {
         // initialize menu

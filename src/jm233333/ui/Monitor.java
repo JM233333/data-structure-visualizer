@@ -2,8 +2,9 @@ package jm233333.ui;
 
 import java.util.HashMap;
 
+import javafx.geometry.Insets;
 import javafx.scene.*;
-import javafx.scene.layout.*;
+import javafx.scene.control.ScrollPane;
 
 import jm233333.visual.*;
 
@@ -11,7 +12,7 @@ import jm233333.visual.*;
  * The {@code Monitor} class is responsible for displaying the visualized data structure.
  * Extended from JavaFX class {@code Pane} only for UI layout.
  */
-public class Monitor extends Pane {
+public class Monitor extends ScrollPane {
 
     /**
      * Displays the graphic components of the visualized data structure.
@@ -42,7 +43,7 @@ public class Monitor extends Pane {
         this.setId("monitor");
         // initialize canvas
         canvas = new Group();
-        this.getChildren().add(canvas);
+        this.setContent(canvas);
         // initialize data
         mapVisual = new HashMap<>();
         mapIndexFieldConnection = new HashMap<>();
