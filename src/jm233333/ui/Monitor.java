@@ -5,7 +5,11 @@ import java.util.HashMap;
 import javafx.geometry.Insets;
 import javafx.scene.*;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Pane;
 
+import javafx.scene.paint.Color;
 import jm233333.visual.*;
 
 /**
@@ -17,7 +21,7 @@ public class Monitor extends ScrollPane {
     /**
      * Displays the graphic components of the visualized data structure.
      */
-    private final Group canvas;
+    private final Pane canvas;
 
     /**
      * Records all instances of {@code VisualArray}.
@@ -42,8 +46,11 @@ public class Monitor extends ScrollPane {
         // initialize
         this.setId("monitor");
         // initialize canvas
-        canvas = new Group();
+        canvas = new Pane();
+        canvas.setBackground(new Background(new BackgroundFill(Color.rgb(160, 160, 255), null, null)));
+        canvas.setPadding(new Insets(32));
         this.setContent(canvas);
+//        this.getChildren().add(canvas);
         // initialize data
         mapVisual = new HashMap<>();
         mapIndexFieldConnection = new HashMap<>();
