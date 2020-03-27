@@ -18,6 +18,8 @@ public class VisualizedBinarySearchTree extends VisualizedDataStructure {
         }
     }
 
+    private static final int MAX_DEPTH = 4;
+
     private Node root = null;
 
     public VisualizedBinarySearchTree() {
@@ -45,8 +47,8 @@ public class VisualizedBinarySearchTree extends VisualizedDataStructure {
     private void insert(Node p, int value) {
         // assert
         assert (p != null);
-        if (p.depth == 5) {
-            System.out.println("Sorry, depth cannot be higher than 5.");
+        if (p.depth == MAX_DEPTH) {
+            System.out.printf("Sorry, depth cannot be higher than %d.\n", MAX_DEPTH);
             return;
         }
         // deal with duplication

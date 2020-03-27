@@ -1,2 +1,16 @@
 push 1
 push 2
+
+insert 0
+insert 8
+insert 12
+insert 10
+insert 14
+insert 9
+insert 11
+insert 13
+insert 15
+insert 4
+insert 6
+insert 5
+insert 7
