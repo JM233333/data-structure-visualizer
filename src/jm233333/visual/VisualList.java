@@ -91,7 +91,6 @@ public class VisualList extends Visual {
         moveRestNodes(index + 1, 1);
         // play animation
         Director.getInstance().createAnimation(1.0, newNode.layoutYProperty(), 0);
-        Director.getInstance().playAnimation();
     }
 
     public void updateNode(int index, int value) {
@@ -118,6 +117,5 @@ public class VisualList extends Visual {
         moveRestNodes(index, -1);
         // play animation
         Director.getInstance().createAnimation(1.0, erasedNode.layoutYProperty(), 96);
-        Director.getInstance().playAnimation();
     }
 }

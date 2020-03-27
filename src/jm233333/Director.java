@@ -243,6 +243,7 @@ public class Director {
             animationPlayingList.get(animationCurrentIndex).play();
             return;
         }
+        System.out.println("SWITCH");
         // switch buffer
         animationPlayingList = animationWaitingList;
         animationWaitingList = new ArrayList<>();
@@ -257,9 +258,6 @@ public class Director {
             Timeline timeline = animationPlayingList.get(index);
             final EventHandler<ActionEvent> oldHandler = timeline.getOnFinished();
             timeline.setOnFinished((event) -> {
-                if (oldHandler != null) {
-                    oldHandler.handle(event);
-                }
                 if (index + 1 < animationPlayingList.size()) {
                     animationPlayingList.get(index + 1).play();
                     animationCurrentIndex = index + 1;
@@ -268,9 +266,13 @@ public class Director {
                         pauseAnimation();
                     }
                 } else {
+                    System.out.println("LAST timeline OK");
                     animationCurrentIndex = -1;
                     animationPlayingProperty().setValue(false);
                     stepPointSet.clear();
+                }
+                if (oldHandler != null) {
+                    oldHandler.handle(event);
                 }
             });
         }

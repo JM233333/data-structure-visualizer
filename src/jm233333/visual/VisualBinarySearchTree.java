@@ -112,7 +112,6 @@ public class VisualBinarySearchTree extends Visual {
     public void insertNode(int value) {
         if (rootNode == null) {
             rootNode = createNode(value);
-            Director.getInstance().playAnimation();
             return;
         }
         insertNode(rootNode, value);
@@ -130,7 +129,6 @@ public class VisualBinarySearchTree extends Visual {
             if (p.getLeft() == null) {
                 VisualBinaryTreeNode newNode = createNode(value);
                 p.setLeft(newNode);
-                Director.getInstance().playAnimation();
             } else {
                 insertNode(p.getLeft(), value);
             }
@@ -139,7 +137,6 @@ public class VisualBinarySearchTree extends Visual {
             if (p.getRight() == null) {
                 VisualBinaryTreeNode newNode = createNode(value);
                 p.setRight(newNode);
-                Director.getInstance().playAnimation();
             } else {
                 insertNode(p.getRight(), value);
             }

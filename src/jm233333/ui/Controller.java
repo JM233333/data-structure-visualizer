@@ -4,6 +4,9 @@ import java.io.*;
 import java.lang.reflect.*;
 import java.util.*;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.IntegerPropertyBase;
+import javafx.beans.value.ChangeListener;
 import javafx.geometry.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -32,6 +35,9 @@ public class Controller extends ScrollPane {
     private PanelConsole panelMethodTrigger, panelAnimationController, panelOutputBox, panelBatchProcessor;
     private Slider animationRateSlider;
     private TextFlow outputBox;
+
+    private IntegerProperty batchIndexProperty;
+    private ChangeListener<Number> batchListener;
 
     private VisualizedDataStructure visualDS;
 
@@ -101,6 +107,9 @@ public class Controller extends ScrollPane {
             primaryStage.maxWidthProperty().setValue(maxWidth);
         });
 //        }
+        // initialize batch properties
+        batchIndexProperty().setValue(-1);
+        batchListener = null;
     }
 
     /**
@@ -148,19 +157,20 @@ public class Controller extends ScrollPane {
                     s.append(" ").append(parameter);
                 }
                 System.out.println(s);
-                // invoke method
-                try {
-                    Class<?>[] parameterTypes = new Class<?>[parameters.size()];
-                    for (int i = 0; i < parameters.size(); i ++) {
-                        Class cls = parameters.get(i).getClass();
-                        try {
-                            Field field = cls.getDeclaredField("TYPE");
-                            parameterTypes[i] = (Class<?>) field.get(parameters.get(i));
-                        } catch (NoSuchFieldException e) {
-                            parameterTypes[i] = cls;
-                        }
+                // get parameter type list
+                Class<?>[] parameterTypes = new Class<?>[parameters.size()];
+                for (int i = 0; i < parameters.size(); i ++) {
+                    Class cls = parameters.get(i).getClass();
+                    try {
+                        Field field = cls.getDeclaredField("TYPE");
+                        parameterTypes[i] = (Class<?>) field.get(parameters.get(i));
+                    } catch (NoSuchFieldException | IllegalAccessException e) {
+                        parameterTypes[i] = cls;
                     }
-                    visualDS.trackCodeMethodBeginning(name);
+                }
+                // invoke method
+                visualDS.trackCodeMethodBeginning(name);
+                try {
                     Method method = visualDS.getClass().getDeclaredMethod(name, parameterTypes);
                     method.invoke(visualDS, parameters.toArray());
                     Director.getInstance().playAnimation();
@@ -322,12 +332,30 @@ public class Controller extends ScrollPane {
         //
         Button btnRun = new Button("Run");
         btnRun.getStyleClass().setAll("btn", "btn-success");
-        btnRun.setOnAction((event) -> {
-            String[] operations = textArea.getText().split("\n");
-            for (String operation : operations) {
-                if (operation.isEmpty()) {
-                    continue;
+        btnRun.setOnAction((ev) -> {
+            // get the operation list
+            String[] input = textArea.getText().split("\n");
+            ArrayList<String> operations = new ArrayList<>();
+            for (String str : input) {
+                if (!str.isEmpty()) operations.add(str);
+            }
+            // set listener
+//            if (batchListener != null) {
+//                batchIndexProperty().removeListener(batchListener);
+//            }
+            System.out.println("ACTION");
+            batchListener = (observable, oldValue, newValue) -> {
+                // get index
+                int index = batchIndexProperty().get(); System.out.println("batch listener : index = " + index);
+                if (index == operations.size()) {
+                    batchIndexProperty().set(-1);
                 }
+                if (batchIndexProperty().get() == -1) {
+                    return;
+                }
+                // get operation string
+                String operation = operations.get(index); System.out.println("  operation = " + operation);
+                // get arguments
                 String[] optParam = operation.split(" ");
                 String name = optParam[0];
                 ArrayList<Integer> arguments = new ArrayList<>();
@@ -340,13 +368,8 @@ public class Controller extends ScrollPane {
                         arguments.add(0); // return null;
                     }
                 }
+                // get the parameter type list
                 Class<?>[] parameterTypes = new Class<?>[arguments.size()];
-                // debug
-                StringBuilder s = new StringBuilder(name);
-                for (int arg : arguments) {
-                    s.append(" ").append(arg);
-                }
-                System.out.println(s);
                 for (int i = 0; i < arguments.size(); i ++) {
                     Class cls = arguments.get(i).getClass();
                     try {
@@ -356,15 +379,22 @@ public class Controller extends ScrollPane {
                         parameterTypes[i] = cls;
                     }
                 }
-                visualDS.trackCodeMethodBeginning(name);
+                // invoke method of VDS
                 try {
+                    visualDS.trackCodeMethodBeginning(name);
                     Method method = visualDS.getClass().getDeclaredMethod(name, parameterTypes);
                     method.invoke(visualDS, arguments.toArray());
+                    Director.getInstance().getLastTimeline().setOnFinished((event) -> {
+                        System.out.printf("batch %d finished\n", batchIndexProperty().get());
+                        batchIndexProperty().set(batchIndexProperty().get() + 1);
+                    });
+                    Director.getInstance().playAnimation();
                 } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
-            }
-            Director.getInstance().playAnimation();
+            };
+            batchIndexProperty().addListener(batchListener);
+            batchIndexProperty().set(0);
         });
         //
         Button btnReadFile = new Button("Read File");
@@ -396,6 +426,26 @@ public class Controller extends ScrollPane {
             btn.setAlignment(Pos.CENTER);
             pane.getChildren().add(btn);
         }
+    }
+
+    /**
+     * a {@code BooleanProperty} that represents the animation status.
+     * means PLAYING when the value is {@code true}, or PAUSED while {@code false}.
+     */
+    public final IntegerProperty batchIndexProperty() {
+        if (batchIndexProperty == null) {
+            batchIndexProperty = new IntegerPropertyBase(-1) {
+                @Override
+                public Object getBean() {
+                    return this;
+                }
+                @Override
+                public String getName() {
+                    return "batchIndex";
+                }
+            };
+        }
+        return batchIndexProperty;
     }
 
 }

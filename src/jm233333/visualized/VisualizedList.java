@@ -50,7 +50,6 @@ public class VisualizedList extends VisualizedDataStructure {
         }
         getVisualList(getName()).insertCachedNode(0);
         trackCodeEntrance(getCodeCurrentMethod() + "_end");
-        Director.getInstance().playAnimation();
     }
 
     public void insert(int index, int value) {
