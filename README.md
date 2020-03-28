@@ -147,5 +147,19 @@ Until 2020.3.23, I have not found any bug in the latest released version.
 | 2020.3.5   | Most basic features are implemented. |
 | 2020.3.17  | Adds support for compilation with Ant. |
 | 2020.3.23  | Finishes writing the README. |
-| 2020.3.27  | Fix BUG : Localization of visualBST. |
-|            | Fix BUG : Animation-playing error of batch-processing. |
+| 2020.3.27  | Fix BUG : Localization of VisualBST. |
+|            | Fix BUG : Animation mistake of batch-processing. |
+| 2020.3.28  | Fix BUG : Animation mistake of VisualPointer. |
+|            | Adds the todo list into the README. |
+
+## Todo List
+
+Things planned to do in the near future:
+
+- Update : Adds support for single-step animation of VisualizedList.
+
+- Update : Implements methods {get(index)} and {find(value)} for VisualizedList.
+
+- Update : Implements methods of VisualizedBST.
+
+- Update : Adds support for single-step animation of VisualizedBST.
