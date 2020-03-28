@@ -9,7 +9,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import jm233333.Director;
 import jm233333.visualized.VDSInstantiation;
-import jm233333.visualized.VisualizedDataStructure;
+import jm233333.visualized.VDS;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -60,9 +60,9 @@ public class SceneMenu extends Scene {
         final Constructor constructor = vdsInstantiation.getConstructor();
         final Object[] arguments = vdsInstantiation.getArgumentList().toArray();
         // instantiate VDS
-        final VisualizedDataStructure visualDS;
+        final VDS visualDS;
         try {
-            visualDS = (VisualizedDataStructure)constructor.newInstance(arguments);
+            visualDS = (VDS)constructor.newInstance(arguments);
             visualDS.setName(name);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             System.err.println(e.getMessage());

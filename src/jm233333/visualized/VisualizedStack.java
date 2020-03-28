@@ -1,14 +1,13 @@
 package jm233333.visualized;
 
 import javafx.util.Pair;
-import jm233333.Director;
 import jm233333.ui.CodeTracker;
 
 /**
  * The {@code VisualizedStack} class defines the data structure {@code Stack} for visualizing.
- * Extended from abstract class {@code VisualizedDataStructure}.
+ * Extended from abstract class {@code VDS}.
  */
-public class VisualizedStack extends VisualizedDataStructure {
+public class VisualizedStack extends VDS {
 
     private int[] data;
     private int top;

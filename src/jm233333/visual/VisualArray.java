@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * The {@code VisualArray} class defines the graphic components of an array that is displayed on the monitor.
- * Used in subclasses of {@code VisualizedDataStructure}.
+ * Used in subclasses of {@code VDS}.
  */
 public class VisualArray extends Visual {
 

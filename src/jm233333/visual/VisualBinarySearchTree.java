@@ -8,7 +8,7 @@ import jm233333.Director;
 
 /**
  * The {@code VisualBinarySearchTree} class defines the graphic components of a binary search tree that is displayed on the monitor.
- * Used in subclasses of {@code VisualizedDataStructure}.
+ * Used in subclasses of {@code VDS}.
  */
 public class VisualBinarySearchTree extends Visual {
 

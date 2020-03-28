@@ -16,7 +16,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import jm233333.Director;
 import jm233333.visualized.Mode;
-import jm233333.visualized.VisualizedDataStructure;
+import jm233333.visualized.VDS;
 
 /**
  * The {@code Controller} class is the user interface in which the user can manipulate the visualized data structure.
@@ -39,14 +39,14 @@ public class Controller extends ScrollPane {
     private IntegerProperty batchIndexProperty;
     private ChangeListener<Number> batchListener;
 
-    private VisualizedDataStructure visualDS;
+    private VDS vds;
 
     /**
      * Creates a Controller with the reference to the visualized data structure.
      *
-     * @param visualDS The reference to the visualized data structure
+     * @param vds The reference to the visualized data structure
      */
-    public Controller(VisualizedDataStructure visualDS) {
+    public Controller(VDS vds) {
         // initialize
         this.setId("controller");
         this.setVbarPolicy(ScrollBarPolicy.NEVER);
@@ -67,7 +67,7 @@ public class Controller extends ScrollPane {
             root.getChildren().add(panel);
         }
         // set reference to the interrelated visual data structure
-        this.visualDS = visualDS;
+        this.vds = vds;
         // initialize sub interfaces
         initializeMethodTriggers();
         initializeAnimationControllers();
@@ -126,7 +126,7 @@ public class Controller extends ScrollPane {
         pane.setMaxHeight(panelBodyHeight);
         pane.setPrefHeight(panelBodyHeight);
         // find all public methods of visualDS
-        Method[] methods = visualDS.getClass().getDeclaredMethods();
+        Method[] methods = vds.getClass().getDeclaredMethods();
         // initialize method triggers
         ArrayList<MethodTrigger> methodTriggers = new ArrayList<>();
         for (Method method : methods) {
@@ -169,10 +169,10 @@ public class Controller extends ScrollPane {
                     }
                 }
                 // invoke method
-                visualDS.trackCodeMethodBeginning(name);
+                vds.trackCodeMethodBeginning(name);
                 try {
-                    Method method = visualDS.getClass().getDeclaredMethod(name, parameterTypes);
-                    method.invoke(visualDS, parameters.toArray());
+                    Method method = vds.getClass().getDeclaredMethod(name, parameterTypes);
+                    method.invoke(vds, parameters.toArray());
                     Director.getInstance().playAnimation();
                 } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
@@ -186,7 +186,7 @@ public class Controller extends ScrollPane {
         modeSelector.setSpacing(padding);
         modeSelector.setAlignment(Pos.CENTER_LEFT);
         pane.getChildren().add(modeSelector);
-        Class<? extends Mode> modeClass = visualDS.getModeClass();
+        Class<? extends Mode> modeClass = vds.getModeClass();
         if (modeClass != null) {
             final Label label = new Label("Select Mode : ");
             modeSelector.getChildren().add(label);
@@ -204,7 +204,7 @@ public class Controller extends ScrollPane {
                 radioButtons[0].setSelected(true);
                 toggleGroup.selectedToggleProperty().addListener((observableValue, oldValue, newValue) -> {
                     if (toggleGroup.getSelectedToggle() != null) {
-                        visualDS.setMode((Mode)toggleGroup.getSelectedToggle().getUserData());
+                        vds.setMode((Mode)toggleGroup.getSelectedToggle().getUserData());
                     }
                 });
             }
@@ -308,7 +308,7 @@ public class Controller extends ScrollPane {
         outputBox.getStyleClass().addAll("bg-default");
         ((ScrollPane)panelOutputBox.getPanelBody()).setContent(outputBox);
         // bind with the visualized data structure
-        visualDS.setOutputBox(outputBox);
+        vds.setOutputBox(outputBox);
     }
 
     /**
@@ -381,9 +381,9 @@ public class Controller extends ScrollPane {
                 }
                 // invoke method of VDS
                 try {
-                    visualDS.trackCodeMethodBeginning(name);
-                    Method method = visualDS.getClass().getDeclaredMethod(name, parameterTypes);
-                    method.invoke(visualDS, arguments.toArray());
+                    vds.trackCodeMethodBeginning(name);
+                    Method method = vds.getClass().getDeclaredMethod(name, parameterTypes);
+                    method.invoke(vds, arguments.toArray());
                     Director.getInstance().getLastTimeline().setOnFinished((event) -> {
                         System.out.printf("batch %d finished\n", batchIndexProperty().get());
                         batchIndexProperty().set(batchIndexProperty().get() + 1);

@@ -6,10 +6,8 @@ import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.*;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 import jm233333.Director;
-import jm233333.visualized.VisualizedDataStructure;
+import jm233333.visualized.VDS;
 
 /**
  * The {@code SceneVisualizer} class maintains a scene graph for Visualizer UI.
@@ -23,18 +21,18 @@ public class SceneVisualizer extends Scene {
     private Controller controller;
     private FlowPane menu;
 
-    private VisualizedDataStructure visualDS;
+    private VDS vds;
 
     /**
      * Creates a SceneVisualizer with a specific size and a specific data structure that will be visualized.
      *
      * @param root The root node of the scene graph
-     * @param visualDS The data structure that will be visualized
+     * @param vds The data structure that will be visualized
      */
-    public SceneVisualizer(BorderPane root, VisualizedDataStructure visualDS) {
+    public SceneVisualizer(BorderPane root, VDS vds) {
         super(root, Color.WHITE);
         this.root = root;
-        this.visualDS = visualDS;
+        this.vds = vds;
         initialize();
     }
 
@@ -85,21 +83,21 @@ public class SceneVisualizer extends Scene {
         monitor = new Monitor();
         monitor.setId("monitor");
         root.setCenter(monitor);
-        visualDS.setMonitor(monitor);
+        vds.setMonitor(monitor);
     }
     private void initializeCodeTracker() {
         // initialize code tracker
         codeTracker = new CodeTracker();
         codeTracker.setId("code-tracker");
         root.setLeft(codeTracker);
-        visualDS.setCodeTracker(codeTracker);
+        vds.setCodeTracker(codeTracker);
 //        codeTracker.widthProperty().addListener((observable, oldValue, newValue) -> {
 //            System.out.println(codeTracker.widthProperty().getValue());
 //        });
     }
     private void initializeController() {
         // initialize controller
-        controller = new Controller(visualDS);
+        controller = new Controller(vds);
         controller.setId("controller");
         root.setBottom(controller); // root.getChildren().add(controller);
 //        controller.setGridLinesVisible(true); // debug

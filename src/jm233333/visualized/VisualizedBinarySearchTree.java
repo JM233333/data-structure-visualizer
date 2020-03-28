@@ -2,9 +2,9 @@ package jm233333.visualized;
 
 /**
  * The {@code VisualizedBinarySearchTree} class defines the data structure {@code BinarySearchTree} for visualizing.
- * Extended from abstract class {@code VisualizedDataStructure}.
+ * Extended from abstract class {@code VDS}.
  */
-public class VisualizedBinarySearchTree extends VisualizedDataStructure {
+public class VisualizedBinarySearchTree extends VDS {
 
     static class Node {
         int value;

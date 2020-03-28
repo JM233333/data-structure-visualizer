@@ -1,16 +1,16 @@
 package custom.visualized;
 
 import javafx.util.Pair;
-import jm233333.visualized.VisualizedDataStructure;
+import jm233333.visualized.VDS;
 import jm233333.Director;
 import jm233333.ui.CodeTracker;
 
 /**
  * The {@code VisualizedQueue} class defines the data structure {@code Queue} for visualizing.
- * Extended from abstract class {@code VisualizedDataStructure}.
+ * Extended from abstract class {@code VDS}.
  */
 @SuppressWarnings("unchecked")
-public class VisualizedQueue extends VisualizedDataStructure {
+public class VisualizedQueue extends VDS {
 
     private int[] data;
     private int front, back;

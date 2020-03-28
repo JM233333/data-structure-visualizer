@@ -11,33 +11,17 @@ import jm233333.ui.Monitor;
 import jm233333.visual.*;
 
 /**
- * The {@code VisualizedDataStructure} abstract class provides common properties for all types of visualized data structures.
+ * The {@code VDS} abstract class provides common properties for all types of VDSs.
+ * VDS is the abbreviation of Visualized Data Structure (or Algorithm).
  */
-public abstract class VisualizedDataStructure {
+public abstract class VDS {
 
-    /**
-     * The name of the visualized data structure.
-     */
     private String name = "";
 
-    /**
-     * The mode of the visualized data structure.
-     */
     private Mode mode = null;
 
-    /**
-     * The reference to the monitor in which the visualized data structure is displayed.
-     */
     private Monitor monitor = null;
-
-    /**
-     * The reference to the code tracker that helps displaying the visualized data structure.
-     */
     private CodeTracker codeTracker = null;
-
-    /**
-     * The reference to the {@code TextFlow} that the visualized data structure outputs to.
-     */
     private TextFlow outputBox = null;
 
     /**
@@ -48,12 +32,57 @@ public abstract class VisualizedDataStructure {
      */
     //private HashMap<String, int[]> mapAssociatedArray;
 
-    public VisualizedDataStructure() {
+    public VDS() {
         //mapAssociatedArray = new HashMap<>();
     }
 
-    public VisualizedDataStructure(String name) {
+    public VDS(String name) {
         setName(name);
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    public final String getName() {
+        return name;
+    }
+
+    public void setMode(Mode mode) {
+        System.out.println(name + " setMode " + mode.toString());
+        this.mode = mode;
+    }
+    public final Mode getMode() {
+        return mode;
+    }
+    public final Class<? extends Mode> getModeClass() {
+        String fullName = this.getClass().getName();
+        String lastName = fullName.substring(fullName.lastIndexOf('.') + 1);
+        String dsName = lastName.split("Visualized")[1];
+        try {
+            Class<? extends Mode> modeClass = Class.forName("jm233333.visualized.Mode" + dsName).asSubclass(Mode.class);
+            return modeClass;
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+    }
+
+    public void setMonitor(Monitor monitor) {
+        this.monitor = monitor;
+        createVisual();
+//        Field[] fs = this.getClass().getDeclaredFields();
+//        for (Field field : fs) {
+//            Class fieldType = field.getType();
+//            String typeName = fieldType.getName();
+//            String fieldName = field.getName();
+//            System.out.println(typeName + " " + fieldName);
+//        }
+    }
+    public void setCodeTracker(CodeTracker codeTracker) {
+        codeTracker.processCodeList(name);
+        this.codeTracker = codeTracker;
+    }
+    public void setOutputBox(TextFlow outputBox) {
+        this.outputBox = outputBox;
     }
 
     /**
@@ -139,50 +168,5 @@ public abstract class VisualizedDataStructure {
     }
     public final VisualBinarySearchTree getVisualBST(String name) {
         return (VisualBinarySearchTree)monitor.getVisual(name);
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-    public final String getName() {
-        return name;
-    }
-
-    public void setMode(Mode mode) {
-        System.out.println(name + " setMode " + mode.toString());
-        this.mode = mode;
-    }
-    public final Mode getMode() {
-        return mode;
-    }
-    public final Class<? extends Mode> getModeClass() {
-        String fullName = this.getClass().getName();
-        String lastName = fullName.substring(fullName.lastIndexOf('.') + 1);
-        String dsName = lastName.split("Visualized")[1];
-        try {
-            Class<? extends Mode> modeClass = Class.forName("jm233333.visualized.Mode" + dsName).asSubclass(Mode.class);
-            return modeClass;
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
-    }
-
-    public void setMonitor(Monitor monitor) {
-        this.monitor = monitor;
-        createVisual();
-//        Field[] fs = this.getClass().getDeclaredFields();
-//        for (Field field : fs) {
-//            Class fieldType = field.getType();
-//            String typeName = fieldType.getName();
-//            String fieldName = field.getName();
-//            System.out.println(typeName + " " + fieldName);
-//        }
-    }
-    public void setCodeTracker(CodeTracker codeTracker) {
-        codeTracker.processCodeList(name);
-        this.codeTracker = codeTracker;
-    }
-    public void setOutputBox(TextFlow outputBox) {
-        this.outputBox = outputBox;
     }
 }

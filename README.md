@@ -140,10 +140,12 @@ Until 2020.3.23, I have not found any bug in the latest released version.
 
 ## Change Log
 
-| Date | Updates |
-| :--- | :--- |
-| 2019.12.1 | Starts developing this project. |
-| | Early update records are omitted for brevity. |
-| 2020.3.5 | Most basic features are implemented. |
-| 2020.3.17 | Adds support for compilation with Ant. |
-| 2020.3.23 | Finishes writing the README. |
+| Date       | Updates |
+| :---       | :--- |
+| 2019.12.1  | Starts developing this project. |
+|            | Early update records are omitted for brevity. |
+| 2020.3.5   | Most basic features are implemented. |
+| 2020.3.17  | Adds support for compilation with Ant. |
+| 2020.3.23  | Finishes writing the README. |
+| 2020.3.27  | Fix BUG : Localization of visualBST. |
+|            | Fix BUG : Animation-playing error of batch-processing. |

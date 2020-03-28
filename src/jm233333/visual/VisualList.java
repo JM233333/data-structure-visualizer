@@ -6,7 +6,7 @@ import jm233333.Director;
 
 /**
  * The {@code VisualList} class defines the graphic components of a list that is displayed on the monitor.
- * Used in subclasses of {@code VisualizedDataStructure}.
+ * Used in subclasses of {@code VDS}.
  */
 public class VisualList extends Visual {
 

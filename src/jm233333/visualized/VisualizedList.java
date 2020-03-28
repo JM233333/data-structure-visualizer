@@ -1,14 +1,13 @@
 package jm233333.visualized;
 
-import jm233333.Director;
 import jm233333.ui.CodeTracker;
 import jm233333.visual.VisualList;
 
 /**
  * The {@code VisualizedList} class defines the data structure {@code List} for visualizing.
- * Extended from abstract class {@code VisualizedDataStructure}.
+ * Extended from abstract class {@code VDS}.
  */
-public class VisualizedList extends VisualizedDataStructure {
+public class VisualizedList extends VDS {
 
     static class Node {
         int value;
