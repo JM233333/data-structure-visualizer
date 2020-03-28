@@ -45,7 +45,7 @@ public class VisualPointer <T extends VisualNode> extends Visual {
         return holder;
     }
 
-    public void setTarget(T node) {
+    public void setTarget(final T node) {
         //
         if (node != null) {
             Director.getInstance().createAnimation(1.0, body.endXProperty(),
@@ -59,25 +59,28 @@ public class VisualPointer <T extends VisualNode> extends Visual {
                     body.getStartY());
         }
         //
-        if (target != null) {
-            holder.layoutXProperty().removeListener(targetListenerX);
-            target.layoutXProperty().removeListener(targetListenerX);
-            holder.layoutYProperty().removeListener(targetListenerY);
-            target.layoutYProperty().removeListener(targetListenerY);
-        }
-        if (node != null) {
-            targetListenerX = (observable, oldValue, newValue) -> {
-                body.setEndX(node.getPointedX() - holder.getLayoutX());
-            };
-            targetListenerY = (observable, oldValue, newValue) -> {
-                body.setEndY(node.getPointedY() - holder.getLayoutY());
-            };
-            holder.layoutXProperty().addListener(targetListenerX);
-            node.layoutXProperty().addListener(targetListenerX);
-            holder.layoutYProperty().addListener(targetListenerY);
-            node.layoutYProperty().addListener(targetListenerY);
-        }
+        final T finalTarget = target;
         target = node;
+        Director.getInstance().getLastTimeline().setOnFinished((event) -> {
+            if (finalTarget != null) {
+                holder.layoutXProperty().removeListener(targetListenerX);
+                finalTarget.layoutXProperty().removeListener(targetListenerX);
+                holder.layoutYProperty().removeListener(targetListenerY);
+                finalTarget.layoutYProperty().removeListener(targetListenerY);
+            }
+            if (node != null) {
+                targetListenerX = (observable, oldValue, newValue) -> {
+                    body.setEndX(node.getPointedX() - holder.getLayoutX());
+                };
+                targetListenerY = (observable, oldValue, newValue) -> {
+                    body.setEndY(node.getPointedY() - holder.getLayoutY());
+                };
+                holder.layoutXProperty().addListener(targetListenerX);
+                node.layoutXProperty().addListener(targetListenerX);
+                holder.layoutYProperty().addListener(targetListenerY);
+                node.layoutYProperty().addListener(targetListenerY);
+            }
+        });
     }
     public final T getTarget() {
         return target;
