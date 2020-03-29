@@ -160,6 +160,8 @@ Things planned to do in the near future:
 
 - Update : Implements methods {get(index)} and {find(value)} for VisualizedList.
 
+- Fix : Sometimes wrong current method name in code-tracking.
+
 - Update : Implements methods of VisualizedBST.
 
 - Update : Adds support for single-step animation of VisualizedBST.

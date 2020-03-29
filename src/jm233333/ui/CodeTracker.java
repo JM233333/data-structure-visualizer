@@ -96,14 +96,12 @@ public class CodeTracker extends ScrollPane {
         Director.getInstance().createAnimation(0.5, this.vvalueProperty(), Math.min(1.0, Math.max(0.0, nScrollPos)));
         //
         currentMethod = nMethod;
-        gotoEntrance(nMethod);
-        gotoEntrance(NEXT_LINE);
     }
     public final String getCurrentMethod() {
         return currentMethod;
     }
 
-    public void gotoEntrance(String name) {
+    public void gotoEntrance(String name) { System.out.println("goto entrance " + name);
         if (name.equals(REMAIN)) {
             return;
         }

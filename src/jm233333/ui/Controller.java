@@ -346,7 +346,7 @@ public class Controller extends ScrollPane {
             System.out.println("ACTION");
             batchListener = (observable, oldValue, newValue) -> {
                 // get index
-                int index = batchIndexProperty().get(); System.out.println("batch listener : index = " + index);
+                int index = batchIndexProperty().get();
                 if (index == operations.size()) {
                     batchIndexProperty().set(-1);
                 }
@@ -354,7 +354,7 @@ public class Controller extends ScrollPane {
                     return;
                 }
                 // get operation string
-                String operation = operations.get(index); System.out.println("  operation = " + operation);
+                String operation = operations.get(index);
                 // get arguments
                 String[] optParam = operation.split(" ");
                 String name = optParam[0];
@@ -385,7 +385,6 @@ public class Controller extends ScrollPane {
                     Method method = vds.getClass().getDeclaredMethod(name, parameterTypes);
                     method.invoke(vds, arguments.toArray());
                     Director.getInstance().getLastTimeline().setOnFinished((event) -> {
-                        System.out.printf("batch %d finished\n", batchIndexProperty().get());
                         batchIndexProperty().set(batchIndexProperty().get() + 1);
                     });
                     Director.getInstance().playAnimation();

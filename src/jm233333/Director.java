@@ -243,7 +243,6 @@ public class Director {
             animationPlayingList.get(animationCurrentIndex).play();
             return;
         }
-        System.out.println("SWITCH");
         // switch buffer
         animationPlayingList = animationWaitingList;
         animationWaitingList = new ArrayList<>();
@@ -266,7 +265,6 @@ public class Director {
                         pauseAnimation();
                     }
                 } else {
-                    System.out.println("LAST timeline OK");
                     animationCurrentIndex = -1;
                     animationPlayingProperty().setValue(false);
                     stepPointSet.clear();

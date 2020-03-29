@@ -86,10 +86,19 @@ public abstract class VDS {
     }
 
     /**
+     * Sets the current method in code-tracking.
+     */
+    public void trackCodeSetCurrentMethod(String name) {
+        codeTracker.setCurrentMethod(name);
+    }
+
+    /**
      * Tracks to the beginning code line of the specified method.
      */
     public void trackCodeMethodBeginning(String name) {
         codeTracker.setCurrentMethod(name);
+        codeTracker.gotoEntrance(name);
+        codeTracker.gotoEntrance(CodeTracker.NEXT_LINE);
     }
 
     /**

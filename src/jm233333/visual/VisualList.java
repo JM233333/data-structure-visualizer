@@ -14,6 +14,7 @@ public class VisualList extends Visual {
 
     private ArrayList<VisualListNode> arrayNode = new ArrayList<>();
     private VisualListNode cachedNode = null;
+    private int markedIndex = -1;
 
     public VisualList(String name) {
         // super
@@ -24,7 +25,8 @@ public class VisualList extends Visual {
 
     private VisualListNode createNode(int index, int value) {
         VisualListNode node = new VisualListNode(value);
-        node.setLayoutX(32 + index * (32 + node.getWidth()));
+        double unitLength = node.getWidth() + VisualListNode.BOX_SIZE / 2;
+        node.setLayoutX(32 + unitLength * index);
         node.setLayoutY(96);
         this.getChildren().add(node);
         return node;
@@ -50,6 +52,21 @@ public class VisualList extends Visual {
             cachedNode = null;
         }
     }
+    public void markNode(int index) {
+        if (markedIndex == -1) {
+            markedIndex = index;
+            Director.getInstance().createAnimation(1.0, arrayNode.get(markedIndex).layoutYProperty(), 96);
+        }
+    }
+    public void eraseMarkedNode() {
+        if (markedIndex != -1) {
+            removeNode(markedIndex);
+            markedIndex = -1;
+        }
+    }
+    public int getMarkedIndex() {
+        return markedIndex;
+    }
 
     public void setPointerNext(int indexFrom, int indexTo) {
         VisualListNode nodeFrom = (indexFrom == CACHED_NODE ? cachedNode : arrayNode.get(indexFrom));
@@ -64,7 +81,7 @@ public class VisualList extends Visual {
     public void moveRestNodes(int begin, int distance) {
         if (begin < arrayNode.size()) {
             VisualListNode lastNode = arrayNode.get(begin);
-            double unitLength = lastNode.getWidth() + VisualNode.BOX_SIZE / 2;
+            double unitLength = lastNode.getWidth() + VisualListNode.BOX_SIZE / 2;
             Director.getInstance().createAnimation(1.0, lastNode.layoutXProperty(), lastNode.getLayoutX() + unitLength * distance);
             for (int i = begin + 1; i < arrayNode.size(); i++) {
                 VisualListNode node = arrayNode.get(i);
