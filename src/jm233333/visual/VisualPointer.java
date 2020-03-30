@@ -1,7 +1,9 @@
 package jm233333.visual;
 
 import javafx.beans.value.ChangeListener;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeLineCap;
 import jm233333.Director;
 
@@ -105,6 +107,28 @@ public class VisualPointer <T extends VisualNode> extends Visual {
             line.setStartY(body.getEndY());
             line.setEndX(body.getEndX() + hx);
             line.setEndY(body.getEndY() + hy);
+        }
+    }
+
+
+    public void setHighlight(boolean flag) {
+        setHighlight(flag, false);
+    }
+    public void setHighlight(boolean flag, boolean sync) {
+        // get color
+        Color colorLine;
+        if (flag) {
+            colorLine = Color.ORANGE;
+        } else {
+            colorLine = Color.BLACK;
+        }
+        // create animation if required
+        if (!sync) {
+            Director.getInstance().addEmptyTimeline();
+        }
+        // add animations
+        for (Shape shape : new Shape[]{body, hatLeft, hatRight}) {
+            Director.getInstance().updateAnimation(1.0, shape.strokeProperty(), colorLine);
         }
     }
 }

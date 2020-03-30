@@ -31,16 +31,18 @@ public class VisualizedList extends VDS {
 
     private Node getNode(int index) {
         Node p = head;
+        getVisualList(getName()).setHighlight(0, true);
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         for (int i = 0; i < index; i ++) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             p = p.next;
-            trackCodeEntrance(CodeTracker.NEXT_LINE);
             if (p == null) {
                 System.out.println("GET NODE ERROR");
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 return null;
             }
+            getVisualList(getName()).setHighlight(i + 1, true);
+            trackCodeEntrance(CodeTracker.NEXT_LINE);
             trackCodeEntrance(getCodeCurrentMethod() + "_loop_begin");
         }
         trackCodeEntrance(getCodeCurrentMethod() + "_loop_end");
@@ -51,6 +53,7 @@ public class VisualizedList extends VDS {
         trackCodeMethodBeginning("getNode");
         Node p = getNode(index);
         trackCodeSetCurrentMethod("get");
+        trackCodeEntrance(getCodeCurrentMethod() + "_return");
         if (p == null) {
             System.out.println("GET ERROR");
             return 0;

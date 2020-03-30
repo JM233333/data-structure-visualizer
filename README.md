@@ -151,16 +151,17 @@ Until 2020.3.23, I have not found any bug in the latest released version.
 |            | Fix BUG : Animation mistake of batch-processing. |
 | 2020.3.28  | Fix BUG : Animation mistake of VisualPointer. |
 |            | Adds the todo list into the README. |
+| 2020.3.29  | Update : Adds support for single-step animation of VisualizedList. |
+|            | Fix BUG : Mistake in method {pushFront(value)} of VisualizedList. |
+|            | Fix BUG : Sometimes wrong current method name in code-tracking. |
 
 ## Todo List
 
 Things planned to do in the near future:
 
-- Update : Adds support for single-step animation of VisualizedList.
-
 - Update : Implements methods {get(index)} and {find(value)} for VisualizedList.
 
-- Fix : Sometimes wrong current method name in code-tracking.
+- Update : Supports global visual pointers for VDS.
 
 - Update : Implements methods of VisualizedBST.
 

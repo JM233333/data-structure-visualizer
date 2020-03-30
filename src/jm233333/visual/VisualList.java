@@ -135,4 +135,11 @@ public class VisualList extends Visual {
         // play animation
         Director.getInstance().createAnimation(1.0, erasedNode.layoutYProperty(), 96);
     }
+
+    public void setHighlight(int index, boolean flag) {
+        setHighlight(index, flag, false);
+    }
+    public void setHighlight(int index, boolean flag, boolean sync) {
+        arrayNode.get(index).setHighlight(flag, sync);
+    }
 }

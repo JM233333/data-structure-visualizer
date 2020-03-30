@@ -31,7 +31,7 @@ private:
 	}
 public:
 	int get(int index) {                       //#/ get
-		return get_node(index).value;
+		return get_node(index).value;          //#/ get_return
 	}
 	void push_front(int value) {               //#/ pushFront
 		Node * p = new Node(value);
