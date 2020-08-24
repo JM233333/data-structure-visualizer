@@ -56,12 +56,18 @@ public class VisualBinaryTreeNode extends VisualNode {
     public final VisualBinaryTreeNode getLeft() {
         return left.getTarget();
     }
+    public final VisualPointer<VisualBinaryTreeNode> getPointerToLeft() {
+        return left;
+    }
 
     public void setRight(VisualBinaryTreeNode node) {
         right.setTarget(node);
     }
     public final VisualBinaryTreeNode getRight() {
         return right.getTarget();
+    }
+    public final VisualPointer<VisualBinaryTreeNode> getPointerToRight() {
+        return right;
     }
 
     @Override
@@ -82,5 +88,30 @@ public class VisualBinaryTreeNode extends VisualNode {
     @Override
     public double getHeight() {
         return box.getRadius();
+    }
+
+    @Override
+    public void setHighlight(boolean flag, boolean sync) {
+        // get color
+        Color colorBoard, colorBox, colorText;
+        if (flag) {
+            colorBoard = Color.WHITE;
+            colorBox = Color.ORANGE;
+            colorText = Color.WHITE;
+        } else {
+            colorBoard = Color.BLACK;
+            colorBox = Color.WHITE;
+            colorText = Color.BLACK;
+        }
+        // create animation if required
+        if (!sync) {
+            Director.getInstance().addEmptyTimeline();
+        }
+        // add animations
+        Director.getInstance().updateAnimation(1.0, box.strokeProperty(), colorBoard);
+        Director.getInstance().updateAnimation(1.0, box.fillProperty(), colorBox);
+        Director.getInstance().updateAnimation(1.0, getText().fillProperty(), colorText);
+//        left.setHighlight(flag, true);
+//        right.setHighlight(flag, true);
     }
 }

@@ -100,7 +100,7 @@ Run the `.jar` file directly to launch the application.
 
 Run the application and start the visualization, you will see the following GUI:
 
-![design/sample-gui.png](design/sample-gui.png)
+![design/sample-gui.png](https://github.com/JM233333/DataStructureVisualizer/blob/master/design/sample-gui.png)
 
 The **Menu** at the top of the GUI is used to switch the VDS or return to the main menu.
 
@@ -154,12 +154,11 @@ Until 2020.3.23, I have not found any bug in the latest released version.
 | 2020.3.29  | Update : Adds support for single-step animation of VisualizedList. |
 |            | Fix BUG : Mistake in method {pushFront(value)} of VisualizedList. |
 |            | Fix BUG : Sometimes wrong current method name in code-tracking. |
+| 2020.8.24  | Update : Implements methods {get(index)} and {find(value)} for VisualizedList. |
 
 ## Todo List
 
 Things planned to do in the near future:
-
-- Update : Implements methods {get(index)} and {find(value)} for VisualizedList.
 
 - Update : Supports global visual pointers for VDS.
 

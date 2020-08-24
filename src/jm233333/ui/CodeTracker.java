@@ -101,7 +101,7 @@ public class CodeTracker extends ScrollPane {
         return currentMethod;
     }
 
-    public void gotoEntrance(String name) { System.out.println("goto entrance " + name);
+    public void gotoEntrance(String name) {
         if (name.equals(REMAIN)) {
             return;
         }

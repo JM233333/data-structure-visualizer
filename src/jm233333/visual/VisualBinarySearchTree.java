@@ -24,11 +24,10 @@ public class VisualBinarySearchTree extends Visual {
     private static double[][] localization = new double[MAX_HEIGHT][2];
 
     private VisualBinaryTreeNode rootNode = null;
-    private HashMap<String, VisualBinaryTreeNode> mapNode = new HashMap<>();
     private int height = 0;
 
     private Stack<Boolean> cachedPath = new Stack<>();
-    private VisualBinaryTreeNode cachedNode = null;
+    private VisualBinaryTreeNode markedNode = null;
 
     public VisualBinarySearchTree(String name) {
         // super
@@ -103,9 +102,38 @@ public class VisualBinarySearchTree extends Visual {
         return cachedPath;
     }
 
-    public void cacheNode(int value) {
-        if (cachedNode == null) {
-            cachedNode = createNode(value);
+    public void markRoot() {
+        markedNode = rootNode;
+        if (markedNode != null) {
+            markedNode.setHighlight(true);
+        }
+    }
+    public void markToLeft() {
+        if (markedNode != null) {
+            markedNode.setHighlight(false);
+            if (markedNode.getLeft() != null) {
+                markedNode.getPointerToLeft().setHighlight(true, true);
+                markedNode.getPointerToLeft().setHighlight(false);
+                markedNode = markedNode.getLeft();
+                markedNode.setHighlight(true, true);
+            }
+        }
+    }
+    public void markToRight() {
+        if (markedNode != null) {
+            markedNode.setHighlight(false);
+            if (markedNode.getRight() != null) {
+                markedNode.getPointerToRight().setHighlight(true, true);
+                markedNode.getPointerToRight().setHighlight(false);
+                markedNode = markedNode.getRight();
+                markedNode.setHighlight(true, true);
+            }
+        }
+    }
+    public void markClear() {
+        if (markedNode != null) {
+            markedNode.setHighlight(false);
+            markedNode = null;
         }
     }
 

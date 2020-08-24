@@ -82,4 +82,9 @@ public abstract class VisualNode extends Visual {
     public abstract double getWidth();
     public abstract double getHeight();
 
+    public void setHighlight(boolean flag) {
+        setHighlight(flag, false);
+    }
+    public abstract void setHighlight(boolean flag, boolean sync);
+
 }

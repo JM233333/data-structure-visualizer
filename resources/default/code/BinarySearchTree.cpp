@@ -14,31 +14,46 @@ private:
 private:
 	Node * root;
 public:
-	BinarySearchTree() {                //#/ construct
+	BinarySearchTree() {                       //#/ construct
 		root = nullptr;
 	}
 	~BinarySearchTree() {
 		clear();
 	}
 public:
-	void find(int value) {              //#/ find
-		;
+	Node * find(int value) {                   //#/ find
+		return find_node(root, value);
+	}
+	void insert(int value) {                   //#/ insert
+		insert_node(root, value);
 	}
 private:
-	void find(Node * p, int value) {
-		;
+	Node * find_Node(Node * & p, int value) {  //#/ findNode
+		if (p == nullptr) {                    //#/ findNode_ifFail
+			return nullptr;
+		}
+		if (value == p->value) {               //#/ findNode_ifSucc
+			return p;
+		}
+		if (value < p->value) {                //#/ findNode_ifLR
+			return find_Node(p->left, value);  //#/ findNode_recL
+		} else {
+			return find_Node(p->right, value); //#/ findNode_recR
+		}
 	}
-public:
-	void insert(int value) {            //#/ insert
-		if (root == nullptr) {
-			root = new Node(value);
+	void insert_node(Node * & p, int value) {  //#/ insertNode
+		if (p == nullptr) {                    //#/ insertNode_ifIns
+			p = new Node(value);
 			return;
 		}
-		insert(root, value);            //#/ insert_jump
-	}
-private:
-	void insert(Node * p, int value) {  //#/ insert#
-		;
+		if (value == p->value) {               //#/ insertNode_ifEql
+			return;
+		}
+		if (value < p->value) {                //#/ insertNode_ifLR
+			insert_node(p->left, value);       //#/ insertNode_recL
+		} else {
+			insert_node(p->right, value);      //#/ insertNode_recR
+		}
 	}
 	void erase(int value) {             //#/ erase
 		;

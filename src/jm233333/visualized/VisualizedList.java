@@ -31,7 +31,7 @@ public class VisualizedList extends VDS {
 
     private Node getNode(int index) {
         Node p = head;
-        getVisualList(getName()).setHighlight(0, true);
+        if (p != null) getVisualList(getName()).setHighlight(0, true);
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         for (int i = 0; i < index; i ++) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
@@ -41,7 +41,8 @@ public class VisualizedList extends VDS {
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 return null;
             }
-            getVisualList(getName()).setHighlight(i + 1, true);
+            getVisualList(getName()).setHighlight(i, false);
+            getVisualList(getName()).setHighlight(i + 1, true, true);
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             trackCodeEntrance(getCodeCurrentMethod() + "_loop_begin");
         }
@@ -62,10 +63,35 @@ public class VisualizedList extends VDS {
         return p.value;
     }
 
+    public Node find(int value) {
+        Node p = head;
+        int index = 0;
+        if (p != null) getVisualList(getName()).setHighlight(0, true);
+        trackCodeEntrance(CodeTracker.NEXT_LINE);
+        while (p != null) {
+            trackCodeEntrance(CodeTracker.NEXT_LINE);
+            if (p.value == value) {
+                trackCodeEntrance(CodeTracker.NEXT_LINE);
+                getVisualList(getName()).setHighlight(index, false);
+                outputMessage(getCodeCurrentMethod() + " true");
+                return p;
+            }
+            trackCodeEntrance(getCodeCurrentMethod() + "_if_end");
+            p = p.next;
+            getVisualList(getName()).setHighlight(index, false);
+            if (p != null) getVisualList(getName()).setHighlight(index + 1, true, true);
+            index ++;
+            trackCodeEntrance(getCodeCurrentMethod() + "_loop_begin");
+        }
+        trackCodeEntrance(getCodeCurrentMethod() + "_loop_end");
+        outputMessage(getCodeCurrentMethod() + " false");
+        return null;
+    }
+
     public void pushFront(int value) {
         // create new node
         Node node = new Node(value);
-        getVisualList(getName()).cacheNode(0, value);
+        getVisualList(getName()).setCachedNode(0, value);
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         // push front
         node.next = head;
@@ -96,7 +122,7 @@ public class VisualizedList extends VDS {
         trackCodeEntrance(getCodeCurrentMethod() + "_main_begin");
         // create new node
         Node p = new Node(value);
-        getVisualList(getName()).cacheNode(index, value);
+        getVisualList(getName()).setCachedNode(index, value);
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         // insert
         p.next = prv.next;
@@ -109,6 +135,8 @@ public class VisualizedList extends VDS {
         getVisualList(getName()).setPointerNext(index - 1, VisualList.CACHED_NODE);
         getVisualList(getName()).insertCachedNode(index);
         trackCodeEntrance(CodeTracker.NEXT_LINE);
+        // clear highlight
+        getVisualList(getName()).setHighlight(index - 1, false);
     }
 
     public void popFront() {
@@ -164,5 +192,7 @@ public class VisualizedList extends VDS {
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         getVisualList(getName()).eraseMarkedNode();
         trackCodeEntrance(CodeTracker.NEXT_LINE);
+        // clear highlight
+        getVisualList(getName()).setHighlight(index - 1, false);
     }
 }

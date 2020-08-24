@@ -51,4 +51,9 @@ public class VisualArrayNode extends VisualNode {
     public double getHeight() {
         return box.getHeight();
     }
+
+    @Override
+    public void setHighlight(boolean flag, boolean sync) {
+        ;
+    }
 }

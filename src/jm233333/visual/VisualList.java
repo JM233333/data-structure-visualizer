@@ -40,11 +40,10 @@ public class VisualList extends Visual {
         });
     }
 
-    public void cacheNode(int index, int value) {
-        if (cachedNode == null) {
-            cachedNode = createNode(index, value);
-        }
+    public void setCachedNode(int index, int value) {
+        cachedNode = createNode(index, value);
     }
+
     public void insertCachedNode(int index) {
         if (cachedNode != null) {
             arrayNode.add(index, cachedNode);

@@ -19,7 +19,7 @@ public:
 		clear();
 	}
 private:
-	Node get_node(int index) {                 //#/ getNode
+	Node * get_node(int index) {               //#/ getNode
 		Node * p = head;
 		for (int i = 0; i < index; i ++) {     //#/ getNode_loop_begin
 			p = p->next;
@@ -31,7 +31,17 @@ private:
 	}
 public:
 	int get(int index) {                       //#/ get
-		return get_node(index).value;          //#/ get_return
+		return get_node(index)->value;         //#/ get_return
+	}
+	Node * find(int value) {                   //#/ find
+		Node * p = head;
+		while (p != nullptr) {                 //#/ find_loop_begin
+			if (p->value == value) {
+				return p;
+			}
+			p = p->next;                       //#/ find_if_end
+		}
+		return nullptr;                        //#/ find_loop_end
 	}
 	void push_front(int value) {               //#/ pushFront
 		Node * p = new Node(value);
@@ -69,7 +79,7 @@ public:
 		prv->next = prv->next->next;
 		delete p;
 	}
-	void clear() {                      //#/ clear
+	void clear() {                             //#/ clear
 		;
 	}
 };

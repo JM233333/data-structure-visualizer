@@ -118,7 +118,7 @@ public class VisualPointer <T extends VisualNode> extends Visual {
         // get color
         Color colorLine;
         if (flag) {
-            colorLine = Color.ORANGE;
+            colorLine = Color.WHITE;
         } else {
             colorLine = Color.BLACK;
         }

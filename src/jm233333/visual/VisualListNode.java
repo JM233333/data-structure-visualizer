@@ -2,7 +2,6 @@ package jm233333.visual;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeType;
 import jm233333.Director;
 
@@ -76,16 +75,21 @@ public class VisualListNode extends VisualNode {
         return boxValue.getHeight();
     }
 
-    public void setHighlight(boolean flag) {
-        setHighlight(flag, false);
+//    @Override
+    public void setHighlightColorBoard() {
+        ;
     }
+
+    @Override
     public void setHighlight(boolean flag, boolean sync) {
         // get color
-        Color colorBox, colorText;
+        Color colorBoard, colorBox, colorText;
         if (flag) {
+            colorBoard = Color.WHITE;
             colorBox = Color.ORANGE;
             colorText = Color.WHITE;
         } else {
+            colorBoard = Color.BLACK;
             colorBox = Color.TRANSPARENT;
             colorText = Color.BLACK;
         }
@@ -94,9 +98,9 @@ public class VisualListNode extends VisualNode {
             Director.getInstance().addEmptyTimeline();
         }
         // add animations
-        for (Shape shape : new Shape[]{boxValue, boxPointer}) {
-            Director.getInstance().updateAnimation(1.0, shape.fillProperty(), colorBox);
-            Director.getInstance().updateAnimation(1.0, shape.strokeProperty(), colorBox);
+        for (Rectangle box : new Rectangle[]{boxValue, boxPointer}) {
+            Director.getInstance().updateAnimation(1.0, box.strokeProperty(), colorBoard);
+            Director.getInstance().updateAnimation(1.0, box.fillProperty(), colorBox);
         }
         Director.getInstance().updateAnimation(1.0, getText().fillProperty(), colorText);
         next.setHighlight(flag, true);
