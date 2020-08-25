@@ -332,9 +332,9 @@ public class Controller extends ScrollPane {
         //
         Button btnRun = new Button("Run");
         btnRun.getStyleClass().setAll("btn", "btn-success");
-        btnRun.setOnAction((ev) -> {
+        btnRun.setOnAction((event) -> {
             // get the operation list
-            String[] input = textArea.getText().split("\n");
+            String[] input = textArea.getText().split("\n"); System.out.println("run " + textArea.getText() + " ;");
             ArrayList<String> operations = new ArrayList<>();
             for (String str : input) {
                 if (!str.isEmpty()) operations.add(str);
@@ -344,6 +344,9 @@ public class Controller extends ScrollPane {
 //                batchIndexProperty().removeListener(batchListener);
 //            }
             System.out.println("ACTION");
+            if (batchListener != null) {
+                batchIndexProperty().removeListener(batchListener);
+            }
             batchListener = (observable, oldValue, newValue) -> {
                 // get index
                 int index = batchIndexProperty().get();
@@ -384,7 +387,7 @@ public class Controller extends ScrollPane {
                     vds.trackCodeMethodBeginning(name);
                     Method method = vds.getClass().getDeclaredMethod(name, parameterTypes);
                     method.invoke(vds, arguments.toArray());
-                    Director.getInstance().getLastTimeline().setOnFinished((event) -> {
+                    Director.getInstance().getLastTimeline().setOnFinished((e) -> {
                         batchIndexProperty().set(batchIndexProperty().get() + 1);
                     });
                     Director.getInstance().playAnimation();

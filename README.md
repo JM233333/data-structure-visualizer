@@ -155,6 +155,9 @@ Until 2020.3.23, I have not found any bug in the latest released version.
 |            | Fix BUG : Mistake in method {pushFront(value)} of VisualizedList. |
 |            | Fix BUG : Sometimes wrong current method name in code-tracking. |
 | 2020.8.24  | Update : Implements methods {get(index)} and {find(value)} for VisualizedList. |
+|            | Update : Implements methods of VisualizedBST. |
+| 2020.8.25  | Update : Adds support for single-step animation of VisualizedBST. |
+|            | Fix BUG : BUG triggered while running batch-processing more than once. |
 
 ## Todo List
 
@@ -162,6 +165,4 @@ Things planned to do in the near future:
 
 - Update : Supports global visual pointers for VDS.
 
-- Update : Implements methods of VisualizedBST.
-
-- Update : Adds support for single-step animation of VisualizedBST.
+- Update : Implements methods {erase(value)} for VisualizedBST.

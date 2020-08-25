@@ -34,8 +34,8 @@ public class VisualizedBinarySearchTree extends VDS {
     }
 
     public Node find(int value) {
-        trackCodeMethodBeginning("findNode");
         getVisualBST(getName()).markRoot();
+        trackCodeMethodBeginning("findNode");
         return findNode(root, value);
     }
     private Node findNode(Node p, int value) {
@@ -48,18 +48,34 @@ public class VisualizedBinarySearchTree extends VDS {
         trackCodeEntrance(getCodeCurrentMethod() + "_ifSucc");
         if (value == p.value) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
+            getVisualBST(getName()).markClear();
             return p;
         }
         // discussion
         trackCodeEntrance(getCodeCurrentMethod() + "_ifLR");
         if (value < p.value) {
             trackCodeEntrance(getCodeCurrentMethod() + "_recL");
+            getVisualBST(getName()).markToLeft();
             trackCodeMethodBeginning(getCodeCurrentMethod());
             return findNode(p.left, value);
         } else {
             trackCodeEntrance(getCodeCurrentMethod() + "_recR");
+            getVisualBST(getName()).markToRight();
             trackCodeMethodBeginning(getCodeCurrentMethod());
             return findNode(p.right, value);
+        }
+    }
+    private Node __findParent(Node p, int value) {
+        if (p == null || value == root.value) {
+            return null;
+        }
+        if (value == p.left.value || value == p.right.value) {
+            return p;
+        }
+        if (value < p.value) {
+            return __findParent(p.left, value);
+        } else {
+            return __findParent(p.right, value);
         }
     }
 
@@ -95,9 +111,8 @@ public class VisualizedBinarySearchTree extends VDS {
         trackCodeEntrance(getCodeCurrentMethod() + "_ifLR");
         if (value < p.value) {
             trackCodeEntrance(getCodeCurrentMethod() + "_recL");
-            getVisualBST(getName()).markToLeft();
-            trackCodeMethodBeginning(getCodeCurrentMethod());
             if (p.left == null) {
+                trackCodeMethodBeginning(getCodeCurrentMethod());
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 p.left = new Node(value);
                 p.left.depth = p.depth + 1;
@@ -105,13 +120,14 @@ public class VisualizedBinarySearchTree extends VDS {
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 getVisualBST(getName()).markClear();
             } else {
+                getVisualBST(getName()).markToLeft();
+                trackCodeMethodBeginning(getCodeCurrentMethod());
                 insertNode(p.left, value);
             }
         } else {
             trackCodeEntrance(getCodeCurrentMethod() + "_recR");
-            getVisualBST(getName()).markToRight();
-            trackCodeMethodBeginning(getCodeCurrentMethod());
             if (p.right == null) {
+                trackCodeMethodBeginning(getCodeCurrentMethod());
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 p.right = new Node(value);
                 p.right.depth = p.depth + 1;
@@ -119,8 +135,48 @@ public class VisualizedBinarySearchTree extends VDS {
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 getVisualBST(getName()).markClear();
             } else {
+                getVisualBST(getName()).markToRight();
+                trackCodeMethodBeginning(getCodeCurrentMethod());
                 insertNode(p.right, value);
             }
         }
+    }
+
+    public void erase(int value) {
+        if (value == root.value) {
+            trackCodeEntrance(CodeTracker.NEXT_LINE);
+            ;
+        }
+        Node prv = __findParent(root, value);
+        getVisualBST(getName()).markRoot();
+        trackCodeMethodBeginning("eraseNode");
+        eraseNode(root, value);
+    }
+    private void eraseNode(Node p, int value) {
+        ;
+    }
+
+    public Node findMax() {
+        getVisualBST(getName()).markRoot();
+        trackCodeMethodBeginning("findMaxOf");
+        return findMaxOf(root);
+    }
+    private Node findMaxOf(Node p) {
+        // check if null
+        if (p == null) {
+            trackCodeEntrance(CodeTracker.NEXT_LINE);
+            return null;
+        }
+        // iterate
+        trackCodeEntrance(getCodeCurrentMethod() + "_loop");
+        while (p.right != null) {
+            trackCodeEntrance(CodeTracker.NEXT_LINE);
+            getVisualBST(getName()).markToRight();
+            p = p.right;
+            trackCodeEntrance(getCodeCurrentMethod() + "_loop");
+        }
+        // return
+        trackCodeEntrance(getCodeCurrentMethod() + "_return");
+        return p;
     }
 }

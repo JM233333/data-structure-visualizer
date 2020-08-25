@@ -103,32 +103,42 @@ public class VisualBinarySearchTree extends Visual {
     }
 
     public void markRoot() {
+        boolean sync = (markedNode != null);
+        if (markedNode != null) {
+            markedNode.setHighlight(false);
+        }
         markedNode = rootNode;
         if (markedNode != null) {
-            markedNode.setHighlight(true);
+            markedNode.setHighlight(true, sync);
         }
     }
     public void markToLeft() {
-        if (markedNode != null) {
-            markedNode.setHighlight(false);
-            if (markedNode.getLeft() != null) {
-                markedNode.getPointerToLeft().setHighlight(true, true);
-                markedNode.getPointerToLeft().setHighlight(false);
-                markedNode = markedNode.getLeft();
-                markedNode.setHighlight(true, true);
-            }
+        if (markedNode == null) {
+            return;
         }
+        if (markedNode.getLeft() != null) {
+            markedNode.getPointerToLeft().setHighlight(true);
+            markedNode.getLeft().setHighlight(true, true);
+            markedNode.setHighlight(false);
+            markedNode.getPointerToLeft().setHighlight(false, true);
+        } else {
+            markedNode.setHighlight(false);
+        }
+        markedNode = markedNode.getLeft();
     }
     public void markToRight() {
-        if (markedNode != null) {
-            markedNode.setHighlight(false);
-            if (markedNode.getRight() != null) {
-                markedNode.getPointerToRight().setHighlight(true, true);
-                markedNode.getPointerToRight().setHighlight(false);
-                markedNode = markedNode.getRight();
-                markedNode.setHighlight(true, true);
-            }
+        if (markedNode == null) {
+            return;
         }
+        if (markedNode.getRight() != null) {
+            markedNode.getPointerToRight().setHighlight(true);
+            markedNode.getRight().setHighlight(true, true);
+            markedNode.setHighlight(false);
+            markedNode.getPointerToRight().setHighlight(false, true);
+        } else {
+            markedNode.setHighlight(false);
+        }
+        markedNode = markedNode.getRight();
     }
     public void markClear() {
         if (markedNode != null) {

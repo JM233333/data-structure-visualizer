@@ -27,8 +27,14 @@ public:
 	void insert(int value) {                   //#/ insert
 		insert_node(root, value);
 	}
+	void erase(int value) {                    //#/ erase
+		erase_node(root, value);
+	}
+	Node * find_max() {                        //#/ findMax
+		return find_max_of(root);
+	}
 private:
-	Node * find_Node(Node * & p, int value) {  //#/ findNode
+	Node * find_node(Node * & p, int value) {  //#/ findNode
 		if (p == nullptr) {                    //#/ findNode_ifFail
 			return nullptr;
 		}
@@ -55,8 +61,38 @@ private:
 			insert_node(p->right, value);      //#/ insertNode_recR
 		}
 	}
-	void erase(int value) {             //#/ erase
-		;
+	void erase_node(Node * & p, int value) {    //#/ eraseNode
+		if (value == p->value) {
+			if (p->left != nullptr
+				 && p->right != nullptr) {
+				Node * np = find_max(p->left);  //#/ eraseNode_findMax
+				p->value = np->value;
+				erase_node(p->left, np->value); //#/ eraseNode_rec
+			} else {
+				Node * q = p;
+				if (p->left != nullptr) {       //#/ eraseNode_ifLR_1
+					p = p->left;                //#/ eraseNode_linkL
+				} else {
+					p = p->right;               //#/ eraseNode_linkR
+				}
+				delete q;                       //#/ eraseNode_delete
+			}
+			return;                             //#/ eraseNode_return
+		}
+		if (value < p->value) {                 //#/ eraseNode_ifLR_2
+			erase_node(p->left, value);         //#/ eraseNode_recL
+		} else {
+			erase_node(p->right, value);        //#/ eraseNode_recR
+		}
+	}
+	Node * find_max_of(Node * p) {             //#/ findMaxOf
+		if (p == nullptr) {
+			return nullptr;
+		}
+		while (p->right != nullptr) {          //#/ findMaxOf_loop
+			p = p->right;
+		}
+		return p;                              //#/ findMaxOf_return
 	}
 	void clear() {                      //#/ clear
 		;
