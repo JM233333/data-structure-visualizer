@@ -10,6 +10,8 @@ public class VisualBinaryTreeNode extends VisualNode {
     private Circle box;
     private VisualPointer<VisualBinaryTreeNode> left, right;
 
+    private VisualBinaryTreeNode parentNode = null;
+
     public VisualBinaryTreeNode() {
         super();
         initialize();
@@ -68,6 +70,13 @@ public class VisualBinaryTreeNode extends VisualNode {
     }
     public final VisualPointer<VisualBinaryTreeNode> getPointerToRight() {
         return right;
+    }
+
+    public void setParentNode(VisualBinaryTreeNode node) {
+        parentNode = node;
+    }
+    public final VisualBinaryTreeNode getParentNode() {
+        return parentNode;
     }
 
     @Override

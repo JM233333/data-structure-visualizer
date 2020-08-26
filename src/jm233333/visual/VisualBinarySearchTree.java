@@ -1,10 +1,8 @@
 package jm233333.visual;
 
-import java.util.HashMap;
 import java.util.Stack;
 
 import javafx.scene.Node;
-import jm233333.Director;
 
 /**
  * The {@code VisualBinarySearchTree} class defines the graphic components of a binary search tree that is displayed on the monitor.
@@ -89,7 +87,7 @@ public class VisualBinarySearchTree extends Visual {
         // return
         return node;
     }
-    private void removeNode(int index) {
+    private void removeNode(VisualBinaryTreeNode p) {
 //        VisualBinaryTreeNode node = arrayNode.remove(index);
 //        Director.getInstance().createAnimation(1.0, node.scaleXProperty(), 0);
 //        Director.getInstance().updateAnimation(1.0, node.scaleYProperty(), 0);
@@ -102,12 +100,12 @@ public class VisualBinarySearchTree extends Visual {
         return cachedPath;
     }
 
-    public void markRoot() {
+    public void markNodeOfValue(int value) {
         boolean sync = (markedNode != null);
         if (markedNode != null) {
             markedNode.setHighlight(false);
         }
-        markedNode = rootNode;
+        markedNode = getNode(value);
         if (markedNode != null) {
             markedNode.setHighlight(true, sync);
         }
@@ -147,6 +145,23 @@ public class VisualBinarySearchTree extends Visual {
         }
     }
 
+    private VisualBinaryTreeNode getNode(int value) {
+        return getNode(rootNode, value);
+    }
+    private VisualBinaryTreeNode getNode(VisualBinaryTreeNode p, int value) {
+        if (p == null) {
+            return null;
+        }
+        if (value == p.getValue()) {
+            return p;
+        }
+        if (value < p.getValue()) {
+            return getNode(p.getLeft(), value);
+        } else {
+            return getNode(p.getRight(), value);
+        }
+    }
+
     public void insertNode(int value) {
         if (rootNode == null) {
             rootNode = createNode(value);
@@ -167,6 +182,7 @@ public class VisualBinarySearchTree extends Visual {
             if (p.getLeft() == null) {
                 VisualBinaryTreeNode newNode = createNode(value);
                 p.setLeft(newNode);
+                newNode.setParentNode(p);
             } else {
                 insertNode(p.getLeft(), value);
             }
@@ -175,10 +191,59 @@ public class VisualBinarySearchTree extends Visual {
             if (p.getRight() == null) {
                 VisualBinaryTreeNode newNode = createNode(value);
                 p.setRight(newNode);
+                newNode.setParentNode(p);
             } else {
                 insertNode(p.getRight(), value);
             }
         }
     }
 
+    public void eraseNodeSeparately(int value) {
+        eraseNodeSeparately(rootNode, value);
+    }
+    private void eraseNodeSeparately(VisualBinaryTreeNode p, int value) {
+        // check if failed
+        if (p == null) {
+            return;
+        }
+        // check if reached
+        if (value == p.getValue()) {
+            if (p.getLeft() != null && p.getRight() != null) {
+                VisualBinaryTreeNode np = findMaxOf(p.getLeft());
+                p.setValue(np.getValue());
+            } else {
+                if (p.getLeft() != null) {
+                    if (p.getValue() < p.getParentNode().getValue()) {
+                        p.getParentNode().setLeft(p.getLeft());
+                    } else {
+                        p.getParentNode().setRight(p.getLeft());
+                    }
+                } else {
+                    if (p.getValue() < p.getParentNode().getValue()) {
+                        p.getParentNode().setLeft(p.getRight());
+                    } else {
+                        p.getParentNode().setRight(p.getRight());
+                    }
+                }
+                removeNode(p);
+            }
+            return;
+        }
+        // discussion
+        if (value < p.getValue()) {
+            eraseNodeSeparately(p.getLeft(), value);
+        } else {
+            eraseNodeSeparately(p.getRight(), value);
+        }
+    }
+
+    private VisualBinaryTreeNode findMaxOf(VisualBinaryTreeNode p) {
+        if (p == null) {
+            return null;
+        }
+        while (p.getRight() != null) {
+            p = p.getRight();
+        }
+        return p;
+    }
 }

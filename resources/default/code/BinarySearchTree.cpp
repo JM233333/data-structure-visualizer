@@ -62,15 +62,18 @@ private:
 		}
 	}
 	void erase_node(Node * & p, int value) {    //#/ eraseNode
-		if (value == p->value) {
+		if (p == nullptr) {
+			return;
+		}
+		if (value == p->value) {                //#/ eraseNode_ifEql
 			if (p->left != nullptr
 				 && p->right != nullptr) {
 				Node * np = find_max(p->left);  //#/ eraseNode_findMax
 				p->value = np->value;
-				erase_node(p->left, np->value); //#/ eraseNode_rec
+				erase_node(p->left, np->value);
 			} else {
-				Node * q = p;
-				if (p->left != nullptr) {       //#/ eraseNode_ifLR_1
+				Node * q = p;                   //#/ eraseNode_preDel
+				if (p->left != nullptr) {
 					p = p->left;                //#/ eraseNode_linkL
 				} else {
 					p = p->right;               //#/ eraseNode_linkR
@@ -79,7 +82,7 @@ private:
 			}
 			return;                             //#/ eraseNode_return
 		}
-		if (value < p->value) {                 //#/ eraseNode_ifLR_2
+		if (value < p->value) {                 //#/ eraseNode_ifLR
 			erase_node(p->left, value);         //#/ eraseNode_recL
 		} else {
 			erase_node(p->right, value);        //#/ eraseNode_recR
@@ -98,3 +101,11 @@ private:
 		;
 	}
 };
+/*
+insert 50
+insert 45
+insert 47
+insert 48
+insert 46
+insert 40
+*/
