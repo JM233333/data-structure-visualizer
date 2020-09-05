@@ -1,7 +1,6 @@
 package jm233333.visual;
 
 import javafx.geometry.VPos;
-import javafx.scene.Node;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import jm233333.Director;

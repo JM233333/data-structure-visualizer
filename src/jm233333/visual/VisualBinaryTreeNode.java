@@ -11,6 +11,7 @@ public class VisualBinaryTreeNode extends VisualNode {
     private VisualPointer<VisualBinaryTreeNode> left, right;
 
     private VisualBinaryTreeNode parentNode = null;
+    private int depth = 0;
 
     public VisualBinaryTreeNode() {
         super();
@@ -74,9 +75,13 @@ public class VisualBinaryTreeNode extends VisualNode {
 
     public void setParentNode(VisualBinaryTreeNode node) {
         parentNode = node;
+        depth = (parentNode == null ? 0 : parentNode.getDepth() + 1);
     }
     public final VisualBinaryTreeNode getParentNode() {
         return parentNode;
+    }
+    public int getDepth() {
+        return depth;
     }
 
     @Override

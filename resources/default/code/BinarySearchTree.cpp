@@ -61,31 +61,32 @@ private:
 			insert_node(p->right, value);      //#/ insertNode_recR
 		}
 	}
-	void erase_node(Node * & p, int value) {    //#/ eraseNode
+	void erase_node(Node * & p, int value) {   //#/ eraseNode
 		if (p == nullptr) {
 			return;
 		}
-		if (value == p->value) {                //#/ eraseNode_ifEql
+		if (value == p->value) {               //#/ eraseNode_ifEql
 			if (p->left != nullptr
 				 && p->right != nullptr) {
-				Node * np = find_max(p->left);  //#/ eraseNode_findMax
-				p->value = np->value;
-				erase_node(p->left, np->value);
+				Node * np = find_max(p->left); //#/ eraseNode_findMax
+				int t = np->value;
+				erase_node(p->left, t);
+				p->value = t;
 			} else {
-				Node * q = p;                   //#/ eraseNode_preDel
+				Node * q = p;                  //#/ eraseNode_preDel
 				if (p->left != nullptr) {
-					p = p->left;                //#/ eraseNode_linkL
+					p = p->left;               //#/ eraseNode_linkL
 				} else {
-					p = p->right;               //#/ eraseNode_linkR
+					p = p->right;              //#/ eraseNode_linkR
 				}
-				delete q;                       //#/ eraseNode_delete
+				delete q;                      //#/ eraseNode_delete
 			}
-			return;                             //#/ eraseNode_return
+			return;                            //#/ eraseNode_return
 		}
-		if (value < p->value) {                 //#/ eraseNode_ifLR
-			erase_node(p->left, value);         //#/ eraseNode_recL
+		if (value < p->value) {                //#/ eraseNode_ifLR
+			erase_node(p->left, value);        //#/ eraseNode_recL
 		} else {
-			erase_node(p->right, value);        //#/ eraseNode_recR
+			erase_node(p->right, value);       //#/ eraseNode_recR
 		}
 	}
 	Node * find_max_of(Node * p) {             //#/ findMaxOf
