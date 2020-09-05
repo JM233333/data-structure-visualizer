@@ -158,11 +158,10 @@ Until 2020.3.23, I have not found any bug in the latest released version.
 |            | Update : Implements methods of VisualizedBST. |
 | 2020.8.25  | Update : Adds support for single-step animation of VisualizedBST. |
 |            | Fix BUG : BUG triggered while running batch-processing more than once. |
+| 2020.9.5   | Update : Implements methods {erase(value)} for VisualizedBST. (too complex!) |
 
 ## Todo List
 
 Things planned to do in the near future:
 
 - Update : Supports global visual pointers for VDS.
-
-- Update : Implements methods {erase(value)} for VisualizedBST.

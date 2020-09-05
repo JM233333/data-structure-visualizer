@@ -65,11 +65,7 @@ public class VisualBinarySearchTree extends Visual {
         node.setLayoutY(y);
         this.getChildren().add(node);
         // relocate
-        double minX = 0;
-        for (Node child : this.getChildren()) {
-            minX = Math.min(minX, child.getLayoutX());
-        }
-        this.setLayoutX(PADDING - minX);
+        relocate();
         // return
         return node;
     }
@@ -78,6 +74,7 @@ public class VisualBinarySearchTree extends Visual {
         Director.getInstance().updateAnimation(1.0, node.scaleYProperty(), 0);
         Director.getInstance().getLastTimeline().setOnFinished((event) -> {
             this.getChildren().remove(node);
+            relocate();
         });
     }
 
@@ -117,17 +114,34 @@ public class VisualBinarySearchTree extends Visual {
         }
     }
 
-    private void resetDepth(VisualBinaryTreeNode p) {
+    private void relocate() {
+        double minX = 0;
+        for (Node child : this.getChildren()) {
+            minX = Math.min(minX, child.getLayoutX());
+        }
+        this.setLayoutX(PADDING - minX);
+    }
+    private void reconstruct() {
+        Director.getInstance().addEmptyTimeline();
+        reconstruct(rootNode, 0.0, 0.0);
+    }
+    private void reconstruct(VisualBinaryTreeNode p, double x, double y) {
+        // end recursion
         if (p == null) {
             return;
         }
+        // reset depth
         if (p == rootNode) {
             p.setParentNode(null);
         } else {
             p.setParentNode(p.getParentNode());
         }
-        resetDepth(p.getLeft());
-        resetDepth(p.getRight());
+        // reset position
+        Director.getInstance().updateAnimation(1.0, p.layoutXProperty(), x);
+        Director.getInstance().updateAnimation(1.0, p.layoutYProperty(), y);
+        //recursion
+        reconstruct(p.getLeft(), x - localization[p.getDepth()][0], y + localization[p.getDepth()][1]);
+        reconstruct(p.getRight(), x + localization[p.getDepth()][0], y + localization[p.getDepth()][1]);
     }
 
     public void markNodeOfValue(int value) {
@@ -172,41 +186,6 @@ public class VisualBinarySearchTree extends Visual {
         if (markedNode != null) {
             markedNode.setHighlight(false);
             markedNode = null;
-        }
-    }
-
-    public void moveNode(int valueFrom, int valueTo) {
-        VisualBinaryTreeNode p = getNode(valueFrom);
-        VisualBinaryTreeNode q = getNode(valueTo);
-        if (p != null && q != null) {
-            moveNode(p, q.getLayoutX(), q.getLayoutY());
-        }
-    }
-    private void moveNode(VisualBinaryTreeNode p, double x, double y) {
-        if (p != null) {
-            Director.getInstance().createAnimation(1.0, p.layoutXProperty(), x);
-            Director.getInstance().updateAnimation(1.0, p.layoutYProperty(), y);
-        }
-    }
-    public void moveSubtree(int valueFrom, int valueTo) {
-        VisualBinaryTreeNode p = getNode(valueFrom);
-        VisualBinaryTreeNode q = getNode(valueTo);
-        if (p != null && q != null) {
-            moveSubtree(p, q.getLayoutX(), q.getLayoutY());
-        }
-    }
-    private void moveSubtree(VisualBinaryTreeNode p, double x, double y) {
-        if (p != null) {
-            Director.getInstance().addEmptyTimeline();
-            moveSubtreeP(p, x - p.getLayoutX(), y - p.getLayoutY());
-        }
-    }
-    private void moveSubtreeP(VisualBinaryTreeNode p, double dx, double dy) {
-        if (p != null) {
-            Director.getInstance().updateAnimation(1.0, p.layoutXProperty(), p.getLayoutX() + dx);
-            Director.getInstance().updateAnimation(1.0, p.layoutYProperty(), p.getLayoutY() + dy);
-            moveSubtreeP(p.getLeft(), dx, dy);
-            moveSubtreeP(p.getRight(), dx, dy);
         }
     }
 
@@ -255,9 +234,7 @@ public class VisualBinarySearchTree extends Visual {
             }
             VisualBinaryTreeNode c = (p.getLeft() != null ? p.getLeft() : p.getRight());
             rootNode = c;
-            resetDepth(rootNode);
             cachedNode = p;
-            moveSubtree(c, p.getLayoutX(), p.getLayoutY());
             Director.getInstance().createAnimation(1.0, p.layoutYProperty(), delY);
             return;
         }
@@ -275,16 +252,16 @@ public class VisualBinarySearchTree extends Visual {
         } else {
             f.setRight(c);
         }
-        System.out.printf("ppp q=%d qL=%d qR=%d qF=%d\n",
-                p.getValue(), p.getLeft()==null?-1:p.getLeft().getValue(),p.getRight()==null?-1:p.getRight().getValue(),
-                        p.getParentNode()==null?-1:p.getParentNode().getValue());
         cachedNode = p;
-        moveSubtree(c, p.getLayoutX(), p.getLayoutY());
         Director.getInstance().createAnimation(1.0, p.layoutYProperty(), delY);
     }
     public void eraseCachedNode() {
         removeNode(cachedNode);
         cachedNode = null;
+        reconstruct();
+        Director.getInstance().createDelayInvocation(500, (event) -> {
+            relocate();
+        });//Director.getInstance().getLastTimeline().setOnFinished(
     }
 
     public void modifyNode(int value, int nValue) {
@@ -304,4 +281,12 @@ public class VisualBinarySearchTree extends Visual {
         return p;
     }
 
+    private void cc(VisualBinaryTreeNode p) {
+        if (p == null) return;
+        System.out.printf("p=%d pL=%d pR=%d pF=%d pDepth=%d\n",
+                p.getValue(), p.getLeft()==null?-1:p.getLeft().getValue(),p.getRight()==null?-1:p.getRight().getValue(),
+                p.getParentNode()==null?-1:p.getParentNode().getValue(), p.getDepth());
+        cc(p.getLeft());
+        cc(p.getRight());
+    }
 }

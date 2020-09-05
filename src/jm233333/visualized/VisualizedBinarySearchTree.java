@@ -14,13 +14,11 @@ public class VisualizedBinarySearchTree extends VDS {
     static class Node {
         int value;
         Node left, right;
-        int depth;
         Node parent;
         Node(int value) {
             this.value = value;
             left = null;
             right = null;
-            depth = 0;
             parent = null;
         }
     }
@@ -95,18 +93,17 @@ public class VisualizedBinarySearchTree extends VDS {
         if (root == null) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             root = new Node(value);
-            root.depth = 0;
             root.parent = null;
             getVisualBST(getName()).insertNode(value);
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             return;
         }
-        insertNode(root, value);
+        insertNode(root, value, 0);
     }
-    private void insertNode(Node p, int value) {
+    private void insertNode(Node p, int value, int curDepth) {
         // assert
         assert (p != null);
-        if (p.depth == MAX_DEPTH) {
+        if (curDepth == MAX_DEPTH) {
             System.out.printf("Sorry, depth cannot be higher than %d.\n", MAX_DEPTH);
             getVisualBST(getName()).markClear();
             return;
@@ -126,7 +123,6 @@ public class VisualizedBinarySearchTree extends VDS {
                 trackCodeMethodBeginning(getCodeCurrentMethod());
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 p.left = new Node(value);
-                p.left.depth = p.depth + 1;
                 p.left.parent = p;
                 getVisualBST(getName()).insertNode(value);
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
@@ -134,7 +130,7 @@ public class VisualizedBinarySearchTree extends VDS {
             } else {
                 getVisualBST(getName()).markToLeft();
                 trackCodeMethodBeginning(getCodeCurrentMethod());
-                insertNode(p.left, value);
+                insertNode(p.left, value, curDepth + 1);
             }
         } else {
             trackCodeEntrance(getCodeCurrentMethod() + "_recR");
@@ -142,7 +138,6 @@ public class VisualizedBinarySearchTree extends VDS {
                 trackCodeMethodBeginning(getCodeCurrentMethod());
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 p.right = new Node(value);
-                p.right.depth = p.depth + 1;
                 p.right.parent = p;
                 getVisualBST(getName()).insertNode(value);
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
@@ -150,11 +145,19 @@ public class VisualizedBinarySearchTree extends VDS {
             } else {
                 getVisualBST(getName()).markToRight();
                 trackCodeMethodBeginning(getCodeCurrentMethod());
-                insertNode(p.right, value);
+                insertNode(p.right, value, curDepth + 1);
             }
         }
     }
 
+    void cc(Node p) {
+        if (p == null) return;
+        System.out.printf("cc1 p=%d pL=%d pR=%d pF=%d\n",
+                p.value, p.left==null?-1:p.left.value,p.right==null?-1:p.right.value,
+                p.parent==null?-1:p.parent.value);
+        cc(p.left);
+        cc(p.right);
+    }
     public void erase(int value) {
         if (root != null) {
             getVisualBST(getName()).markNodeOfValue(root.value);
@@ -180,13 +183,12 @@ public class VisualizedBinarySearchTree extends VDS {
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 Node p = (root.left != null ? root.left : root.right);
                 trackCodeEntrance(getCodeCurrentMethod() + (root.left != null ? "_linkL" : "_linkR"));
-//                System.out.printf("q=%d qL=%d qR=%d qF=%d\n",q.value,q.left==null?-1:q.left.value,q.right==null?-1:q.right.value,
-//                        q.parent==null?-1:q.parent.value);
                 getVisualBST(getName()).eraseNodePrep(root.value);
                 trackCodeEntrance(getCodeCurrentMethod() + "_delete");
                 getVisualBST(getName()).eraseCachedNode();
                 root = p;
             }
+            trackCodeEntrance(getCodeCurrentMethod() + "_return");
             return;
         }
         trackCodeMethodBeginning("eraseNode");
@@ -217,19 +219,24 @@ public class VisualizedBinarySearchTree extends VDS {
             } else {
                 trackCodeEntrance(getCodeCurrentMethod() + "_preDel");
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
+                Node f = p.parent;
                 if (p.left != null) {
                     trackCodeEntrance(getCodeCurrentMethod() + "_linkL");
-                    if (p.value < p.parent.value) {
-                        p.parent.left = p.left;
+                    if (p.value < f.value) {
+                        f.left = p.left;
+                        f.left.parent = f;
                     } else {
-                        p.parent.right = p.left;
+                        f.right = p.left;
+                        f.right.parent = f;
                     }
                 } else {
                     trackCodeEntrance(getCodeCurrentMethod() + "_linkR");
-                    if (p.value < p.parent.value) {
-                        p.parent.left = p.right;
+                    if (p.value < f.value) {
+                        f.left = p.right;
+                        if (p.right != null) f.left.parent = f;
                     } else {
-                        p.parent.right = p.right;
+                        f.right = p.right;
+                        if (p.right != null) f.right.parent = f;
                     }
                 }
                 getVisualBST(getName()).eraseNodePrep(p.value);

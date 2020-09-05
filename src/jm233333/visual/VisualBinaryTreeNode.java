@@ -55,6 +55,9 @@ public class VisualBinaryTreeNode extends VisualNode {
 
     public void setLeft(VisualBinaryTreeNode node) {
         left.setTarget(node);
+        if (node != null) {
+            node.setParentNode(this);
+        }
     }
     public final VisualBinaryTreeNode getLeft() {
         return left.getTarget();
@@ -65,6 +68,9 @@ public class VisualBinaryTreeNode extends VisualNode {
 
     public void setRight(VisualBinaryTreeNode node) {
         right.setTarget(node);
+        if (node != null) {
+            node.setParentNode(this);
+        }
     }
     public final VisualBinaryTreeNode getRight() {
         return right.getTarget();
