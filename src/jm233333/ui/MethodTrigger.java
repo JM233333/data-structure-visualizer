@@ -10,8 +10,8 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 
 /**
- * The {@code MethodTrigger} class defines the UI to manipulate the visualized data structure with a specified public method of it.
- * Extended from JavaFX class {@code HBox} only for UI layout.
+ * Class {@code MethodTrigger} is a sub-component of {@link Controller} to manipulate the {@link jm233333.visualized.VDS} with a specified public method of it.
+ * Extended from JavaFX class {@link HBox} only for UI layout.
  */
 public class MethodTrigger extends HBox {
 
@@ -23,7 +23,7 @@ public class MethodTrigger extends HBox {
     private ArrayList<TextField> textFields;
 
     /**
-     * Creates a MethodTrigger with the name and parameter list of a specified method.
+     * Creates a {@code MethodTrigger} with the name and parameter list of the specified method.
      *
      * @param nameMethod The name of the method
      * @param nameParameters The name list of parameters of the method
@@ -33,9 +33,9 @@ public class MethodTrigger extends HBox {
     }
 
     /**
-     * Creates a MethodTrigger with the specified method.
+     * Creates a {@code MethodTrigger} with the specified method.
      *
-     * @param method The reference to the method
+     * @param method The method
      */
     public MethodTrigger(Method method) {
         // get method metadata
@@ -51,12 +51,6 @@ public class MethodTrigger extends HBox {
         initialize(nameMethod, nameParameters);
     }
 
-    /**
-     * Initializes the method trigger.
-     *
-     * @param nameMethod The name of the method
-     * @param nameParameters The name list of parameters of the method
-     */
     private void initialize(String nameMethod, String... nameParameters) {
         // initialize
         this.setPadding(new Insets(0, 16, 0, 0));
@@ -96,15 +90,35 @@ public class MethodTrigger extends HBox {
         }
     }
 
+    /**
+     * Gets the name of the method.
+     *
+     * @return the name of the method
+     */
     public final String getName() {
         return name;
     }
+    /**
+     * Gets the trigger of the method.
+     *
+     * @return the trigger of the method
+     */
     public final Button getButton() {
         return button;
     }
+    /**
+     * Gets the argument text fields of the {@code MethodTrigger}.
+     *
+     * @return the argument text fields of the method trigger
+     */
     public final ArrayList<TextField> getTextFields() {
         return textFields;
     }
+    /**
+     * Gets the current inputted parameters of the {@code MethodTrigger}.
+     *
+     * @return the current inputted parameters of the method trigger
+     */
     public ArrayList<Integer> getParameters() {
         // initialize
         ArrayList<Integer> parameters = new ArrayList<>();

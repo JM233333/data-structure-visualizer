@@ -9,17 +9,24 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 import jm233333.Director;
+import jm233333.io.ResourceReader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * The {@code CodeTracker}  is responsible for tracking the invoked method code of the visualized data structure.
- *  * Extended from JavaFX class {@code Group} only for UI layout.
+ * Class {@code CodeTracker} is responsible for tracking the invoked method code of the visualized data structure.
+ * Extended from JavaFX class {@link ScrollPane} only for UI layout.
  */
 public class CodeTracker extends ScrollPane {
 
+    /**
+     * The flag string meaning to go to the next line.
+     */
     public static final String NEXT_LINE = "__next";
+    /**
+     * The flag string meaning to do nothing.
+     */
     public static final String REMAIN = "__remain";
 
     private final double padding = 16;
@@ -32,6 +39,9 @@ public class CodeTracker extends ScrollPane {
     private String currentMethod;
     private int currentLineIndex;
 
+    /**
+     * Creates a {@code CodeTracker}.
+     */
     public CodeTracker() {
         // initialize
         this.getStyleClass().add("code-tracker");
@@ -52,18 +62,19 @@ public class CodeTracker extends ScrollPane {
         mapEntrance = new HashMap<>();
         currentMethod = "";
         currentLineIndex = -1;
-        //
-//        this.vvalueProperty().addListener((observable, oldValue, newValue) -> {
-//            System.out.println(newValue);
-//        });
     }
 
-    public void processCodeList(final String name) {
+    /**
+     * Parses the code list of the {@link jm233333.visualized.VDS} named as {@code name}.
+     *
+     * @param name the specified name of vds
+     */
+    public void parseCodeList(final String name) {
         // clear
         codeBoard.getChildren().clear();
         mapEntrance.clear();
         // process the code text
-        ArrayList<String> codeList = Director.getInstance().getVdsCodeMap().get(name);
+        ArrayList<String> codeList = ResourceReader.getInstance().getVdsCodeMap().get(name);
         if (codeList == null) {
             System.err.println("Native Code File Not Found for " + name);
             return;
@@ -82,6 +93,12 @@ public class CodeTracker extends ScrollPane {
             }
         }
     }
+
+    /**
+     * Tracks into the method of the specified name.
+     *
+     * @param nMethod name of the method to go
+     */
     public void setCurrentMethod(String nMethod) {
         //
         if (mapEntrance.get(nMethod) == null) {
@@ -97,10 +114,21 @@ public class CodeTracker extends ScrollPane {
         //
         currentMethod = nMethod;
     }
+
+    /**
+     * Gets the name of the method currently tracked in.
+     *
+     * @return name of the method currently tracked in
+     */
     public final String getCurrentMethod() {
         return currentMethod;
     }
 
+    /**
+     * Tracks into the line of the specified entrance name in the current method.
+     *
+     * @param name name of the entrance
+     */
     public void gotoEntrance(String name) {
         if (name.equals(REMAIN)) {
             return;
@@ -111,6 +139,12 @@ public class CodeTracker extends ScrollPane {
             setCurrentLineIndex(mapEntrance.get(name));
         }
     }
+
+    /**
+     * Tracks into the code line of the specified line index.
+     *
+     * @param nLineIndex the specified line index
+     */
     public void setCurrentLineIndex(Integer nLineIndex) {
         if (nLineIndex == null || nLineIndex < 0 || nLineIndex >= codeBoard.getChildren().size()) {
             System.err.println("Code Tracking Error for Line " + nLineIndex);
@@ -137,6 +171,12 @@ public class CodeTracker extends ScrollPane {
             Director.getInstance().createAnimation(0.5, currentLineSymbol.opacityProperty(), 1);
         }
     }
+
+    /**
+     * Gets the current tracked line index.
+     *
+     * @return the current tracked line index
+     */
     public int getCurrentLineIndex() {
         return currentLineIndex;
     }

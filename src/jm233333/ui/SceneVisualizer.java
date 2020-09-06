@@ -7,11 +7,12 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.*;
 import jm233333.Director;
+import jm233333.Global;
 import jm233333.visualized.VDS;
 
 /**
- * The {@code SceneVisualizer} class maintains a scene graph for Visualizer UI.
- * Extended from JavaFX class {@code Scene}.
+ * Class {@code SceneVisualizer} maintains a scene graph for visualizer UI.
+ * Extended from JavaFX class {@link Scene}.
  */
 public class SceneVisualizer extends Scene {
 
@@ -24,7 +25,7 @@ public class SceneVisualizer extends Scene {
     private VDS vds;
 
     /**
-     * Creates a SceneVisualizer with a specific size and a specific data structure that will be visualized.
+     * Creates a {@code SceneVisualizer} with a specific size and a specific {@link VDS}.
      *
      * @param root The root node of the scene graph
      * @param vds The data structure that will be visualized
@@ -37,13 +38,13 @@ public class SceneVisualizer extends Scene {
     }
 
     /**
-     * Initializes the SceneVisualizer.
+     * Initializes the {@code SceneVisualizer}.
      */
     private void initialize() {
         // initialize root
         root.setId("root");
         root.getStyleClass().add("bg-info");
-        root.setPrefHeight(Math.min(800.0, Director.getInstance().getScreenHeight()));
+        root.setPrefHeight(Math.min(800.0, Global.getScreenHeight()));
         // initialize CSS
         initializeCSS();
         // initialize sub regions
@@ -65,10 +66,6 @@ public class SceneVisualizer extends Scene {
 //            System.out.println("Window Size Change:" + t.toString() + "," + t1.toString());
 //        });
     }
-
-    /**
-     * Initializes CSS.
-     */
     private void initializeCSS() {
         Class cls = this.getClass();
         this.getStylesheets().add(cls.getResource("/css/bootstrapfx.css").toExternalForm());
@@ -77,7 +74,6 @@ public class SceneVisualizer extends Scene {
         String lastName = fullName.substring(fullName.lastIndexOf('.') + 1);
         this.getStylesheets().add(cls.getResource("/css/" + lastName + ".css").toExternalForm());
     }
-
     private void initializeMonitor() {
         // initialize monitor
         monitor = new Monitor();
@@ -114,7 +110,7 @@ public class SceneVisualizer extends Scene {
         buttonBack.setOnAction((event) -> {
             Director.getInstance().forceClearAllAnimation();
             Scene scene = new SceneMenu(new FlowPane(), 1024, 768);
-            Director.getInstance().getPrimaryStage().setScene(scene);
+            Global.getPrimaryStage().setScene(scene);
         });
         menu.getChildren().add(buttonBack);
     }

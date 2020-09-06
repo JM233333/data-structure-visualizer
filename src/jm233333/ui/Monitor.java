@@ -3,7 +3,6 @@ package jm233333.ui;
 import java.util.HashMap;
 
 import javafx.geometry.Insets;
-import javafx.scene.*;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -13,8 +12,8 @@ import javafx.scene.paint.Color;
 import jm233333.visual.*;
 
 /**
- * The {@code Monitor} class is responsible for displaying the visualized data structure.
- * Extended from JavaFX class {@code Pane} only for UI layout.
+ * Class {@code Monitor} is responsible for displaying the visualized data structure.
+ * Extended from JavaFX class {@link ScrollPane} only for UI layout.
  */
 public class Monitor extends ScrollPane {
 
@@ -40,7 +39,7 @@ public class Monitor extends ScrollPane {
     private HashMap<String, String> mapIndexFieldConnection;
 
     /**
-     * Creates a Monitor.
+     * Creates a {@code Monitor}.
      */
     public Monitor() {
         // initialize
@@ -50,15 +49,10 @@ public class Monitor extends ScrollPane {
         canvas.setBackground(new Background(new BackgroundFill(Color.rgb(160, 160, 255), null, null)));
         canvas.setPadding(new Insets(32));
         this.setContent(canvas);
-//        this.getChildren().add(canvas);
         // initialize data
         mapVisual = new HashMap<>();
         mapIndexFieldConnection = new HashMap<>();
     }
-//    public <T> void updateField(String name, Class type, T value) {
-//        fieldMap.computeIfAbsent(type, k -> new HashMap<>());
-//        fieldMap.get(type).put(name, value);
-//    }
 
     /**
      * Gets the visual component by name.
@@ -81,10 +75,10 @@ public class Monitor extends ScrollPane {
     }
 
     /**
-     * Creates graphic components that represent an array.
+     * Creates a {@link VisualArray} in the {@code Monitor}.
      *
-     * @param name name of the array
-     * @param n length of the array
+     * @param name name of the visual array
+     * @param n length of the visual array
      */
     public void createVisualArray(String name, int n) {
         VisualArray visualArray = new VisualArray(name, n);
@@ -105,9 +99,9 @@ public class Monitor extends ScrollPane {
     }
 
     /**
-     * Creates graphic components that represent a list.
+     * Creates a {@link VisualList} in the {@code Monitor}.
      *
-     * @param name name of the list
+     * @param name name of the visual list
      */
     public void createVisualList(String name) {
         VisualList visualList = new VisualList(name);
@@ -118,9 +112,9 @@ public class Monitor extends ScrollPane {
     }
 
     /**
-     * Creates graphic components that represent a binary tree.
+     * Creates a {@link VisualBinarySearchTree} in the {@code Monitor}.
      *
-     * @param name name of the binary tree
+     * @param name name of the visual binary search tree
      */
     public void createVisualBST(String name) {
         // create visual

@@ -1,7 +1,5 @@
 package jm233333;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.util.*;
 
 import javafx.animation.KeyFrame;
@@ -9,32 +7,35 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.BooleanPropertyBase;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.IntegerPropertyBase;
 import javafx.beans.value.WritableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-import jm233333.visualized.VDSInstantiation;
 
 /**
- * The {@code Director} class is a singleton class that maintains global data and controls the overall program.
+ * Class {@code Director} is a singleton class that controls all of the animations in the application.
+ *
+ * <p>
+ *     User can define the animation with the prepare-play scheme.
+ *     While preparing, user creates animations (e.g. put animation data into a cache) via the provided interfaces;
+ *     After playing, the animation in the cache will be played as user sets, then the cache will be cleared for being used the next time.
+ *     The animations can be set as concurrently-playing or successively-playing.
+ * </p><p>
+ *     Here are some more-in-depth details of {@code Director}.
+ *     The animation mechanism of the application is implemented with {@link Timeline} and {@link KeyFrame} of JavaFX.
+ *     {@code Director} maintains two lists of timelines, {@link Director#animationWaitingList} and {@link Director#animationPlayingList}.
+ *     A timeline is bound with a series of keyframes, each of which represents an animation effect.
+ *     Timelines are played successively, while keyframes in a timeline are played concurrently.
+ * </p>
  */
 public class Director {
 
+    /**
+     * The singleton of {@code Director}.
+     */
     private static Director instance = new Director();
-
-    private final boolean isJar = Main.class.getResource("Main.class").toString().startsWith("jar");
-    private Stage primaryStage;
-
-    private ArrayList<String> menuItemsList;
-    private HashMap<String, VDSInstantiation> vdsInstantiationMap;
-    private HashMap<String, ArrayList<String>> vdsCodeMap;
-    private IntegerProperty loadingProgressProperty;
-    private int maxLoadingProgress;
 
     public static final double UNIT_ANIMATION_RATE = 100,
             MIN_ANIMATION_RATE = UNIT_ANIMATION_RATE,
@@ -48,20 +49,10 @@ public class Director {
     private HashSet<Integer> stepPointSet;
     private boolean isSingleStep;
 
-    private final double screenWidth, screenHeight;
-
     /**
-     * Creates the unique instance of {@code Director}.
+     * Creates the singleton of {@code Director}.
      */
     private Director() {
-        primaryStage = null;
-
-        menuItemsList = new ArrayList<>();
-        vdsInstantiationMap = new HashMap<>();
-        vdsCodeMap = new HashMap<>();
-        loadingProgressProperty().setValue(0);
-        maxLoadingProgress = 1;
-
         animationWaitingList = new ArrayList<>();
         animationPlayingList = null;
         animationCurrentIndex = -1;
@@ -69,128 +60,65 @@ public class Director {
         animationRate = DEFAULT_ANIMATION_RATE;
         stepPointSet = new HashSet<>();
         isSingleStep = false;
-
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        screenWidth = screenSize.getWidth();
-        screenHeight = screenSize.getHeight();
     }
 
     /**
-     * Gets the unique instance of {@code Director}.
+     * Gets the singleton of {@code Director}.
      *
-     * @return the unique instance of {@code Director}
+     * @return the singleton of {@code Director}
      */
     public static Director getInstance() {
         return instance;
     }
 
     /**
-     * Initializes the unique instance of {@code Director} with a specified {@code Stage}.
+     * Creates a new {@link Timeline} into {@link Director#animationWaitingList} with an animation.
+     * The added animation will be played in a new timeline after the last timeline.
+     * Factually calls {@link Director#addEmptyTimeline} and {@link Director#updateAnimation(double, WritableValue, Object)}.
      *
-     * @param primaryStage the {@code Stage} that is designated as the primary stage
-     */
-    public void initialize(Stage primaryStage) {
-        setPrimaryStage(primaryStage);
-    }
-
-    /**
-     * Sets the primary stage.
-     *
-     * @param primaryStage the new primary stage.
-     */
-    public void setPrimaryStage(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-    }
-
-    /**
-     * Gets the primary stage.
-     *
-     * @return the primary stage.
-     */
-    public final Stage getPrimaryStage() {
-        return primaryStage;
-    }
-
-    public void addMenuItem(final String item) {
-        menuItemsList.add(item);
-    }
-    public final ArrayList<String> getMenuItems() {
-        return menuItemsList;
-    }
-    public final HashMap<String, VDSInstantiation> getVDSInstantiationMap() {
-        return vdsInstantiationMap;
-    }
-    public final HashMap<String, ArrayList<String>> getVdsCodeMap() {
-        return vdsCodeMap;
-    }
-
-    public final String getRootPath() {
-        if (isJar) {
-            String pathJar = Main.class.getProtectionDomain().getCodeSource().getLocation().getFile();
-            return pathJar.substring(0, pathJar.lastIndexOf('/') + 1);
-        }
-        // debug
-        return "F:/DataStructureVisualizer/";
-    }
-
-    /**
-     * a {@code BooleanProperty} that represents the animation status.
-     * means PLAYING when the value is {@code true}, or PAUSED while {@code false}.
-     */
-    public final IntegerProperty loadingProgressProperty() {
-        if (loadingProgressProperty == null) {
-            loadingProgressProperty = new IntegerPropertyBase(0) {
-                @Override
-                public Object getBean() {
-                    return this;
-                }
-                @Override
-                public String getName() {
-                    return "loadingProgress";
-                }
-            };
-        }
-        return loadingProgressProperty;
-    }
-
-    public void setMaxLoadingProgress(int maxLoadingProgress) {
-        this.maxLoadingProgress = maxLoadingProgress;
-    }
-    public int getMaxLoadingProgress() {
-        return maxLoadingProgress;
-    }
-    public boolean isAllLoaded() {
-        return (loadingProgressProperty().getValue() == maxLoadingProgress);
-    }
-
-    public double getLoadingProgress() {
-        if (maxLoadingProgress == 0) {
-            return 0.0;
-        }
-        return ((double)loadingProgressProperty().getValue() / maxLoadingProgress);
-    }
-
-    /**
-     * Creates a new timeline with an animation.
-     * calls {@code addEmptyTimeline} and {@code updateAnimation}.
+     * @param timeScaleRate the rate of the animation duration (will be multiplied by {@link Director#animationRate})
+     * @param property the animated property
+     * @param value the target value of the animated property
      */
     public <T> void createAnimation(double timeScaleRate, WritableValue<T> property, T value) {
         addEmptyTimeline();
         updateAnimation(timeScaleRate, property, value);
     }
+    /**
+     * Updates the last {@link Timeline} in {@link Director#animationWaitingList} with an animation.
+     * The added animation will be played concurrently with existed animations in the last timeline.
+     *
+     * @param timeScaleRate the rate of the animation duration (will be multiplied by {@link Director#animationRate})
+     * @param property the animated property
+     * @param value the target value of the animated property
+     */
     public <T> void updateAnimation(double timeScaleRate, WritableValue<T> property, T value) {
-        Timeline timeline = Director.getInstance().getLastTimeline();
+        Timeline timeline = getLastTimeline();
         assert timeline != null;
         KeyValue keyValue = new KeyValue(property, value);
-        KeyFrame keyFrame = new KeyFrame(Duration.millis(Director.getInstance().getAnimationRate() * timeScaleRate), keyValue);
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(getAnimationRate() * timeScaleRate), keyValue);
         timeline.getKeyFrames().add(keyFrame);
     }
+    /**
+     * Creates a delay (e.g. a new empty {@link Timeline} with a duration) into {@link Director#animationWaitingList}.
+     * Factually calls {@link Director#addEmptyTimeline}.
+     *
+     * @param delay the duration of the delay (in milliseconds)
+     * @param eventHandler the event triggered after the delay
+     */
     public void createDelayInvocation(double delay, final EventHandler<ActionEvent> eventHandler) {
         addEmptyTimeline();
-        Timeline timeline = Director.getInstance().getLastTimeline();
+        Timeline timeline = getLastTimeline();
         KeyFrame keyFrame = new KeyFrame(Duration.millis(delay), eventHandler);
         timeline.getKeyFrames().add(keyFrame);
     }
+    /**
+     * Creates a series of animation (e.g. two {@link Timeline}s) that changes the content of a {@link Text}.
+     * The added animation will be played in two continuous timelines after the last timeline.
+     *
+     * @param text the animated {@link Text}
+     * @param str the new content of {@code text}
+     */
     public void createAnimationText(Text text, String str) {
         // change text
         createAnimation(0.1, text.textProperty(), str);
@@ -205,26 +133,24 @@ public class Director {
     }
 
     /**
-     * Adds a {@code Timeline} to the animation waiting list.
+     * Adds a {@link Timeline} into {@link Director#animationWaitingList}.
      *
-     * @param timeline the {@code Timeline} that will be added
+     * @param timeline the timeline to be added
      */
     private void addTimeline(Timeline timeline) {
         animationWaitingList.add(timeline);
     }
-
     /**
-     * Adds an empty {@code Timeline} to the animation waiting list.
+     * Adds an empty {@link Timeline} into {@link Director#animationWaitingList}.
      */
     public void addEmptyTimeline() {
         animationWaitingList.add(new Timeline());
     }
-
     /**
-     * Gets the last {@code Timeline} in the animation waiting list.
-     * If the waiting list is empty, create an empty {@code Timeline} and return it.
+     * Gets the last {@link Timeline} in {@link Director#animationWaitingList}.
+     * If the waiting list is empty, creates an empty timeline and returns it.
      *
-     * @return the last {@code Timeline}
+     * @return the last timeline in the waiting list
      */
     public final Timeline getLastTimeline() {
         if (animationWaitingList.isEmpty()) {
@@ -234,8 +160,9 @@ public class Director {
     }
 
     /**
-     * If the animation playing list is empty, swaps it with the animation waiting list;
-     * Otherwise, sets the animation status to PLAYING.
+     * Plays the animation.
+     * If {@link Director#animationPlayingList} is empty, swaps it with {@link Director#animationWaitingList};
+     * Otherwise, resumes the paused animation (does nothing if not paused).
      */
     public void playAnimation() {
         // check
@@ -281,7 +208,9 @@ public class Director {
     }
 
     /**
-     * If the animation playing list is not empty, sets the animation status to PAUSED.
+     * Pauses the animation.
+     * If {@link Director#animationPlayingList} is not empty, pauses the playing animation (does nothing if already paused);
+     * Otherwise, does nothing.
      */
     public void pauseAnimation() {
         if (isAnimationPlaying() && animationCurrentIndex != -1) {
@@ -290,7 +219,7 @@ public class Director {
     }
 
     /**
-     * Clear all cached animation info in force.
+     * Clear the waiting list and the playing list in force.
      */
     public void forceClearAllAnimation() {
         animationWaitingList.clear();
@@ -306,8 +235,11 @@ public class Director {
     }
 
     /**
-     * a {@code BooleanProperty} that represents the animation status.
-     * means PLAYING when the value is {@code true}, or PAUSED while {@code false}.
+     * A {@link BooleanProperty} that represents the animation status.
+     * {@code true} means PLAYING while {@code false} mean STOPPED.
+     * initializes {@link Director#animationPlayingProperty} if visits it the first time.
+     *
+     * @return {@link Director#animationPlayingProperty}
      */
     public final BooleanProperty animationPlayingProperty() {
         if (animationPlayingProperty == null) {
@@ -326,42 +258,55 @@ public class Director {
     }
 
     /**
-     * Gets the judgement that if the animation status is PLAYING.
+     * Asks if the animation status is PLAYING (e.g. {@link Director#animationPlayingProperty} is {@code true}).
      *
-     * @return if the animation status is PLAYING
+     * @return if the animation status is PLAYING (e.g. {@link Director#animationPlayingProperty} is {@code true})
      */
     public boolean isAnimationPlaying() {
         return animationPlayingProperty().getValue();
     }
 
     /**
-     * Adds a step point after current last timeline.
+     * Adds a step point after the last {@link Timeline} in {@link Director#animationWaitingList}.
      */
     public void addStepPoint() {
         stepPointSet.add(animationWaitingList.size() - 1);
     }
 
     /**
-     * Sets the animation playing module.
+     * Sets the animation playing mode (e.g. {@link Director#isSingleStep}).
+     * {@code true} means single-step mode while {@code false} means continuous mode.
+     *
+     * @param flag the new animation playing mode
      */
     public void setSingleStep(boolean flag) {
         this.isSingleStep = flag;
     }
+    /**
+     * Gets the animation playing mode (e.g. {@link Director#isSingleStep}).
+     * {@code true} means single-step mode while {@code false} means continuous mode.
+     *
+     * @return the animation playing mode
+     */
     public boolean isSingleStep() {
         return isSingleStep;
     }
 
+    /**
+     * Sets {@link Director#animationRate} ranged in [0, 1].
+     *
+     * @param rate the new animation rate
+     */
     public void setAnimationRate(double rate) {
         animationRate = rate;
     }
+    /**
+     * Gets {@link Director#animationRate} ranged in [0, 1].
+     *
+     * @return the animation rate
+     */
     public double getAnimationRate() {
         return animationRate;
     }
 
-    public double getScreenWidth() {
-        return screenWidth;
-    }
-    public double getScreenHeight() {
-        return screenHeight;
-    }
 }

@@ -15,12 +15,13 @@ import javafx.stage.FileChooser;
 
 import javafx.stage.Stage;
 import jm233333.Director;
+import jm233333.Global;
 import jm233333.visualized.Mode;
 import jm233333.visualized.VDS;
 
 /**
- * The {@code Controller} class is the user interface in which the user can manipulate the visualized data structure.
- * Extended from JavaFX class {@code FlowPane} only for UI layout.
+ * Class {@code Controller} is the UI component to manipulate the {@link VDS}.
+ * Extended from JavaFX class {@link ScrollPane} only for UI layout.
  */
 public class Controller extends ScrollPane {
 
@@ -42,9 +43,9 @@ public class Controller extends ScrollPane {
     private VDS vds;
 
     /**
-     * Creates a Controller with the reference to the visualized data structure.
+     * Creates a {@code Controller} with a specific {@link VDS}.
      *
-     * @param vds The reference to the visualized data structure
+     * @param vds The data structure that will be visualized
      */
     public Controller(VDS vds) {
         // initialize
@@ -92,15 +93,15 @@ public class Controller extends ScrollPane {
             root.setMinWidth(sumWidth);
             final double realWidth = sumWidth + padding + 6;
             //
-            Director.getInstance().getPrimaryStage().widthProperty().addListener((observable, oldValue, newValue) -> {
+            Global.getPrimaryStage().widthProperty().addListener((observable, oldValue, newValue) -> {
                 double height = ((double)newValue >= realWidth ? panelHeight - 10 : panelHeight + 6);
                 this.setMinHeight(height);
                 this.setMaxHeight(height);
             });
             //
-            final double maxWidth = Director.getInstance().getScreenWidth();
+            final double maxWidth = Global.getScreenWidth();
             final double minWidth = Math.min(640.0, maxWidth);
-            final Stage primaryStage = Director.getInstance().getPrimaryStage();
+            final Stage primaryStage = Global.getPrimaryStage();
             primaryStage.minWidthProperty().setValue(realWidth);
             primaryStage.maxWidthProperty().setValue(realWidth);
             primaryStage.minWidthProperty().setValue(minWidth);
@@ -112,10 +113,6 @@ public class Controller extends ScrollPane {
         batchListener = null;
     }
 
-    /**
-     * Initializes method triggers.
-     * Finds all public methods of the visualized data structure and initializes corresponding method triggers with them.
-     */
     private void initializeMethodTriggers() {
         // initialize panel body
         FlowPane pane = (FlowPane)panelMethodTrigger.getPanelBody();
@@ -210,10 +207,6 @@ public class Controller extends ScrollPane {
             }
         }
     }
-
-    /**
-     * Initializes animation controllers.
-     */
     private void initializeAnimationControllers() {
         // initialize panel body
         FlowPane pane = (FlowPane)panelAnimationController.getPanelBody();
@@ -287,10 +280,6 @@ public class Controller extends ScrollPane {
             pane.getChildren().add(btn);
         }
     }
-
-    /**
-     * Initializes the output box.
-     */
     private void initializeOutputBox() {
         // initialize panel body
         ScrollPane pane = (ScrollPane)panelOutputBox.getPanelBody();
@@ -310,10 +299,6 @@ public class Controller extends ScrollPane {
         // bind with the visualized data structure
         vds.setOutputBox(outputBox);
     }
-
-    /**
-     * Initializes the batch processor.
-     */
     private void initializeBatchProcessor() {
         // get panel body
         FlowPane pane = (FlowPane)panelBatchProcessor.getPanelBody();
@@ -406,7 +391,7 @@ public class Controller extends ScrollPane {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Choose Any Text File : ");
             fileChooser.setInitialDirectory(new File("."));
-            File result = fileChooser.showOpenDialog(Director.getInstance().getPrimaryStage());
+            File result = fileChooser.showOpenDialog(Global.getPrimaryStage());
             if (result != null) {
                 System.out.print(result.getAbsolutePath());
                 StringBuilder str = new StringBuilder();
@@ -431,8 +416,7 @@ public class Controller extends ScrollPane {
     }
 
     /**
-     * a {@code BooleanProperty} that represents the animation status.
-     * means PLAYING when the value is {@code true}, or PAUSED while {@code false}.
+     * An {@code IntegerProperty} that represents the current executing index in a series of batch operations.
      */
     public final IntegerProperty batchIndexProperty() {
         if (batchIndexProperty == null) {

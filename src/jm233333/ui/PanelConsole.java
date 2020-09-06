@@ -6,8 +6,8 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 /**
- * The {@code PanelConsole} class is the root UI for sub-consoles of the {@code Controller}.
- * Extended from JavaFX class {@code VBox} only for UI layout.
+ * Class {@code PanelConsole} is the root UI component for sub-consoles of {@link Controller}.
+ * Extended from JavaFX class {@link VBox} only for UI layout.
  */
 public class PanelConsole extends VBox {
 
@@ -16,7 +16,7 @@ public class PanelConsole extends VBox {
     private Label panelTitle;
 
     /**
-     * Creates a Controller with a specified body UI.
+     * Creates a {@code PanelConsole} with a specified body UI.
      *
      * @param body the specified body UI
      */
@@ -35,7 +35,7 @@ public class PanelConsole extends VBox {
     }
 
     /**
-     * Creates a Controller with a specified body UI and title name.
+     * Creates a {@code PanelConsole} with a specified body UI and title name.
      *
      * @param body the specified body UI
      * @param title the title name

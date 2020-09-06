@@ -7,7 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
-import jm233333.Director;
+import jm233333.Global;
+import jm233333.io.ResourceReader;
 import jm233333.visualized.VDSInstantiation;
 import jm233333.visualized.VDS;
 
@@ -17,15 +18,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * The {@code SceneMenu} class maintains a scene graph for the main menu of the application.
- * Extended from JavaFX class {@code Scene}.
+ * Class {@code SceneMenu} maintains a scene graph for the main menu GUI.
+ * Extended from JavaFX class {@link Scene}.
  */
 public class SceneMenu extends Scene {
 
     private FlowPane root;
 
     /**
-     * Creates a SceneMenu with a specific size.
+     * Creates a {@code SceneMenu} with a specific size.
      *
      * @param root The root node of the scene graph
      * @param width The width of the scene
@@ -38,7 +39,7 @@ public class SceneMenu extends Scene {
     }
 
     /**
-     * Initializes the SceneMenu.
+     * Initializes the {@code SceneMenu}.
      */
     private void initialize() {
         // initialize
@@ -48,9 +49,9 @@ public class SceneMenu extends Scene {
         root.setHgap(16);
         root.setVgap(16);
         // initialize menu list
-        ArrayList<String> menuItems = Director.getInstance().getMenuItems();
+        ArrayList<String> menuItems = ResourceReader.getInstance().getMenuItemsList();
         for (String menuItem : menuItems) {
-            addButton(Director.getInstance().getVDSInstantiationMap().get(menuItem));
+            addButton(ResourceReader.getInstance().getVdsInstantiationMap().get(menuItem));
         }
     }
 
@@ -75,7 +76,7 @@ public class SceneMenu extends Scene {
         // set listener
         button.setOnAction((event) -> {
             Scene scene = new SceneVisualizer(new BorderPane(), visualDS);
-            Director.getInstance().getPrimaryStage().setScene(scene);
+            Global.getPrimaryStage().setScene(scene);
         });
     }
 }

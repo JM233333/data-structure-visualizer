@@ -8,12 +8,14 @@ import javafx.stage.Stage;
 import jm233333.ui.SceneLoading;
 
 /**
- * The {@code Main} class includes the entrance and the main process of the application.
+ * Class {@code Main} includes the entrance and the main process of the application.
  */
 public class Main extends Application {
+
     /**
      * Initialization of the application.
-     * @param primaryStage the stage of the application.
+     *
+     * @param primaryStage the primary stage of the application.
      */
     @Override
     public void start(Stage primaryStage) {
@@ -21,7 +23,7 @@ public class Main extends Application {
         Font.loadFont(getClass().getResourceAsStream("/font/PT-Sans.ttf"), 12);
         Font.loadFont(getClass().getResourceAsStream("/font/PT-Sans-Bold.ttf"), 12);
         // initialize director
-        Director.getInstance().setPrimaryStage(primaryStage);
+        Global.setPrimaryStage(primaryStage);
         // initialize scene
         Scene scene = new SceneLoading(new VBox(), 1200, 800);
         // initialize stage
@@ -35,6 +37,7 @@ public class Main extends Application {
 //            System.out.println(".");
 //        });
     }
+
     /**
      * The main function of the application.
      */

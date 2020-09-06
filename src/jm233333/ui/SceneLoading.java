@@ -13,8 +13,13 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import jm233333.Director;
+import jm233333.Global;
 import jm233333.io.ResourceReader;
 
+/**
+ * Class {@code SceneLoading} maintains a scene graph for the resource-loading GUI.
+ * Extended from JavaFX class {@link Scene}.
+ */
 public class SceneLoading extends Scene {
 
     private static final double MIN_WAIT_TIME = 1000;
@@ -23,12 +28,22 @@ public class SceneLoading extends Scene {
     private VBox root;
     private ProgressBar progressBar;
 
+    /**
+     * Creates a {@code SceneLoading} with a specific size.
+     *
+     * @param root The root node of the scene graph
+     * @param width The width of the scene
+     * @param height The height of the scene
+     */
     public SceneLoading(VBox root, double width, double height) {
         super(root, width, height);
         this.root = root;
         initialize();
     }
 
+    /**
+     * Initializes the {@code SceneLoading}.
+     */
     private void initialize() {
         // initialize
         this.getStylesheets().add(this.getClass().getResource("/css/bootstrapfx.css").toExternalForm());
@@ -53,9 +68,9 @@ public class SceneLoading extends Scene {
         // set progress listener
         final ChangeListener<Number> changeListener = (observable, oldValue, newValue) -> {
             // update progress bar
-            progressBar.setProgress(Director.getInstance().getLoadingProgress());
+            progressBar.setProgress(ResourceReader.getInstance().getLoadingProgress());
             // check if resource-loading is finished
-            if (waited && Director.getInstance().isAllLoaded()) {
+            if (waited && ResourceReader.getInstance().isAllLoaded()) {
                 // update label
                 label.getStyleClass().setAll("lbl", "lbl-success");
                 label.setText("OK!");
@@ -65,12 +80,12 @@ public class SceneLoading extends Scene {
                 button.setVisible(true);
             }
         };
-        Director.getInstance().loadingProgressProperty().addListener(changeListener);
+        ResourceReader.getInstance().loadingProgressProperty().addListener(changeListener);
         // set button listener
         button.setOnAction((event) -> {
-            Director.getInstance().loadingProgressProperty().removeListener(changeListener);
+            ResourceReader.getInstance().loadingProgressProperty().removeListener(changeListener);
             Scene scene = new SceneMenu(new FlowPane(), 1200, 800);
-            Director.getInstance().getPrimaryStage().setScene(scene);
+            Global.getPrimaryStage().setScene(scene);
         });
         // set minimum wait time
         Timeline wait = new Timeline(new KeyFrame(Duration.millis(MIN_WAIT_TIME), (event) -> {
@@ -80,7 +95,7 @@ public class SceneLoading extends Scene {
         // load resources
         Director.getInstance().addEmptyTimeline();
         Director.getInstance().createDelayInvocation(1000, (event) -> {
-            ResourceReader.getCustomResources();
+            ResourceReader.getInstance().getCustomResources();
         });
         Director.getInstance().playAnimation();
     }

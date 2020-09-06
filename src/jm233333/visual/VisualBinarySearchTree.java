@@ -10,11 +10,6 @@ import jm233333.util.Pair;
  */
 public class VisualBinarySearchTree extends Visual {
 
-    public static final int CACHED_NODE = -1;
-
-    public static final boolean LEFT_CHILD = false;
-    public static final boolean RIGHT_CHILD = true;
-
     public static final double PADDING = 64;
 
     private static final int MAX_HEIGHT = 4;
@@ -24,7 +19,6 @@ public class VisualBinarySearchTree extends Visual {
 
     private VisualBinaryTreeNode rootNode = null;
 
-//    private Stack<Boolean> cachedPath = new Stack<>();
     private VisualBinaryTreeNode cachedNode = null;
     private VisualBinaryTreeNode markedNode = null;
 

@@ -10,8 +10,8 @@ import jm233333.ui.CodeTracker;
 import jm233333.ui.Monitor;
 import jm233333.visual.*;
 
-/**
- * The {@code VDS} abstract class provides common properties for all types of VDSs.
+/** -- javadoc-to-be-done
+ * Abstract class {@code VDS} provides common properties for all types of VDSs.
  * VDS is the abbreviation of Visualized Data Structure (or Algorithm).
  */
 public abstract class VDS {
@@ -78,7 +78,7 @@ public abstract class VDS {
 //        }
     }
     public void setCodeTracker(CodeTracker codeTracker) {
-        codeTracker.processCodeList(name);
+        codeTracker.parseCodeList(name);
         this.codeTracker = codeTracker;
     }
     public void setOutputBox(TextFlow outputBox) {
