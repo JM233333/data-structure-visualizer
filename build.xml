@@ -17,6 +17,7 @@
   <property name="build.output.dir" value="out"/>
   <property name="build.output.production.dir" value="${build.output.dir}/production"/>
   <property name="build.output.artifacts.dir" value="${build.output.dir}/artifacts"/>
+  <property name="build.doc.dir" value="doc"/>
 
   <path id="build_classpath">
     <fileset dir="${build.lib.dir}">
@@ -27,7 +28,7 @@
 
   <taskdef resource="com/sun/javafx/tools/ant/antlib.xml" uri="javafx:com.sun.javafx.tools.ant" classpath="${jdk8.home}/lib/ant-javafx.jar"/>
 
-  <target name="all" depends="clean, compile, jar"/>
+  <target name="all" depends="clean, compile, jar, javadoc"/>
 
   <target name="clean">
     <mkdir dir="${build.output.dir}"/>
@@ -71,6 +72,14 @@
         <attribute name="Class-Path" value="${build.output.artifacts.lib.classpath}"/>
       </manifest>
     </fx:jar>
+  </target>
+
+  <target name="javadoc" depends="compile">
+    <javadoc destdir="${build.doc.dir}" encoding="UTF-8" docencoding="UTF-8">
+      <packageset dir="${build.src.dir}">
+        <include name="**"/>
+      </packageset>
+    </javadoc>
   </target>
 
 </project>

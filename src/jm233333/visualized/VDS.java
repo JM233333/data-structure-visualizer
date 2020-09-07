@@ -10,9 +10,12 @@ import jm233333.ui.CodeTracker;
 import jm233333.ui.Monitor;
 import jm233333.visual.*;
 
-/** -- javadoc-to-be-done
- * Abstract class {@code VDS} provides common properties for all types of VDSs.
- * VDS is the abbreviation of Visualized Data Structure (or Algorithm).
+/**
+ * Abstract class {@code VDS} provides common properties for all types of VDSs (VDS is the abbreviation of Visualized Data Structure or Algorithm).
+ *
+ * <p>
+ *     detailed description of class VDS to-be-done...
+ * </p>
  */
 public abstract class VDS {
 
@@ -24,26 +27,43 @@ public abstract class VDS {
     private CodeTracker codeTracker = null;
     private TextFlow outputBox = null;
 
-    /**
+    /*/**
      * Records all relationships of (index field, array).
      *
      * key: name of the index field
      * value: reference to the array that the index field points to
-     */
+     *
     //private HashMap<String, int[]> mapAssociatedArray;
 
     public VDS() {
         //mapAssociatedArray = new HashMap<>();
-    }
+    }*/
 
+    public VDS() {}
+
+    /**
+     * Creates a {@code VDS} with a specific name.
+     *
+     * @param name the name of the VDS
+     */
     public VDS(String name) {
         setName(name);
     }
 
+    /**
+     * Sets the name of {@code VDS}.
+     *
+     * @param name the new name of the VDS
+     */
     public void setName(String name) {
         this.name = name;
     }
-    public final String getName() {
+    /**
+     * Gets the name of {@code VDS}.
+     *
+     * @return the name of the VDS
+     */
+    public String getName() {
         return name;
     }
 
@@ -66,6 +86,11 @@ public abstract class VDS {
         }
     }
 
+    /**
+     * Sets the {@link Monitor} associated with {@code VDS}.
+     *
+     * @param monitor the monitor
+     */
     public void setMonitor(Monitor monitor) {
         this.monitor = monitor;
         createVisual();
@@ -77,44 +102,64 @@ public abstract class VDS {
 //            System.out.println(typeName + " " + fieldName);
 //        }
     }
+
+    /**
+     * Sets the {@link CodeTracker} associated with {@code VDS}.
+     *
+     * @param codeTracker the code tracker
+     */
     public void setCodeTracker(CodeTracker codeTracker) {
         codeTracker.parseCodeList(name);
         this.codeTracker = codeTracker;
     }
+
+    /**
+     * Sets the output box (a {@link TextFlow}) associated with {@code VDS}.
+     *
+     * @param outputBox the output box
+     */
     public void setOutputBox(TextFlow outputBox) {
         this.outputBox = outputBox;
     }
 
     /**
-     * Sets the current method in code-tracking.
+     * Instruct the associated {@link CodeTracker} to track into the method of the specified name.
+     * Calls {@link CodeTracker#setCurrentMethod(String)}.
+     *
+     * @param name name of the method to go
      */
     public void trackCodeSetCurrentMethod(String name) {
         codeTracker.setCurrentMethod(name);
     }
 
     /**
-     * Tracks to the beginning code line of the specified method.
+     * Instruct the associated {@link CodeTracker} to track into the method of the specified name and then track to its beginning line.
+     * Calls {@link VDS#trackCodeSetCurrentMethod(String)} and {@link VDS#trackCodeEntrance(String, boolean)}.
+     *
+     * @param name name of the method to go
      */
     public void trackCodeMethodBeginning(String name) {
-        codeTracker.setCurrentMethod(name);
-        codeTracker.gotoEntrance(name);
-        codeTracker.gotoEntrance(CodeTracker.NEXT_LINE);
+        trackCodeSetCurrentMethod(name);
+        trackCodeEntrance(name, false);
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
     }
 
     /**
-     * Tracks to the code line that the specified entrance represents, and sets a step point on the current timeline.
+     * Instruct the associated {@link CodeTracker} to track into the line of the specified entrance name in the current method,
+     * and set a step point into the animation waiting list of {@link Director}.
+     * Factually calls {@link VDS#trackCodeEntrance(String, boolean)} with parameters ({@code name}, {@code true}).
      *
-     * @param name name of the code entrance
+     * @param name name of the entrance
      */
     public void trackCodeEntrance(String name) {
         trackCodeEntrance(name, true);
     }
 
     /**
-     * Tracks to the code line that the specified entrance represents.
+     * Instruct the associated {@link CodeTracker} to track into the line of the specified entrance name in the current method.
      *
-     * @param name name of the code entrance
-     * @param isStepPoint whether exists a step point on the current timeline or not
+     * @param name name of the entrance
+     * @param isStepPoint if sets a step point into the animation waiting list of {@link Director}
      */
     public void trackCodeEntrance(String name, boolean isStepPoint) {
         if (isStepPoint) {
@@ -124,14 +169,18 @@ public abstract class VDS {
     }
 
     /**
-     * Gets the current method name of the code tracker.
+     * Gets the name of the method that the the associated {@link CodeTracker} is currently tracking in.
+     *
+     * @return name of the method that the the associated code tracker is currently tracking in
      */
     public final String getCodeCurrentMethod() {
         return codeTracker.getCurrentMethod();
     }
 
     /**
-     * Outputs message to the output box.
+     * Outputs message to the associated output box.
+     *
+     * @param message the message outputted to the associated output box.
      */
     public void outputMessage(String message) {
         Text text = new Text(message + "\n");
@@ -140,15 +189,16 @@ public abstract class VDS {
         outputBox.getChildren().add(text);
         Director.getInstance().createAnimation(1.0, text.opacityProperty(), 1);
     }
+
     /**
-     * Clears the output box.
+     * Clears the associated output box.
      */
     public void clearOutputBox() {
         outputBox.getChildren().clear();
     }
 
     /**
-     * Creates graphic components of the visualized data structure for displaying.
+     * Creates graphic components (e.g. instances of {@link Visual}) of the {@code VDS}.
      */
     public abstract void createVisual();
 

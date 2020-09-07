@@ -4,8 +4,8 @@ import javafx.util.Pair;
 import jm233333.ui.CodeTracker;
 
 /**
- * The {@code VisualizedStack} class defines the data structure {@code Stack} for visualizing.
- * Extended from abstract class {@code VDS}.
+ * Class {@code VisualizedStack} defines the data structure {@code Stack} for visualizing.
+ * Extended from abstract class {@link VDS}.
  */
 public class VisualizedStack extends VDS {
 

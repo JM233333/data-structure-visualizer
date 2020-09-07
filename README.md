@@ -159,6 +159,8 @@ Until 2020.3.23, I have not found any bug in the latest released version.
 | 2020.8.25  | Update : Adds support for single-step animation of VisualizedBST. |
 |            | Fix BUG : BUG triggered while running batch-processing more than once. |
 | 2020.9.5   | Update : Implements methods {erase(value)} for VisualizedBST. (too complex!) |
+| 2020.9.6   | Refactors the source code. |
+| 2020.9.7   | Refactors the information for javadoc. |
 
 ## Todo List
 

@@ -3,28 +3,31 @@ package jm233333.visual;
 import javafx.scene.Group;
 
 /**
- * The {@code Visual} abstract class provides common properties for all types of graphic components.
- * Extended from JavaFX class {@code Group} only for UI layout.
+ * Abstract class {@code Visual} provides common properties for all types of visual components used in {@link jm233333.visualized.VDS}.
+ * Extended from JavaFX class {@link Group} only for UI layout.
  */
 public class Visual extends Group {
 
-    /**
-     * The name of the graphic component.
-     */
     private String name;
 
+    /**
+     * Creates a {@code Visual} with an empty name.
+     */
     Visual() {
         this("");
     }
+
+    /**
+     * Creates a {@code Visual} with a specific name.
+     *
+     * @param name the name of the visual component
+     */
     Visual(String name) {
         this.name = name;
         this.getStyleClass().add("visual");
         this.initializeCSS();
     }
 
-    /**
-     * Initializes CSS.
-     */
     private void initializeCSS() {
         Class cls = this.getClass();
         this.getStylesheets().add(cls.getResource("/css/Visual.css").toExternalForm());

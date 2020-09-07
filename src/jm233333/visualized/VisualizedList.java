@@ -4,8 +4,8 @@ import jm233333.ui.CodeTracker;
 import jm233333.visual.VisualList;
 
 /**
- * The {@code VisualizedList} class defines the data structure {@code List} for visualizing.
- * Extended from abstract class {@code VDS}.
+ * Class {@code VisualizedList} defines the data structure {@code List} for visualizing.
+ * Extended from abstract class {@link VDS}.
  */
 public class VisualizedList extends VDS {
 

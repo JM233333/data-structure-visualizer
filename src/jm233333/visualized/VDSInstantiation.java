@@ -3,6 +3,9 @@ package jm233333.visualized;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
+/**
+ * Class {@code VDSInstantiation} stores the information required to instantiate a {@link VDS} with the specified constructor.
+ */
 public class VDSInstantiation {
 
     private String name;
@@ -11,6 +14,9 @@ public class VDSInstantiation {
     private Constructor constructor;
     private ArrayList<Object> argumentList;
 
+    /**
+     * Creates an empty {@code VDSInstantiation}.
+     */
     public VDSInstantiation() {
         name = "";
         className = "";

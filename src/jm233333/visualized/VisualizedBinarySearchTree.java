@@ -6,8 +6,8 @@ import jm233333.visual.VisualBinaryTreeNode;
 import java.util.HashMap;
 
 /**
- * The {@code VisualizedBinarySearchTree} class defines the data structure {@code BinarySearchTree} for visualizing.
- * Extended from abstract class {@code VDS}.
+ * Class {@code VisualizedBinarySearchTree} defines the data structure {@code BinarySearchTree} for visualizing.
+ * Extended from abstract class {@link VDS}.
  */
 public class VisualizedBinarySearchTree extends VDS {
 
