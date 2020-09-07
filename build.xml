@@ -18,6 +18,7 @@
   <property name="build.output.production.dir" value="${build.output.dir}/production"/>
   <property name="build.output.artifacts.dir" value="${build.output.dir}/artifacts"/>
   <property name="build.doc.dir" value="doc"/>
+  <property name="build.custom.dir" value="custom"/>
 
   <path id="build_classpath">
     <fileset dir="${build.lib.dir}">
@@ -42,6 +43,7 @@
   <target name="compile" depends="clean">
     <javac srcdir="${build.src.dir}" destdir="${build.output.production.dir}"
       includeantruntime="false" fork="yes" executable="${jdk8.bin}/javac" source="8" debug="on">
+      <compilerarg line="-parameters -encoding UTF-8"/>
       <classpath refid="build_classpath"/>
     </javac>
     <copy todir="${build.output.production.dir}">
@@ -52,6 +54,9 @@
   <target name="jar" depends="compile">
     <copy todir="${build.output.artifacts.dir}/lib">
       <fileset dir="${build.lib.dir}"></fileset>
+    </copy>
+    <copy todir="${build.output.artifacts.dir}/custom">
+      <fileset dir="${build.custom.dir}"></fileset>
     </copy>
     <pathconvert property="build.output.artifacts.lib.classpath" pathsep=" ">
       <mapper>

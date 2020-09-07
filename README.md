@@ -90,6 +90,8 @@ DataStructureVisualizer.jar
 
 Run the `.jar` file directly to launch the application.
 
+In addition, because the `.iml` configuration file used by IDEA is retained in the project source code, it is very convenient to use IDEA to build the project, just one-click compile and run.
+
 *Notice:*
 
 - *JDK 8 or higher version is required. If using JDK 10+, you may need to manually add JavaFX modules to your JDK.*
@@ -159,8 +161,8 @@ Until 2020.3.23, I have not found any bug in the latest released version.
 | 2020.8.25  | Update : Adds support for single-step animation of VisualizedBST. |
 |            | Fix BUG : BUG triggered while running batch-processing more than once. |
 | 2020.9.5   | Update : Implements methods {erase(value)} for VisualizedBST. (too complex!) |
-| 2020.9.6   | Refactors the source code. |
-| 2020.9.7   | Refactors the information for javadoc. |
+| 2020.9.7   | Refactors the source code. |
+|            | Refactors the information for javadoc. |
 
 ## Todo List
 

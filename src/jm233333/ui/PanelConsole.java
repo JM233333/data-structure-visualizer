@@ -9,18 +9,19 @@ import javafx.scene.layout.VBox;
  * Class {@code PanelConsole} is the root UI component for sub-consoles of {@link Controller}.
  * Extended from JavaFX class {@link VBox} only for UI layout.
  */
-public class PanelConsole extends VBox {
+public class PanelConsole<T extends Region> extends VBox {
 
     private HBox panelHeading = null;
-    private Region panelBody = null;
+    private T panelBody = null;
     private Label panelTitle;
 
     /**
-     * Creates a {@code PanelConsole} with a specified body UI.
+     * Creates a {@code PanelConsole} with a specified body UI and title name.
      *
      * @param body the specified body UI
+     * @param title the title name
      */
-    public PanelConsole(Region body) {
+    public PanelConsole(T body, String title) {
         // super
         super();
         // initialize
@@ -29,20 +30,12 @@ public class PanelConsole extends VBox {
         setPanelHeading(new HBox());
         setPanelBody(body);
         // initialize title
-        panelTitle = new Label();
+        panelTitle = new Label(title);
         panelTitle.getStyleClass().addAll("panel-title");
         panelHeading.getChildren().add(panelTitle);
     }
-
-    /**
-     * Creates a {@code PanelConsole} with a specified body UI and title name.
-     *
-     * @param body the specified body UI
-     * @param title the title name
-     */
-    public PanelConsole(Region body, String title) {
-        this(body);
-        panelTitle.setText(title);
+    public PanelConsole(T body) {
+        this(body, "");
     }
 
     public void setPanelHeading(HBox heading) {
@@ -51,24 +44,26 @@ public class PanelConsole extends VBox {
         panelHeading.getStyleClass().addAll("panel-heading");
         this.getChildren().add(panelHeading);
     }
-    public final HBox getPanelHeading() {
+    public HBox getPanelHeading() {
         return panelHeading;
     }
 
-    public void setPanelBody(Region body) {
+    public void setPanelBody(T body) {
         this.getChildren().remove(panelBody);
         panelBody = body;
-        panelBody.getStyleClass().addAll("panel-body");
-        this.getChildren().add(panelBody);
+        if (panelBody != null) {
+            panelBody.getStyleClass().addAll("panel-body");
+            this.getChildren().add(panelBody);
+        }
     }
-    public final Region getPanelBody() {
+    public T getPanelBody() {
         return panelBody;
     }
 
     public void setPanelTitle(String title) {
         panelTitle.setText(title);
     }
-    public final String getPanelTitle() {
+    public String getPanelTitle() {
         return panelTitle.getText();
     }
 }

@@ -1,13 +1,21 @@
-package jm233333.ui;
+package jm233333.ui.control;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
+
+import jm233333.Director;
+import jm233333.ui.Controller;
+import jm233333.visualized.VDS;
 
 /**
  * Class {@code MethodTrigger} is a sub-component of {@link Controller} to manipulate the {@link jm233333.visualized.VDS} with a specified public method of it.
@@ -17,27 +25,32 @@ public class MethodTrigger extends HBox {
 
     private static final double HEIGHT = 36;
 
+    private VDS vds;
     private String name;
-    private Button button;
 
+    private Button button;
     private ArrayList<TextField> textFields;
 
     /**
-     * Creates a {@code MethodTrigger} with the name and parameter list of the specified method.
+     * Creates a {@code MethodTrigger} with the {@link VDS} and the name and parameter list of the specified method.
      *
-     * @param nameMethod The name of the method
-     * @param nameParameters The name list of parameters of the method
+     * @param vds the {@link VDS}
+     * @param nameMethod the name of the method
+     * @param nameParameters the name list of parameters of the method
      */
-    public MethodTrigger(String nameMethod, String... nameParameters) {
+    public MethodTrigger(VDS vds, String nameMethod, String... nameParameters) {
+        this.name = nameMethod;
+        this.vds = vds;
         initialize(nameMethod, nameParameters);
     }
 
     /**
-     * Creates a {@code MethodTrigger} with the specified method.
+     * Creates a {@code MethodTrigger} with the {@link VDS} and the specified {@link Method}.
      *
+     * @param vds the {@link VDS}
      * @param method The method
      */
-    public MethodTrigger(Method method) {
+    public MethodTrigger(VDS vds, Method method) {
         // get method metadata
         String nameMethod = method.getName();
         Parameter[] parameters = method.getParameters();
@@ -48,6 +61,8 @@ public class MethodTrigger extends HBox {
             nameParameters[i] = parameters[i].getName();
         }
         // initialize
+        this.name = nameMethod;
+        this.vds = vds;
         initialize(nameMethod, nameParameters);
     }
 
@@ -59,8 +74,6 @@ public class MethodTrigger extends HBox {
         this.setMinHeight(HEIGHT);
         this.setMaxHeight(HEIGHT);
         this.getStyleClass().add("method-trigger");
-        // initialize data
-        this.name = nameMethod;
         // initialize button
         button = new Button(nameMethod);
         button.getStyleClass().addAll("btn", "btn-primary");
@@ -88,6 +101,43 @@ public class MethodTrigger extends HBox {
             // store reference to writer
             textFields.add(textField);
         }
+        // set listener
+        button.setOnAction((event) -> {
+            trigger(getArguments(), null);
+        });
+    }
+
+    /**
+     * Triggers the method.
+     */
+    public void trigger(ArrayList<Integer> arguments, EventHandler<ActionEvent> eventAtLast) {
+        // debug
+        StringBuilder s = new StringBuilder(name);
+        for (int argument : arguments) {
+            s.append(" ").append(argument);
+        }
+        System.out.println(s);
+        // get parameter type list
+        Class<?>[] parameterTypes = new Class<?>[arguments.size()];
+        for (int i = 0; i < arguments.size(); i ++) {
+            Class cls = arguments.get(i).getClass();
+            try {
+                Field field = cls.getDeclaredField("TYPE");
+                parameterTypes[i] = (Class<?>) field.get(arguments.get(i));
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                parameterTypes[i] = cls;
+            }
+        }
+        // invoke method
+        vds.trackCodeMethodBeginning(name);
+        try {
+            Method method = vds.getClass().getDeclaredMethod(name, parameterTypes);
+            method.invoke(vds, arguments.toArray());
+            Director.getInstance().getLastTimeline().setOnFinished(eventAtLast);
+            Director.getInstance().playAnimation();
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -99,41 +149,25 @@ public class MethodTrigger extends HBox {
         return name;
     }
     /**
-     * Gets the trigger of the method.
-     *
-     * @return the trigger of the method
-     */
-    public final Button getButton() {
-        return button;
-    }
-    /**
-     * Gets the argument text fields of the {@code MethodTrigger}.
-     *
-     * @return the argument text fields of the method trigger
-     */
-    public final ArrayList<TextField> getTextFields() {
-        return textFields;
-    }
-    /**
      * Gets the current inputted parameters of the {@code MethodTrigger}.
      *
      * @return the current inputted parameters of the method trigger
      */
-    public ArrayList<Integer> getParameters() {
+    public ArrayList<Integer> getArguments() {
         // initialize
-        ArrayList<Integer> parameters = new ArrayList<>();
+        ArrayList<Integer> arguments = new ArrayList<>();
         // iterate textFields
         for (TextField textField : textFields) {
             // get argument
             try {
-                int parameter = Integer.parseInt(textField.getText());
-                parameters.add(parameter);
+                int argument = Integer.parseInt(textField.getText());
+                arguments.add(argument);
             } catch (NumberFormatException e) {
                 System.out.println("Error : illegal argument in function " + name);
-                parameters.add(0); // return null;
+                arguments.add(0); // return null;
             }
         }
         // return
-        return parameters;
+        return arguments;
     }
 }
