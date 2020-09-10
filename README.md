@@ -163,6 +163,7 @@ Until 2020.3.23, I have not found any bug in the latest released version.
 | 2020.9.5   | Update : Implements methods {erase(value)} for VisualizedBST. (too complex!) |
 | 2020.9.7   | Refactors the source code. |
 |            | Refactors the information for javadoc. |
+| 2020.9.10  | Update : Implements illegal input detection for batch-processing. |
 
 ## Todo List
 
