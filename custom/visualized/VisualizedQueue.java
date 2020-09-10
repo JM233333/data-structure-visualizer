@@ -1,9 +1,10 @@
 package custom.visualized;
 
 import javafx.util.Pair;
-import jm233333.visualized.VDS;
-import jm233333.Director;
-import jm233333.ui.CodeTracker;
+
+import jm233333.dsv.Director;
+import jm233333.dsv.visualized.VDS;
+import jm233333.dsv.ui.CodeTracker;
 
 /**
  * The {@code VisualizedQueue} class defines the data structure {@code Queue} for visualizing.

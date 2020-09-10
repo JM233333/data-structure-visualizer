@@ -68,7 +68,7 @@
       <path refid="build_classpath"/>
     </pathconvert>
     <fx:jar destfile="${build.output.artifacts.dir}/${app.name}.jar">
-      <fx:application name="${app.name}" mainClass="jm233333.Main" version="${app.version}"/>
+      <fx:application name="${app.name}" mainClass="jm233333.dsv.Main" version="${app.version}"/>
       <fileset dir="${build.output.production.dir}"/>
       <manifest>
         <attribute name="Implementation-Title" value="${app.name}"/>
