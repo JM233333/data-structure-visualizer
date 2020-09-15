@@ -4,87 +4,88 @@ set namespaceSeparator ::
 
 namespace io {
     class ResourceReader
-
     ui::SceneLoading -left-> ResourceReader
 }
 
 namespace ui {
 
     class SceneLoading
-
     class SceneMenu
-
     class SceneVisualizer
-    
-    class Monitor #wheat
 
     class CodeTracker #wheat
-
+    class Monitor #wheat
     class Controller #wheat
-    class MethodTrigger
+
+    interface Layout #LightBlue
 
     SceneLoading -right[hidden]-> SceneMenu
     SceneMenu -right[hidden]-> SceneVisualizer
 
-    SceneVisualizer *- Controller
-    SceneVisualizer *-- Monitor
     SceneVisualizer *-- CodeTracker
-    Controller *- MethodTrigger
+    SceneVisualizer *-- Monitor
+    SceneVisualizer *-right- Controller
+
+    Monitor -right[hidden]-> CodeTracker
+    SceneLoading -down[hidden]-> Layout
+
+    Controller *-right- PanelConsole
 
 }
 
+allowmixing
+package ui::control {
+    class AnimationController
+    class BatchProcssor
+    class MethodTrigger
+    class MethodTriggers
+    class OutputBox
+    MethodTriggers *-> MethodTrigger
+    OutputBox -down[hidden]-> MethodTriggers
+}
+ui::PanelConsole -right-|> ui::control
+
 namespace visualized {
-
-    abstract class VisualizedDataStructure #wheat
-
-    VisualizedDataStructure --|> VisualizedStack
-    VisualizedDataStructure --|> VisualizedQueue
-    VisualizedDataStructure --|> VisualizedList
-    VisualizedDataStructure --|> VisualizedBinarySearchTree
+    abstract class VDS #wheat
+    VDS --|> VisualizedXXX
 }
 
 namespace visual {
 
     abstract class Visual
-
     abstract class VisualNode
 
-    class VisualArray
-
     Visual --|> VisualNode
-    Visual --|> VisualArray
-    Visual --|> VisualList
-    Visual --|> VisualBinaryTree
+    Visual --|> VisualXXX
 
-    VisualNode --|> VisualArrayNode
-    VisualNode --|> VisualListNode
-    VisualNode --|> VisualTreeNode
+    VisualNode --|> VisualXXXNode
 
-    VisualArray *-- VisualArrayNode
-    VisualList *-- VisualListNode
-    VisualBinaryTree *-- VisualTreeNode
+    VisualXXX *-- VisualXXXNode
+
 }
 
 namespace custom {
+    class VisualizedXXX
 }
 
 class Main
 
-class Director
+class Director #LightBlue
+class Global #LightBlue
 
 Main o-- ui::SceneLoading
 Main o-- ui::SceneMenu
 Main o-- ui::SceneVisualizer
 
-ui::SceneVisualizer *-- visualized::VisualizedDataStructure
-ui::Controller -down-> visualized::VisualizedDataStructure
-visualized::VisualizedDataStructure -up-> ui::Monitor
-visualized::VisualizedDataStructure -up-> ui::CodeTracker
+ui::SceneVisualizer *-- visualized::VDS
+ui::Controller -down-> visualized::VDS
+visualized::VDS -up-> ui::Monitor
+visualized::VDS -up-> ui::CodeTracker
 
-ui::Monitor *--- visual::Visual
+ui::Monitor *-- visual::Visual
 
-visualized::VisualizedDataStructure -left[hidden]-> visual::Visual
+visualized::VDS .left. visual::Visual
 
-visualized::VisualizedDataStructure -right-|> custom::VisualizedXXX
+visualized::VDS --|> custom::VisualizedXXX
 
 @enduml

@@ -46,7 +46,7 @@ public class Monitor extends ScrollPane {
         this.setId("monitor");
         // initialize canvas
         canvas = new Pane();
-        canvas.setBackground(new Background(new BackgroundFill(Color.rgb(160, 160, 255), null, null)));
+//        canvas.setBackground(new Background(new BackgroundFill(Color.rgb(160, 160, 255), null, null)));
         canvas.setPadding(new Insets(32));
         this.setContent(canvas);
         // initialize data

@@ -4,13 +4,17 @@ English | [简体中文](./README.cn.md)
 
 *Authored by JM233333*
 
-*Notice: The current source code is only a DEMO version, and some basic functions are still flawed. For example, the application cannot yet respond well to the user's illegal input.*
+*Notice: The current source code is only a DEMO version, and some basic functions are still flawed. For example, some basic data structures are not supported currently (e.g. k-ary tree or graph).*
 
 ## Introduction
 
 ### Overview
 
 **DataStructureVisualizer** is a PC desktop application that provides visualization and interaction of algorithms and data structures, and supports programmers (even newbies) to simply extend it.
+
+*This application provides a **step-by-step animation demonstration** and a matching **code tracking** , which facilitate users to intuitively understand the various operations performed on the data structure.*
+
+*This application can be used as an auxiliary tool for personal learning, as well as a teaching tool (e.g. demonstrating on the screen in class)*
 
 *For convenience of description, we will abbreviate the data structure (or algorithm) visualized by the application as **VDS**.*
 
@@ -98,11 +102,11 @@ In addition, because the `.iml` configuration file used by IDEA is retained in t
 
 - *If you build the project with Ant, then 1.10.x is required.*
 
-## Quick Start
+## Overview of the Core GUI
 
-Run the application and start the visualization, you will see the following GUI:
+Start the visualization (please refer to the tutorial document for how-to-startup) , you will see the following GUI:
 
-![design/sample-gui.png](https://github.com/JM233333/DataStructureVisualizer/blob/master/design/sample-gui.png)
+![design/sample-gui.jpg](https://github.com/JM233333/DataStructureVisualizer/blob/master/design/sample-gui.jpg)
 
 The **Menu** at the top of the GUI is used to switch the VDS or return to the main menu.
 
@@ -164,6 +168,8 @@ Until 2020.3.23, I have not found any bug in the latest released version.
 | 2020.9.7   | Refactors the source code. |
 |            | Refactors the information for javadoc. |
 | 2020.9.10  | Update : Implements illegal input detection for batch-processing. |
+| 2020.9.15  | Writes tutorial for user (Chinese). |
+|            | Refactors the design documents. |
 
 ## Todo List
 

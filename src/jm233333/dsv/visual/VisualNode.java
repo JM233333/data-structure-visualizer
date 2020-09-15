@@ -3,6 +3,7 @@ package jm233333.dsv.visual;
 import javafx.geometry.VPos;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+
 import jm233333.dsv.Director;
 
 /**
@@ -15,7 +16,7 @@ public abstract class VisualNode extends Visual {
     /**
      * The width and height of every graphic nodes.
      */
-    public static final double BOX_SIZE = 36;
+    public static final double BOX_SIZE = 48;
 
     private boolean isFilled;
     private int value;
