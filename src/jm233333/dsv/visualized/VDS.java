@@ -191,22 +191,22 @@ public abstract class VDS {
         text.setFill(fontColor);
         text.setOpacity(0);
         text.fontProperty().addListener((ev, ov, nv) -> {
-            text.setFont(Font.font(18));
+            text.setFont(Font.font(fontSize));
         });
         outputBox.getChildren().add(text);
         Director.getInstance().createAnimation(0.25, text.opacityProperty(), 1);
     }
     public void outputMessageInvoke(String message) {
-        outputMessage(message, 21, Color.BLACK);
+        outputMessage(message, 18, Color.BLACK);
     }
     public <T> void outputMessageReturn(T message) {
-        outputMessage(" | RET : " + message, 18, Color.BLACK);
+        outputMessage(" | RET : " + message, 16, Color.BLACK);
     }
     public void outputMessageError(String message) {
-        outputMessage(" | ERR : " + message, 18, Color.RED);
+        outputMessage(" | ERR : " + message, 16, Color.RED);
     }
     public void outputMessageDebug(String message) {
-        outputMessage(" | [DBG] " + message, 18, Color.DARKGREEN);
+        outputMessage(" | [DBG] " + message, 16, Color.DARKGREEN);
     }
 
     /**

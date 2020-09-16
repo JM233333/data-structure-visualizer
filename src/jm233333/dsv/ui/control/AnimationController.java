@@ -63,18 +63,18 @@ public class AnimationController extends PanelConsole<FlowPane> {
         });
         hBoxType.getChildren().addAll(rb1, rb2);
         // initialize state-control
-        Button btnPlay = new Button("Play");
-        btnPlay.getStyleClass().setAll("btn", "btn-success");
-        btnPlay.setOnAction((event) -> {
-            Director.getInstance().playAnimation();
-        });
         Button btnPause = new Button("Pause");
         btnPause.getStyleClass().setAll("btn", "btn-warning");
         btnPause.setOnAction((event) -> {
             Director.getInstance().pauseAnimation();
         });
-        for (Button btn : new Button[]{btnPlay, btnPause}) {
-            btn.setPrefWidth((getPanelBody().getMaxWidth() - 3 * getPanelBody().getHgap()) / 2);
+        Button btnContinue = new Button("Continue");
+        btnContinue.getStyleClass().setAll("btn", "btn-success");
+        btnContinue.setOnAction((event) -> {
+            Director.getInstance().playAnimation();
+        });
+        for (Button btn : new Button[]{btnPause, btnContinue}) {
+            btn.setPrefWidth(112);
             btn.setAlignment(Pos.CENTER);
             getPanelBody().getChildren().add(btn);
         }

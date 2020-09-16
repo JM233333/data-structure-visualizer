@@ -209,7 +209,7 @@ a.bg-danger:focused {
   -fx-font-size: 16px; /* 14px */
   -fx-border-radius: 4px;
   -fx-background-radius: 4px;
-  -fx-min-width: 80; }
+  /*-fx-min-width: 80;*/ }
   .btn:hover, .btn:focused, .btn.focused {
     -fx-text-fill: #333;
     -fx-fill: #333; }

@@ -172,11 +172,11 @@ Until 2020.3.23, I have not found any bug in the latest released version.
 |            | Refactors the design documents. |
 | 2020.9.16  | Update : Implements the main part of OutputBox. |
 |            | Fix BUG : Lack of out-of-bounds-check in several methods of VisualizedList. |
+|            | Fix BUG : Few UI layout mistakes. |
+| 2020.9.xx  | Update : Supports fast-build for batch-processing. |
 
 ## Todo List
 
 Things planned to do in the near future:
-
-- Update : Supports fast-build for batch-processing.
 
 - Update : Supports global visual pointers for VDS.
