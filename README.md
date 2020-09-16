@@ -160,19 +160,23 @@ Until 2020.3.23, I have not found any bug in the latest released version.
 | 2020.3.29  | Update : Adds support for single-step animation of VisualizedList. |
 |            | Fix BUG : Mistake in method {pushFront(value)} of VisualizedList. |
 |            | Fix BUG : Sometimes wrong current method name in code-tracking. |
-| 2020.8.24  | Update : Implements methods {get(index)} and {find(value)} for VisualizedList. |
+| 2020.8.24  | Update : Implements methods {get(index)} and {find(value)} of VisualizedList. |
 |            | Update : Implements methods of VisualizedBST. |
 | 2020.8.25  | Update : Adds support for single-step animation of VisualizedBST. |
 |            | Fix BUG : BUG triggered while running batch-processing more than once. |
-| 2020.9.5   | Update : Implements methods {erase(value)} for VisualizedBST. (too complex!) |
+| 2020.9.5   | Update : Implements methods {erase(value)} of VisualizedBST. (too complex!) |
 | 2020.9.7   | Refactors the source code. |
 |            | Refactors the information for javadoc. |
 | 2020.9.10  | Update : Implements illegal input detection for batch-processing. |
 | 2020.9.15  | Writes tutorial for user (Chinese). |
 |            | Refactors the design documents. |
+| 2020.9.16  | Update : Implements the main part of OutputBox. |
+|            | Fix BUG : Lack of out-of-bounds-check in several methods of VisualizedList. |
 
 ## Todo List
 
 Things planned to do in the near future:
+
+- Update : Supports fast-build for batch-processing.
 
 - Update : Supports global visual pointers for VDS.

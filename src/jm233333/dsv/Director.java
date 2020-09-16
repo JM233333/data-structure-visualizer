@@ -94,7 +94,10 @@ public class Director {
      */
     public <T> void updateAnimation(double timeScaleRate, WritableValue<T> property, T value) {
         Timeline timeline = getLastTimeline();
-        assert timeline != null;
+        if (timeline == null) {
+            addEmptyTimeline();
+            timeline = getLastTimeline();
+        }
         KeyValue keyValue = new KeyValue(property, value);
         KeyFrame keyFrame = new KeyFrame(Duration.millis(getAnimationRate() * timeScaleRate), keyValue);
         timeline.getKeyFrames().add(keyFrame);

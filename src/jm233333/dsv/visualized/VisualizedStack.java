@@ -31,6 +31,7 @@ public class VisualizedStack extends VDS {
     public void push(int value) {
         if (_isFull()) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
+            outputMessageError("Full stack.");
             return;
         }
         trackCodeEntrance(getCodeCurrentMethod() + "_main_begin");
@@ -45,6 +46,7 @@ public class VisualizedStack extends VDS {
     public void pop() {
         if (_isEmpty()) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
+            outputMessageError("Empty stack.");
             return;
         }
         trackCodeEntrance(getCodeCurrentMethod() + "_main_begin");
@@ -57,22 +59,23 @@ public class VisualizedStack extends VDS {
     public int top() {
         if (_isEmpty()) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
+            outputMessageError("Empty stack.");
             return 0;
         }
         trackCodeEntrance(getCodeCurrentMethod() + "_main_begin");
         trackCodeEntrance(CodeTracker.NEXT_LINE);
-        outputMessage(getCodeCurrentMethod() + " " + data[top - 1]);
+        outputMessageReturn(data[top - 1]);
         return data[top - 1];
     }
 
     public boolean isEmpty() {
         boolean flag = (top == 0);
-        outputMessage(getCodeCurrentMethod() + " " + (flag ? "true" : "false"));
+        outputMessageReturn(flag ? "true" : "false");
         return flag;
     }
     public boolean isFull() {
         boolean flag = (top == data.length);
-        outputMessage(getCodeCurrentMethod() + " " + (flag ? "true" : "false"));
+        outputMessageReturn(flag ? "true" : "false");
         return flag;
     }
 

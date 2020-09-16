@@ -1,5 +1,6 @@
 package jm233333.dsv.visualized;
 
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -180,14 +181,32 @@ public abstract class VDS {
     /**
      * Outputs message to the associated output box.
      *
-     * @param message the message outputted to the associated output box.
+     * @param message the message sent to the associated output box.
+     * @param fontSize the font size of the message.
+     * @param fontColor the font color of the message.
      */
-    public void outputMessage(String message) {
+    public void outputMessage(String message, int fontSize, Color fontColor) {
         Text text = new Text(message + "\n");
-        text.setFont(Font.font(18));
+        text.setFont(Font.font(fontSize));
+        text.setFill(fontColor);
         text.setOpacity(0);
+        text.fontProperty().addListener((ev, ov, nv) -> {
+            text.setFont(Font.font(18));
+        });
         outputBox.getChildren().add(text);
-        Director.getInstance().createAnimation(1.0, text.opacityProperty(), 1);
+        Director.getInstance().createAnimation(0.25, text.opacityProperty(), 1);
+    }
+    public void outputMessageInvoke(String message) {
+        outputMessage(message, 21, Color.BLACK);
+    }
+    public <T> void outputMessageReturn(T message) {
+        outputMessage(" | RET : " + message, 18, Color.BLACK);
+    }
+    public void outputMessageError(String message) {
+        outputMessage(" | ERR : " + message, 18, Color.RED);
+    }
+    public void outputMessageDebug(String message) {
+        outputMessage(" | [DBG] " + message, 18, Color.DARKGREEN);
     }
 
     /**

@@ -48,12 +48,14 @@ public class VisualizedBinarySearchTree extends VDS {
         // check if failed
         if (p == null) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
+            outputMessageReturn("false");
             return null;
         }
         // check if succeeded
         trackCodeEntrance(getCodeCurrentMethod() + "_ifSucc");
         if (value == p.value) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
+            outputMessageReturn("true (Node)(value = " + p.value + ")");
             getVisualBST(getName()).markClear();
             return p;
         }
@@ -104,7 +106,7 @@ public class VisualizedBinarySearchTree extends VDS {
         // assert
         assert (p != null);
         if (curDepth == MAX_DEPTH) {
-            System.out.printf("Sorry, depth cannot be higher than %d.\n", MAX_DEPTH);
+            outputMessageError("Depth limit exceed.");
             getVisualBST(getName()).markClear();
             return;
         }
@@ -150,7 +152,7 @@ public class VisualizedBinarySearchTree extends VDS {
         }
     }
 
-    void cc(Node p) {
+    private void cc(Node p) {
         if (p == null) return;
         System.out.printf("cc1 p=%d pL=%d pR=%d pF=%d\n",
                 p.value, p.left==null?-1:p.left.value,p.right==null?-1:p.right.value,
@@ -198,6 +200,7 @@ public class VisualizedBinarySearchTree extends VDS {
         // check if failed
         if (p == null) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
+            outputMessageReturn("The value is nonexistent.");
             return;
         }
         // check if reached
@@ -272,6 +275,7 @@ public class VisualizedBinarySearchTree extends VDS {
         // check if null
         if (p == null) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
+            outputMessageReturn("false (empty BST)");
             return null;
         }
         // iterate
@@ -284,6 +288,7 @@ public class VisualizedBinarySearchTree extends VDS {
         }
         // return
         trackCodeEntrance(getCodeCurrentMethod() + "_return");
+        outputMessageReturn("true (Node)(value = " + p.value + ")");
         return p;
     }
     private Node __findMaxOf(Node p) {

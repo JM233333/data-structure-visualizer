@@ -54,6 +54,9 @@ public:
 			return;
 		}
 		Node * prv = get_node(index - 1);      //#/ insert_getNode
+		if (prv == nullptr) {
+			return;
+		}
 		Node * p = new Node(value);            //#/ insert_main_begin
 		p->next = prv->next;
 		prv->next = p;
@@ -72,7 +75,8 @@ public:
 			return;
 		}
 		Node * prv = get_node(index - 1);      //#/ erase_getNode
-		if (prv->next == nullptr) {
+		if (prv == nullptr ||
+			prv->next == nullptr) {
 			return;
 		}
 		Node * p = prv->next;                  //#/ erase_main_begin
