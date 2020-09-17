@@ -1,5 +1,6 @@
 package jm233333.dsv;
 
+import java.lang.reflect.Type;
 import java.util.*;
 
 import javafx.animation.KeyFrame;
@@ -7,13 +8,11 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.BooleanPropertyBase;
-import javafx.beans.value.WritableDoubleValue;
-import javafx.beans.value.WritableIntegerValue;
-import javafx.beans.value.WritableObjectValue;
 import javafx.beans.value.WritableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -244,6 +243,10 @@ public class Director {
      * Extracts all cached animations in {@link Director#animationWaitingList}, e.g. finish them immediately.
      */
     public void extractAnimation() {
+//        Circle test = new Circle();
+//        Class<?> clz = test.layoutXProperty().getClass(); System.out.println(clz.getName());
+//        Type tp = clz.getGenericSuperclass(); System.out.println(tp);
+//        for (Type t : itfcs) System.out.print(t.getClass().getName() + " "); System.out.print('\n');
         for (Timeline timeline : animationWaitingList) {
             for (KeyFrame keyFrame : timeline.getKeyFrames()) {
                 for (KeyValue keyValue : keyFrame.getValues()) {

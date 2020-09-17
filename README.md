@@ -179,4 +179,6 @@ Until 2020.3.23, I have not found any bug in the latest released version.
 
 Things planned to do in the near future:
 
+- Update : Implements {traverseXxxOrder()} of VisualizedBST.
+
 - Update : Supports global visual pointers for VDS.

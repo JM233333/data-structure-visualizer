@@ -11,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 
+import jm233333.dsv.Director;
 import jm233333.dsv.ui.Controller;
 import jm233333.dsv.visualized.VDS;
 
@@ -101,6 +102,7 @@ public class MethodTrigger extends HBox {
         // set listener
         button.setOnAction((event) -> {
             trigger(getArguments());
+            Director.getInstance().playAnimation();
         });
     }
 

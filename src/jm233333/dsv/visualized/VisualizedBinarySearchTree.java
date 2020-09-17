@@ -1,5 +1,6 @@
 package jm233333.dsv.visualized;
 
+import javafx.scene.paint.Color;
 import jm233333.dsv.ui.CodeTracker;
 import jm233333.dsv.visual.VisualBinaryTreeNode;
 
@@ -71,19 +72,6 @@ public class VisualizedBinarySearchTree extends VDS {
             getVisualBST(getName()).markToRight();
             trackCodeMethodBeginning(getCodeCurrentMethod());
             return findNode(p.right, value);
-        }
-    }
-    private Node __findParent(Node p, int value) {
-        if (p == null || value == root.value) {
-            return null;
-        }
-        if (value == p.left.value || value == p.right.value) {
-            return p;
-        }
-        if (value < p.value) {
-            return __findParent(p.left, value);
-        } else {
-            return __findParent(p.right, value);
         }
     }
 
@@ -300,5 +288,39 @@ public class VisualizedBinarySearchTree extends VDS {
             p = p.right;
         }
         return p;
+    }
+
+    public void traversePreOrder() {
+        outputMessage(" | RES : ", 16, Color.BLACK, false);
+        trackCodeMethodBeginning("dfsPreOrder");
+        dfsPreOrder(root);
+        trackCodeSetCurrentMethod("traversePreOrder");
+        trackCodeEntrance(getCodeCurrentMethod() + "_call");
+        trackCodeEntrance(CodeTracker.NEXT_LINE);
+    }
+    private void dfsPreOrder(Node p) {
+        if (p == null) {
+            trackCodeEntrance(CodeTracker.NEXT_LINE);
+            return;
+        }
+        trackCodeEntrance(getCodeCurrentMethod() + "_visit");
+        visitNode(p);
+        trackCodeEntrance(CodeTracker.NEXT_LINE);
+        trackCodeMethodBeginning(getCodeCurrentMethod());
+        dfsPreOrder(p.left);
+        trackCodeEntrance(getCodeCurrentMethod() + "_recL");
+        trackCodeEntrance(CodeTracker.NEXT_LINE);
+        trackCodeMethodBeginning(getCodeCurrentMethod());
+        dfsPreOrder(p.right);
+        trackCodeEntrance(getCodeCurrentMethod() + "_recR");
+        trackCodeEntrance(CodeTracker.NEXT_LINE);
+        leaveNode(p);
+    }
+
+    private void visitNode(Node p) {
+        outputMessage(String.valueOf(p.value), 16, Color.BLACK, false);
+    }
+    private void leaveNode(Node p) {
+
     }
 }

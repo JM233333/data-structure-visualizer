@@ -33,6 +33,9 @@ public:
 	Node * find_max() {                        //#/ findMax
 		return find_max_of(root);
 	}
+	void traverse_pre_order() {                //#/ traversePreOrder
+		dfs_pre_order(root);                   //#/ traversePreOrder_call
+	}
 private:
 	Node * find_node(Node * & p, int value) {  //#/ findNode
 		if (p == nullptr) {                    //#/ findNode_ifFail
@@ -97,6 +100,17 @@ private:
 			p = p->right;
 		}
 		return p;                              //#/ findMaxOf_return
+	}
+	void dfs_pre_order(Node * p) {             //#/ dfsPreOrder
+		if (p == nullptr) {
+			return;
+		}
+		visit(p);                              //#/ dfsPreOrder_visit
+		dfs_pre_order(p->left);                //#/ dfsPreOrder_recL
+		dfs_pre_order(p->right);               //#/ dfsPreOrder_recR
+	}
+	void visit(Node * p) {
+		printf("Node(%d)\n", p->value);
 	}
 	void clear() {                      //#/ clear
 		;

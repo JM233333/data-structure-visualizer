@@ -185,8 +185,8 @@ public abstract class VDS {
      * @param fontSize the font size of the message.
      * @param fontColor the font color of the message.
      */
-    public void outputMessage(String message, int fontSize, Color fontColor) {
-        Text text = new Text(message + "\n");
+    public void outputMessage(String message, int fontSize, Color fontColor, boolean newLine) {
+        Text text = new Text(newLine ? message + "\n" : message);
         text.setFont(Font.font(fontSize));
         text.setFill(fontColor);
         text.setOpacity(0);
@@ -195,6 +195,9 @@ public abstract class VDS {
         });
         outputBox.getChildren().add(text);
         Director.getInstance().createAnimation(0.25, text.opacityProperty(), 1.0);
+    }
+    public void outputMessage(String message, int fontSize, Color fontColor) {
+        outputMessage(message, fontSize, fontColor, true);
     }
     public void outputMessageInvoke(String message) {
         outputMessage(message, 18, Color.BLACK);
