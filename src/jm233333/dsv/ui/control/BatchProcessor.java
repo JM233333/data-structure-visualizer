@@ -6,15 +6,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.IntegerPropertyBase;
-import javafx.beans.value.ChangeListener;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 
+import jm233333.dsv.Director;
 import jm233333.dsv.Global;
 import jm233333.dsv.ui.PanelConsole;
 import jm233333.dsv.util.Pair;
@@ -23,17 +20,11 @@ import jm233333.dsv.visualized.VDSOptParser;
 
 public class BatchProcessor extends PanelConsole<FlowPane> {
 
-    private IntegerProperty batchIndexProperty;
-    private ChangeListener<Number> batchListener;
-
     private TextArea textArea;
 
     public BatchProcessor(VDS vds, MethodTriggers methodTriggers) {
         // super
         super(new FlowPane(), "Batch Processor");
-        // initialize batch properties
-        batchIndexProperty().setValue(-1);
-        batchListener = null;
         // initialize the text area
         textArea = new TextArea();
         getPanelBody().getChildren().add(textArea);
@@ -50,36 +41,15 @@ public class BatchProcessor extends PanelConsole<FlowPane> {
         getPanelBody().getChildren().add(btnRun);
         // set listener
         btnRun.setOnAction((event) -> {
-            // get the operation list
-            ArrayList<Pair<String, ArrayList<Integer>>> operationList;
+            // batch process
             try {
-                operationList = getOperationList(vds);
+                batchProcess(vds, methodTriggers);
             } catch (IllegalArgumentException e) {
                 System.err.println(e.getMessage());
                 return;
             }
-            // set listener
-            if (batchListener != null) {
-                batchIndexProperty().removeListener(batchListener);
-            }
-            batchListener = (observable, oldValue, newValue) -> {
-                // get index
-                int index = batchIndexProperty().get();
-                if (index == operationList.size()) {
-                    batchIndexProperty().set(-1);
-                }
-                if (batchIndexProperty().get() == -1) {
-                    return;
-                }
-                // get operation data
-                Pair<String, ArrayList<Integer>> operation = operationList.get(index);
-                // trigger the correspond method trigger
-                methodTriggers.trigger(operation.first, operation.second, (e) -> {
-                    batchIndexProperty().set(batchIndexProperty().get() + 1);
-                });
-            };
-            batchIndexProperty().addListener(batchListener);
-            batchIndexProperty().set(0);
+            // play animation
+            Director.getInstance().playAnimation();
         });
     }
     private void initializeButtonBuild(VDS vds, MethodTriggers methodTriggers) {
@@ -89,18 +59,15 @@ public class BatchProcessor extends PanelConsole<FlowPane> {
         getPanelBody().getChildren().add(btnBuild);
         // set listener
         btnBuild.setOnAction((event) -> {
-            // get the operation list
-            ArrayList<Pair<String, ArrayList<Integer>>> operationList;
+            // batch process
             try {
-                operationList = getOperationList(vds);
+                batchProcess(vds, methodTriggers);
             } catch (IllegalArgumentException e) {
                 System.err.println(e.getMessage());
                 return;
             }
-            //
-            for (Pair<String, ArrayList<Integer>> operation : operationList) {
-                methodTriggers.trigger(operation.first, operation.second, null);
-            }
+            // extract animation results
+            Director.getInstance().extractAnimation();
         });
 
     }
@@ -133,7 +100,7 @@ public class BatchProcessor extends PanelConsole<FlowPane> {
         });
     }
 
-    private ArrayList<Pair<String, ArrayList<Integer>>> getOperationList(VDS vds) {
+    private void batchProcess(VDS vds, MethodTriggers methodTriggers) {
         // get the operation list
         String[] input = textArea.getText().split("\\n+");
         ArrayList<Pair<String, ArrayList<Integer>>> operationList = new ArrayList<>();
@@ -146,29 +113,13 @@ public class BatchProcessor extends PanelConsole<FlowPane> {
                 throw new IllegalArgumentException("Illegal command [" + str + "]. Process refused.");
             }
         }
-        return operationList;
+        // trigger the methods in order
+        for (Pair<String, ArrayList<Integer>> operation : operationList) {
+            methodTriggers.trigger(operation.first, operation.second, false);
+        }
     }
 
     public TextArea getTextArea() {
         return textArea;
-    }
-
-    /**
-     * An {@code IntegerProperty} that represents the current executing index in a series of batch operations.
-     */
-    public final IntegerProperty batchIndexProperty() {
-        if (batchIndexProperty == null) {
-            batchIndexProperty = new IntegerPropertyBase(-1) {
-                @Override
-                public Object getBean() {
-                    return this;
-                }
-                @Override
-                public String getName() {
-                    return "batchIndex";
-                }
-            };
-        }
-        return batchIndexProperty;
     }
 }

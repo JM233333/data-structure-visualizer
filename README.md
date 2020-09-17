@@ -173,7 +173,7 @@ Until 2020.3.23, I have not found any bug in the latest released version.
 | 2020.9.16  | Update : Implements the main part of OutputBox. |
 |            | Fix BUG : Lack of out-of-bounds-check in several methods of VisualizedList. |
 |            | Fix BUG : Few UI layout mistakes. |
-| 2020.9.xx  | Update : Supports fast-build for batch-processing. |
+| 2020.9.17  | Update : Supports fast-build for batch-processing. |
 
 ## Todo List
 

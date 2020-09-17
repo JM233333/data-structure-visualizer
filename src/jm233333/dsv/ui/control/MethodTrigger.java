@@ -6,14 +6,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 
-import jm233333.dsv.Director;
 import jm233333.dsv.ui.Controller;
 import jm233333.dsv.visualized.VDS;
 
@@ -103,14 +100,14 @@ public class MethodTrigger extends HBox {
         }
         // set listener
         button.setOnAction((event) -> {
-            trigger(getArguments(), null);
+            trigger(getArguments());
         });
     }
 
     /**
      * Triggers the method.
      */
-    public void trigger(ArrayList<Integer> arguments, EventHandler<ActionEvent> eventAtLast) {
+    public boolean trigger(ArrayList<Integer> arguments) { //, EventHandler<ActionEvent> eventAtLast) {
         // debug
         StringBuilder s = new StringBuilder(name);
         for (int argument : arguments) {
@@ -134,10 +131,11 @@ public class MethodTrigger extends HBox {
         try {
             Method method = vds.getClass().getDeclaredMethod(name, parameterTypes);
             method.invoke(vds, arguments.toArray());
-            Director.getInstance().getLastTimeline().setOnFinished(eventAtLast);
-            Director.getInstance().playAnimation();
+//            Director.getInstance().getLastTimeline().setOnFinished(eventAtLast);
+            return true;
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
+            return false;
         }
     }
 

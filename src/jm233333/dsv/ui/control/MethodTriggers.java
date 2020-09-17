@@ -5,10 +5,9 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.layout.FlowPane;
 
+import jm233333.dsv.Director;
 import jm233333.dsv.ui.PanelConsole;
 import jm233333.dsv.visualized.VDS;
 
@@ -40,7 +39,11 @@ public class MethodTriggers extends PanelConsole<FlowPane> {
         }
     }
 
-    public void trigger(String name, ArrayList<Integer> arguments, EventHandler<ActionEvent> eventAtLast) {
-        mapTriggers.get(name).trigger(arguments, eventAtLast);
+    public void trigger(String name, ArrayList<Integer> arguments, boolean playAtOnce) { //, EventHandler<ActionEvent> eventAtLast) {
+        if (mapTriggers.get(name).trigger(arguments)) {
+            if (playAtOnce) {
+                Director.getInstance().playAnimation();
+            }
+        }
     }
 }

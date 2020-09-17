@@ -7,6 +7,9 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.BooleanPropertyBase;
+import javafx.beans.value.WritableDoubleValue;
+import javafx.beans.value.WritableIntegerValue;
+import javafx.beans.value.WritableObjectValue;
 import javafx.beans.value.WritableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -235,6 +238,32 @@ public class Director {
         animationCurrentIndex = -1;
         animationPlayingProperty().setValue(false);
         stepPointSet.clear();
+    }
+
+    /**
+     * Extracts all cached animations in {@link Director#animationWaitingList}, e.g. finish them immediately.
+     */
+    public void extractAnimation() {
+        for (Timeline timeline : animationWaitingList) {
+            for (KeyFrame keyFrame : timeline.getKeyFrames()) {
+                for (KeyValue keyValue : keyFrame.getValues()) {
+                    WritableValue property = keyValue.getTarget();
+                    Object value = keyValue.getEndValue();
+                    extractAnimation(property, value);
+                }
+            }
+        }
+        animationWaitingList.clear();
+    }
+
+    /**
+     * Extracts a pair of (property, value), e.g. finish the animation immediately.
+     *
+     * @param property the animated property
+     * @param value the target value of the animated property
+     */
+    public <T> void extractAnimation(WritableValue<T> property, T value) {
+        property.setValue(value);
     }
 
     /**

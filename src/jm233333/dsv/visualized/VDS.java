@@ -194,7 +194,7 @@ public abstract class VDS {
             text.setFont(Font.font(fontSize));
         });
         outputBox.getChildren().add(text);
-        Director.getInstance().createAnimation(0.25, text.opacityProperty(), 1);
+        Director.getInstance().createAnimation(0.25, text.opacityProperty(), 1.0);
     }
     public void outputMessageInvoke(String message) {
         outputMessage(message, 18, Color.BLACK);
