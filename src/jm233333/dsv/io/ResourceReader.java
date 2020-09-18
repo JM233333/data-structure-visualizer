@@ -25,14 +25,14 @@ public class ResourceReader {
     /**
      * The singleton of {@code ResourceReader}.
      */
-    private static ResourceReader instance = new ResourceReader();
+    private static final ResourceReader instance = new ResourceReader();
 
     private boolean isLoaded;
     private boolean isAllSucceeded;
 
-    private ArrayList<String> menuItemsList;
-    private HashMap<String, VDSInstantiation> vdsInstantiationMap;
-    private HashMap<String, ArrayList<String>> vdsCodeMap;
+    private final ArrayList<String> menuItemsList;
+    private final HashMap<String, VDSInstantiation> vdsInstantiationMap;
+    private final HashMap<String, ArrayList<String>> vdsCodeMap;
 
     private IntegerProperty loadingProgressProperty;
     private int maxLoadingProgress;

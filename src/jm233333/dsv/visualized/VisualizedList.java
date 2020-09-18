@@ -1,6 +1,7 @@
 package jm233333.dsv.visualized;
 
 import jm233333.dsv.ui.CodeTracker;
+import jm233333.dsv.visual.ColorScheme;
 import jm233333.dsv.visual.VisualList;
 
 /**
@@ -31,19 +32,19 @@ public class VisualizedList extends VDS {
 
     private Node getNode(int index) {
         Node p = head;
-        if (p != null) getVisualList(getName()).setHighlight(0, true);
+        if (p != null) getVisualList(getName()).setColorScheme(0, ColorScheme.HIGHLIGHT);
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         for (int i = 0; i < index; i ++) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             p = p.next;
             if (p == null) {
-                getVisualList(getName()).setHighlight(i, false);
+                getVisualList(getName()).setColorScheme(i, ColorScheme.DEFAULT);
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 return null;
             }
-            getVisualList(getName()).setHighlight(i, false);
-            getVisualList(getName()).setHighlight(i + 1, true, true);
+            getVisualList(getName()).setColorScheme(i, ColorScheme.DEFAULT);
+            getVisualList(getName()).setColorScheme(i + 1, ColorScheme.HIGHLIGHT, true);
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             trackCodeEntrance(getCodeCurrentMethod() + "_loop_begin");
         }
@@ -67,20 +68,20 @@ public class VisualizedList extends VDS {
     public Node find(int value) {
         Node p = head;
         int index = 0;
-        if (p != null) getVisualList(getName()).setHighlight(0, true);
+        if (p != null) getVisualList(getName()).setColorScheme(0, ColorScheme.HIGHLIGHT);
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         while (p != null) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             if (p.value == value) {
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
-                getVisualList(getName()).setHighlight(index, false);
+                getVisualList(getName()).setColorScheme(index, ColorScheme.DEFAULT);
                 outputMessageReturn("true (Node)(value = " + p.value + ")");
                 return p;
             }
             trackCodeEntrance(getCodeCurrentMethod() + "_if_end");
             p = p.next;
-            getVisualList(getName()).setHighlight(index, false);
-            if (p != null) getVisualList(getName()).setHighlight(index + 1, true, true);
+            getVisualList(getName()).setColorScheme(index, ColorScheme.DEFAULT);
+            if (p != null) getVisualList(getName()).setColorScheme(index + 1, ColorScheme.HIGHLIGHT, true);
             index ++;
             trackCodeEntrance(getCodeCurrentMethod() + "_loop_begin");
         }
@@ -144,7 +145,7 @@ public class VisualizedList extends VDS {
         getVisualList(getName()).insertCachedNode(index);
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         // clear highlight
-        getVisualList(getName()).setHighlight(index - 1, false);
+        getVisualList(getName()).setColorScheme(index - 1, ColorScheme.DEFAULT);
     }
 
     public void popFront() {
@@ -202,6 +203,6 @@ public class VisualizedList extends VDS {
         getVisualList(getName()).eraseMarkedNode();
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         // clear highlight
-        getVisualList(getName()).setHighlight(index - 1, false);
+        getVisualList(getName()).setColorScheme(index - 1, ColorScheme.DEFAULT);
     }
 }

@@ -4,6 +4,8 @@ import javafx.scene.Node;
 import jm233333.dsv.Director;
 import jm233333.dsv.util.Pair;
 
+import java.util.HashMap;
+
 /**
  * The {@code VisualBinarySearchTree} class defines the graphic components of a binary search tree that is displayed on the monitor.
  * Used in subclasses of {@code VDS}.
@@ -14,13 +16,14 @@ public class VisualBinarySearchTree extends Visual {
 
     private static final int MAX_HEIGHT = 4;
 
-    private static double[][] localization = new double[MAX_HEIGHT][2];
+    private static final double[][] localization = new double[MAX_HEIGHT + 1][2];
     private static double delY;
 
     private VisualBinaryTreeNode rootNode = null;
 
+    private final HashMap<Integer, VisualBinaryTreeNode> mapNode = new HashMap<>();
     private VisualBinaryTreeNode cachedNode = null;
-    private VisualBinaryTreeNode markedNode = null;
+    private VisualBinaryTreeNode tracedNode = null;
 
     static {
         // get box size
@@ -34,6 +37,8 @@ public class VisualBinarySearchTree extends Visual {
             dx /= 2;
             dy += (boxSize / 5);
         }
+        localization[MAX_HEIGHT][0] = 0;
+        localization[MAX_HEIGHT][1] = 0;
         //
         delY = PADDING / 2;
         for (int depth = 0; depth < MAX_HEIGHT; depth ++) {
@@ -58,6 +63,7 @@ public class VisualBinarySearchTree extends Visual {
         node.setLayoutX(x);
         node.setLayoutY(y);
         this.getChildren().add(node);
+        mapNode.put(node.getValue(), node);
         // relocate
         relocate();
         // return
@@ -68,6 +74,7 @@ public class VisualBinarySearchTree extends Visual {
         Director.getInstance().updateAnimation(1.0, node.scaleYProperty(), 0);
         Director.getInstance().getLastTimeline().setOnFinished((event) -> {
             this.getChildren().remove(node);
+            mapNode.remove(node.getValue());
             relocate();
         });
     }
@@ -133,53 +140,68 @@ public class VisualBinarySearchTree extends Visual {
         // reset position
         Director.getInstance().updateAnimation(1.0, p.layoutXProperty(), x);
         Director.getInstance().updateAnimation(1.0, p.layoutYProperty(), y);
-        //recursion
+        // recursion
         reconstruct(p.getLeft(), x - localization[p.getDepth()][0], y + localization[p.getDepth()][1]);
         reconstruct(p.getRight(), x + localization[p.getDepth()][0], y + localization[p.getDepth()][1]);
     }
 
-    public void markNodeOfValue(int value) {
-        boolean sync = (markedNode != null);
-        if (markedNode != null) {
-            markedNode.setHighlight(false);
+    public void traceRoot() {
+        boolean sync = (tracedNode != null);
+        if (tracedNode != null) {
+            tracedNode.setColorScheme(ColorScheme.DEFAULT);
         }
-        markedNode = getNode(value);
-        if (markedNode != null) {
-            markedNode.setHighlight(true, sync);
+        tracedNode = rootNode;
+        if (tracedNode != null) {
+            tracedNode.setColorScheme(ColorScheme.HIGHLIGHT, sync);
         }
     }
-    public void markToLeft() {
-        if (markedNode == null) {
+    public void traceToLeft() {
+        if (tracedNode == null) {
             return;
         }
-        if (markedNode.getLeft() != null) {
-            markedNode.getPointerToLeft().setHighlight(true);
-            markedNode.getLeft().setHighlight(true, true);
-            markedNode.setHighlight(false);
-            markedNode.getPointerToLeft().setHighlight(false, true);
+        if (tracedNode.getLeft() != null) {
+            tracedNode.getPointerToLeft().setColorScheme(ColorScheme.HIGHLIGHT);
+            tracedNode.getLeft().setColorScheme(ColorScheme.HIGHLIGHT, true);
+            tracedNode.setColorScheme(ColorScheme.DEFAULT);
+            tracedNode.getPointerToLeft().setColorScheme(ColorScheme.DEFAULT, true);
         } else {
-            markedNode.setHighlight(false);
+            tracedNode.setColorScheme(ColorScheme.DEFAULT);
         }
-        markedNode = markedNode.getLeft();
+        tracedNode = tracedNode.getLeft();
     }
-    public void markToRight() {
-        if (markedNode == null) {
+    public void traceToRight() {
+        if (tracedNode == null) {
             return;
         }
-        if (markedNode.getRight() != null) {
-            markedNode.getPointerToRight().setHighlight(true);
-            markedNode.getRight().setHighlight(true, true);
-            markedNode.setHighlight(false);
-            markedNode.getPointerToRight().setHighlight(false, true);
+        if (tracedNode.getRight() != null) {
+            tracedNode.getPointerToRight().setColorScheme(ColorScheme.HIGHLIGHT);
+            tracedNode.getRight().setColorScheme(ColorScheme.HIGHLIGHT, true);
+            tracedNode.setColorScheme(ColorScheme.DEFAULT);
+            tracedNode.getPointerToRight().setColorScheme(ColorScheme.DEFAULT, true);
         } else {
-            markedNode.setHighlight(false);
+            tracedNode.setColorScheme(ColorScheme.DEFAULT);
         }
-        markedNode = markedNode.getRight();
+        tracedNode = tracedNode.getRight();
+    }
+    public void traceClear() {
+        if (tracedNode != null) {
+            tracedNode.setColorScheme(ColorScheme.DEFAULT);
+            tracedNode = null;
+        }
+    }
+
+    public void markNodeOfValue(int value, ColorScheme colorScheme) {
+        markNodeOfValue(value, colorScheme, false);
+    }
+    public void markNodeOfValue(int value, ColorScheme colorScheme, boolean sync) {
+        VisualBinaryTreeNode node = mapNode.get(value);
+        if (node != null) {
+            node.setColorScheme(colorScheme, sync);
+        }
     }
     public void markClear() {
-        if (markedNode != null) {
-            markedNode.setHighlight(false);
-            markedNode = null;
+        for (VisualBinaryTreeNode node : mapNode.values()) {
+            node.setColorScheme(ColorScheme.DEFAULT, true);
         }
     }
 
@@ -261,7 +283,9 @@ public class VisualBinarySearchTree extends Visual {
     public void modifyNode(int value, int nValue) {
         VisualBinaryTreeNode p = getNode(value);
         if (p != null) {
+            mapNode.remove(p.getValue());
             p.setValue(nValue);
+            mapNode.put(p.getValue(), p);
         }
     }
 

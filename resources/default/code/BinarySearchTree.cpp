@@ -73,7 +73,7 @@ private:
 				 && p->right != nullptr) {
 				Node * np = find_max(p->left); //#/ eraseNode_findMax
 				int t = np->value;
-				erase_node(p->left, t);
+				erase_node(p->left, t);        //#/ eraseNode_subp
 				p->value = t;
 			} else {
 				Node * q = p;                  //#/ eraseNode_preDel

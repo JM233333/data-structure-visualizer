@@ -10,10 +10,11 @@ import javafx.stage.Stage;
  */
 public class Global {
 
-    /**
-     * The flag indicating whether the application is running in the jar package.
-     */
-    public static final boolean isJar = Main.class.getResource("Main.class").toString().startsWith("jar");
+//    /**
+//     * The flag indicating whether the application is running in the jar package.
+//     */
+//    public static final boolean isJar = Main.class.getResource("Main.class").toString().startsWith("jar");
+    public static final boolean isDebug = true;
 
     /**
      * Gets the (absolute) root path where the application runs.
@@ -21,12 +22,13 @@ public class Global {
      * @return the (absolute) root path where the application runs
      */
     public static String getRootPath() {
-        if (Global.isJar) {
-            String pathJar = Main.class.getProtectionDomain().getCodeSource().getLocation().getFile();
-            return pathJar.substring(0, pathJar.lastIndexOf('/') + 1);
+        String pathJar = Main.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String pathRoot = pathJar.substring(0, pathJar.lastIndexOf('/') + 1);
+        if (isDebug) {
+            pathRoot += "../../";
         }
         // debug
-        return "F:/DataStructureVisualizer/";
+        return pathRoot;
     }
 
     /**
@@ -50,9 +52,9 @@ public class Global {
         return primaryStage;
     }
 
-    private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    private static double screenWidth = screenSize.getWidth();
-    private static double screenHeight = screenSize.getHeight();
+    private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    private static final double screenWidth = screenSize.getWidth();
+    private static final double screenHeight = screenSize.getHeight();
 
     /**
      * Gets the screen width of the machine.

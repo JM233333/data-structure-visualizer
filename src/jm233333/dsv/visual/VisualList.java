@@ -135,10 +135,10 @@ public class VisualList extends Visual {
         Director.getInstance().createAnimation(1.0, erasedNode.layoutYProperty(), 96);
     }
 
-    public void setHighlight(int index, boolean flag) {
-        setHighlight(index, flag, false);
+    public void setColorScheme(int index, ColorScheme colorScheme) {
+        setColorScheme(index, colorScheme, false);
     }
-    public void setHighlight(int index, boolean flag, boolean sync) {
-        arrayNode.get(index).setHighlight(flag, sync);
+    public void setColorScheme(int index, ColorScheme colorScheme, boolean sync) {
+        arrayNode.get(index).setColorScheme(colorScheme, sync);
     }
 }

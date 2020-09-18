@@ -1,5 +1,3 @@
 Stack 10
-Queue 5
 List
 BinarySearchTree
-Deque 12

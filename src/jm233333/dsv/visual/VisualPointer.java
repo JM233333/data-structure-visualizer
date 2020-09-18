@@ -65,10 +65,14 @@ public class VisualPointer <T extends VisualNode> extends Visual {
         target = node;
         Director.getInstance().getLastTimeline().setOnFinished((event) -> {
             if (finalTarget != null) {
-                holder.layoutXProperty().removeListener(targetListenerX);
-                finalTarget.layoutXProperty().removeListener(targetListenerX);
-                holder.layoutYProperty().removeListener(targetListenerY);
-                finalTarget.layoutYProperty().removeListener(targetListenerY);
+                if (targetListenerX != null) {
+                    holder.layoutXProperty().removeListener(targetListenerX);
+                    finalTarget.layoutXProperty().removeListener(targetListenerX);
+                }
+                if (targetListenerY != null) {
+                    holder.layoutYProperty().removeListener(targetListenerY);
+                    finalTarget.layoutYProperty().removeListener(targetListenerY);
+                }
             }
             if (node != null) {
                 targetListenerX = (observable, oldValue, newValue) -> {
@@ -111,24 +115,17 @@ public class VisualPointer <T extends VisualNode> extends Visual {
     }
 
 
-    public void setHighlight(boolean flag) {
-        setHighlight(flag, false);
+    public void setColorScheme(ColorScheme colorScheme) {
+        setColorScheme(colorScheme, false);
     }
-    public void setHighlight(boolean flag, boolean sync) {
-        // get color
-        Color colorLine;
-        if (flag) {
-            colorLine = Color.WHITE;
-        } else {
-            colorLine = Color.BLACK;
-        }
+    public void setColorScheme(ColorScheme colorScheme, boolean sync) {
         // create animation if required
         if (!sync) {
             Director.getInstance().addEmptyTimeline();
         }
         // add animations
         for (Shape shape : new Shape[]{body, hatLeft, hatRight}) {
-            Director.getInstance().updateAnimation(1.0, shape.strokeProperty(), colorLine);
+            Director.getInstance().updateAnimation(1.0, shape.strokeProperty(), colorScheme.getColorBoard());
         }
     }
 }

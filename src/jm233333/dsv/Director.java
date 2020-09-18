@@ -1,6 +1,5 @@
 package jm233333.dsv;
 
-import java.lang.reflect.Type;
 import java.util.*;
 
 import javafx.animation.KeyFrame;
@@ -12,7 +11,6 @@ import javafx.beans.value.WritableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -194,6 +192,7 @@ public class Director {
                     animationCurrentIndex = index + 1;
                     animationPlayingProperty().setValue(true);
                     if (isSingleStep() && stepPointSet.contains(index)) {
+                        System.out.printf("timeline %d paused\n", index);
                         pauseAnimation();
                     }
                 } else {

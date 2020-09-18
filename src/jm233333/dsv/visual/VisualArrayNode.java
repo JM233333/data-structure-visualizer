@@ -53,7 +53,7 @@ public class VisualArrayNode extends VisualNode {
     }
 
     @Override
-    public void setHighlight(boolean flag, boolean sync) {
+    public void setColorScheme(ColorScheme colorScheme, boolean sync) {
         ;
     }
 }

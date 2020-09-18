@@ -81,28 +81,17 @@ public class VisualListNode extends VisualNode {
     }
 
     @Override
-    public void setHighlight(boolean flag, boolean sync) {
-        // get color
-        Color colorBoard, colorBox, colorText;
-        if (flag) {
-            colorBoard = Color.WHITE;
-            colorBox = Color.ORANGE;
-            colorText = Color.WHITE;
-        } else {
-            colorBoard = Color.BLACK;
-            colorBox = Color.TRANSPARENT;
-            colorText = Color.BLACK;
-        }
+    public void setColorScheme(ColorScheme colorScheme, boolean sync) {
         // create animation if required
         if (!sync) {
             Director.getInstance().addEmptyTimeline();
         }
         // add animations
         for (Rectangle box : new Rectangle[]{boxValue, boxPointer}) {
-            Director.getInstance().updateAnimation(1.0, box.strokeProperty(), colorBoard);
-            Director.getInstance().updateAnimation(1.0, box.fillProperty(), colorBox);
+            Director.getInstance().updateAnimation(1.0, box.strokeProperty(), colorScheme.getColorBoard());
+            Director.getInstance().updateAnimation(1.0, box.fillProperty(), colorScheme.getColorBox());
         }
-        Director.getInstance().updateAnimation(1.0, getText().fillProperty(), colorText);
-        next.setHighlight(flag, true);
+        Director.getInstance().updateAnimation(1.0, getText().fillProperty(), colorScheme.getColorText());
+        next.setColorScheme(colorScheme, true);
     }
 }
