@@ -134,14 +134,26 @@ public abstract class VDS {
     }
 
     /**
+     * Gets the name of the method that the the associated {@link CodeTracker} is currently tracking in.
+     *
+     * @return name of the method that the the associated code tracker is currently tracking in
+     */
+    public final String trackCodeGetCurrentMethod() {
+        return codeTracker.getCurrentMethod();
+    }
+
+    /**
      * Instruct the associated {@link CodeTracker} to track into the method of the specified name and then track to its beginning line.
      * Calls {@link VDS#trackCodeSetCurrentMethod(String)} and {@link VDS#trackCodeEntrance(String, boolean)}.
      *
      * @param name name of the method to go
      */
     public void trackCodeMethodBeginning(String name) {
+        trackCodeMethodBeginning(name, true);
+    }
+    public void trackCodeMethodBeginning(String name, boolean sync) {
+        trackCodeEntrance(name, sync);
         trackCodeSetCurrentMethod(name);
-        trackCodeEntrance(name, false);
         trackCodeEntrance(CodeTracker.NEXT_LINE, false);
     }
 
@@ -167,15 +179,6 @@ public abstract class VDS {
             Director.getInstance().addStepPoint();
         }
         codeTracker.gotoEntrance(name);
-    }
-
-    /**
-     * Gets the name of the method that the the associated {@link CodeTracker} is currently tracking in.
-     *
-     * @return name of the method that the the associated code tracker is currently tracking in
-     */
-    public final String getCodeCurrentMethod() {
-        return codeTracker.getCurrentMethod();
     }
 
     /**

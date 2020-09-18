@@ -110,7 +110,7 @@ public class CodeTracker extends ScrollPane {
         double virtualCurHeight = getLine(Math.max(0, nLineIndex - 3)).getLayoutY();
         double virtualMaxHeight = getLine(codeBoard.getChildren().size() - 1).getLayoutY() - this.heightProperty().getValue();
         double nScrollPos = virtualCurHeight / virtualMaxHeight;
-        Director.getInstance().createAnimation(0.5, this.vvalueProperty(), Math.min(1.0, Math.max(0.0, nScrollPos)));
+        Director.getInstance().updateAnimation(0.5, this.vvalueProperty(), Math.min(1.0, Math.max(0.0, nScrollPos)));
         //
         currentMethod = nMethod;
     }

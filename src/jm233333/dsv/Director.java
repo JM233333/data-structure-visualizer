@@ -192,7 +192,6 @@ public class Director {
                     animationCurrentIndex = index + 1;
                     animationPlayingProperty().setValue(true);
                     if (isSingleStep() && stepPointSet.contains(index)) {
-                        System.out.printf("timeline %d paused\n", index);
                         pauseAnimation();
                     }
                 } else {

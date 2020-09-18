@@ -129,7 +129,7 @@ public class MethodTrigger extends HBox {
         }
         // invoke method
         vds.outputMessageInvoke(s.toString());
-        vds.trackCodeMethodBeginning(name);
+        vds.trackCodeMethodBeginning(name, false);
         try {
             Method method = vds.getClass().getDeclaredMethod(name, parameterTypes);
             method.invoke(vds, arguments.toArray());

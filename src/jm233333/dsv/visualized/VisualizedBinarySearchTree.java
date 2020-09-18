@@ -54,7 +54,7 @@ public class VisualizedBinarySearchTree extends VDS {
             return null;
         }
         // check if succeeded
-        trackCodeEntrance(getCodeCurrentMethod() + "_ifSucc");
+        trackCodeEntrance(trackCodeGetCurrentMethod() + "_ifSucc");
         if (value == p.value) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             outputMessageReturn("true (Node)(value = " + p.value + ")");
@@ -62,16 +62,16 @@ public class VisualizedBinarySearchTree extends VDS {
             return p;
         }
         // discussion
-        trackCodeEntrance(getCodeCurrentMethod() + "_ifLR");
+        trackCodeEntrance(trackCodeGetCurrentMethod() + "_ifLR");
         if (value < p.value) {
-            trackCodeEntrance(getCodeCurrentMethod() + "_recL");
+            trackCodeEntrance(trackCodeGetCurrentMethod() + "_recL");
             getVisualBST(getName()).traceToLeft();
-            trackCodeMethodBeginning(getCodeCurrentMethod());
+            trackCodeMethodBeginning(trackCodeGetCurrentMethod());
             return findNode(p.left, value);
         } else {
-            trackCodeEntrance(getCodeCurrentMethod() + "_recR");
+            trackCodeEntrance(trackCodeGetCurrentMethod() + "_recR");
             getVisualBST(getName()).traceToRight();
-            trackCodeMethodBeginning(getCodeCurrentMethod());
+            trackCodeMethodBeginning(trackCodeGetCurrentMethod());
             return findNode(p.right, value);
         }
     }
@@ -100,18 +100,18 @@ public class VisualizedBinarySearchTree extends VDS {
             return;
         }
         // deal with duplication
-        trackCodeEntrance(getCodeCurrentMethod() + "_ifEql");
+        trackCodeEntrance(trackCodeGetCurrentMethod() + "_ifEql");
         if (value == p.value) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             getVisualBST(getName()).traceClear();
             return;
         }
         // discussion
-        trackCodeEntrance(getCodeCurrentMethod() + "_ifLR");
+        trackCodeEntrance(trackCodeGetCurrentMethod() + "_ifLR");
         if (value < p.value) {
-            trackCodeEntrance(getCodeCurrentMethod() + "_recL");
+            trackCodeEntrance(trackCodeGetCurrentMethod() + "_recL");
             if (p.left == null) {
-                trackCodeMethodBeginning(getCodeCurrentMethod());
+                trackCodeMethodBeginning(trackCodeGetCurrentMethod());
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 p.left = new Node(value);
                 p.left.parent = p;
@@ -120,13 +120,13 @@ public class VisualizedBinarySearchTree extends VDS {
                 getVisualBST(getName()).traceClear();
             } else {
                 getVisualBST(getName()).traceToLeft();
-                trackCodeMethodBeginning(getCodeCurrentMethod());
+                trackCodeMethodBeginning(trackCodeGetCurrentMethod());
                 insertNode(p.left, value, curDepth + 1);
             }
         } else {
-            trackCodeEntrance(getCodeCurrentMethod() + "_recR");
+            trackCodeEntrance(trackCodeGetCurrentMethod() + "_recR");
             if (p.right == null) {
-                trackCodeMethodBeginning(getCodeCurrentMethod());
+                trackCodeMethodBeginning(trackCodeGetCurrentMethod());
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 p.right = new Node(value);
                 p.right.parent = p;
@@ -135,7 +135,7 @@ public class VisualizedBinarySearchTree extends VDS {
                 getVisualBST(getName()).traceClear();
             } else {
                 getVisualBST(getName()).traceToRight();
-                trackCodeMethodBeginning(getCodeCurrentMethod());
+                trackCodeMethodBeginning(trackCodeGetCurrentMethod());
                 insertNode(p.right, value, curDepth + 1);
             }
         }
@@ -155,11 +155,11 @@ public class VisualizedBinarySearchTree extends VDS {
         }
         if (root != null && value == root.value) {
             trackCodeMethodBeginning("eraseNode");
-            trackCodeEntrance(getCodeCurrentMethod() + "_ifEql");
+            trackCodeEntrance(trackCodeGetCurrentMethod() + "_ifEql");
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             if (root.left != null && root.right != null) {
-                trackCodeEntrance(getCodeCurrentMethod() + "_findMax");
+                trackCodeEntrance(trackCodeGetCurrentMethod() + "_findMax");
                 Node np = __findMaxOf(root.left);
                 getVisualBST(getName()).markNodeOfValue(np.value, ColorScheme.MARKED);
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
@@ -173,15 +173,15 @@ public class VisualizedBinarySearchTree extends VDS {
                 getVisualBST(getName()).markClear();
                 getVisualBST(getName()).modifyNode(root.value, t);
                 root.value = t;
-                trackCodeEntrance(getCodeCurrentMethod() + "_return");
+                trackCodeEntrance(trackCodeGetCurrentMethod() + "_return");
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
             } else {
-                trackCodeEntrance(getCodeCurrentMethod() + "_preDel");
+                trackCodeEntrance(trackCodeGetCurrentMethod() + "_preDel");
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 Node p = (root.left != null ? root.left : root.right);
-                trackCodeEntrance(getCodeCurrentMethod() + (root.left != null ? "_linkL" : "_linkR"));
+                trackCodeEntrance(trackCodeGetCurrentMethod() + (root.left != null ? "_linkL" : "_linkR"));
                 getVisualBST(getName()).eraseNodePrep(root.value);
-                trackCodeEntrance(getCodeCurrentMethod() + "_delete");
+                trackCodeEntrance(trackCodeGetCurrentMethod() + "_delete");
                 getVisualBST(getName()).eraseCachedNode();
                 root = p;
             }
@@ -198,12 +198,12 @@ public class VisualizedBinarySearchTree extends VDS {
             return;
         }
         // check if reached
-        trackCodeEntrance(getCodeCurrentMethod() + "_ifEql");
+        trackCodeEntrance(trackCodeGetCurrentMethod() + "_ifEql");
         if (value == p.value) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             if (p.left != null && p.right != null) {
-                trackCodeEntrance(getCodeCurrentMethod() + "_findMax");
+                trackCodeEntrance(trackCodeGetCurrentMethod() + "_findMax");
                 Node np = __findMaxOf(p.left);
                 getVisualBST(getName()).markNodeOfValue(np.value, ColorScheme.MARKED);
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
@@ -217,14 +217,14 @@ public class VisualizedBinarySearchTree extends VDS {
                 getVisualBST(getName()).markClear();
                 getVisualBST(getName()).modifyNode(p.value, t);
                 p.value = t;
-                trackCodeEntrance(getCodeCurrentMethod() + "_return");
+                trackCodeEntrance(trackCodeGetCurrentMethod() + "_return");
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
             } else {
-                trackCodeEntrance(getCodeCurrentMethod() + "_preDel");
+                trackCodeEntrance(trackCodeGetCurrentMethod() + "_preDel");
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 Node f = p.parent;
                 if (p.left != null) {
-                    trackCodeEntrance(getCodeCurrentMethod() + "_linkL");
+                    trackCodeEntrance(trackCodeGetCurrentMethod() + "_linkL");
                     if (p.value < f.value) {
                         f.left = p.left;
                         f.left.parent = f;
@@ -233,7 +233,7 @@ public class VisualizedBinarySearchTree extends VDS {
                         f.right.parent = f;
                     }
                 } else {
-                    trackCodeEntrance(getCodeCurrentMethod() + "_linkR");
+                    trackCodeEntrance(trackCodeGetCurrentMethod() + "_linkR");
                     if (p.value < f.value) {
                         f.left = p.right;
                         if (p.right != null) f.left.parent = f;
@@ -243,23 +243,23 @@ public class VisualizedBinarySearchTree extends VDS {
                     }
                 }
                 getVisualBST(getName()).eraseNodePrep(p.value);
-                trackCodeEntrance(getCodeCurrentMethod() + "_delete");
+                trackCodeEntrance(trackCodeGetCurrentMethod() + "_delete");
                 getVisualBST(getName()).eraseCachedNode();
-                trackCodeEntrance(getCodeCurrentMethod() + "_subp");
+                trackCodeEntrance(trackCodeGetCurrentMethod() + "_subp");
             }
             return;
         }
         // discussion
-        trackCodeEntrance(getCodeCurrentMethod() + "_ifLR");
+        trackCodeEntrance(trackCodeGetCurrentMethod() + "_ifLR");
         if (value < p.value) {
-            trackCodeEntrance(getCodeCurrentMethod() + "_recL");
+            trackCodeEntrance(trackCodeGetCurrentMethod() + "_recL");
             getVisualBST(getName()).traceToLeft();
-            trackCodeMethodBeginning(getCodeCurrentMethod());
+            trackCodeMethodBeginning(trackCodeGetCurrentMethod());
             eraseNode(p.left, value);
         } else {
-            trackCodeEntrance(getCodeCurrentMethod() + "_recR");
+            trackCodeEntrance(trackCodeGetCurrentMethod() + "_recR");
             getVisualBST(getName()).traceToRight();
-            trackCodeMethodBeginning(getCodeCurrentMethod());
+            trackCodeMethodBeginning(trackCodeGetCurrentMethod());
             eraseNode(p.right, value);
         }
     }
@@ -279,15 +279,15 @@ public class VisualizedBinarySearchTree extends VDS {
             return null;
         }
         // iterate
-        trackCodeEntrance(getCodeCurrentMethod() + "_loop");
+        trackCodeEntrance(trackCodeGetCurrentMethod() + "_loop");
         while (p.right != null) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             getVisualBST(getName()).traceToRight();
             p = p.right;
-            trackCodeEntrance(getCodeCurrentMethod() + "_loop");
+            trackCodeEntrance(trackCodeGetCurrentMethod() + "_loop");
         }
         // return
-        trackCodeEntrance(getCodeCurrentMethod() + "_return");
+        trackCodeEntrance(trackCodeGetCurrentMethod() + "_return");
         outputMessageReturn("true (Node)(value = " + p.value + ")");
         return p;
     }
@@ -307,7 +307,7 @@ public class VisualizedBinarySearchTree extends VDS {
         trackCodeMethodBeginning("dfsPreOrder");
         dfsPreOrder(root);
         trackCodeSetCurrentMethod("traversePreOrder");
-        trackCodeEntrance(getCodeCurrentMethod() + "_call");
+        trackCodeEntrance(trackCodeGetCurrentMethod() + "_call");
         trackCodeEntrance(CodeTracker.NEXT_LINE);
     }
     private void dfsPreOrder(Node p) {
@@ -315,18 +315,18 @@ public class VisualizedBinarySearchTree extends VDS {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             return;
         }
-        trackCodeEntrance(getCodeCurrentMethod() + "_visit");
+        trackCodeEntrance(trackCodeGetCurrentMethod() + "_visit");
         visitNode(p);
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         if (p.left != null) getVisualBST(getName()).markNodeOfValue(p.left.value, ColorScheme.MARKED);
-        trackCodeMethodBeginning(getCodeCurrentMethod());
+        trackCodeMethodBeginning(trackCodeGetCurrentMethod());
         dfsPreOrder(p.left);
-        trackCodeEntrance(getCodeCurrentMethod() + "_recL");
+        trackCodeEntrance(trackCodeGetCurrentMethod() + "_recL");
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         if (p.right != null) getVisualBST(getName()).markNodeOfValue(p.right.value, ColorScheme.MARKED);
-        trackCodeMethodBeginning(getCodeCurrentMethod());
+        trackCodeMethodBeginning(trackCodeGetCurrentMethod());
         dfsPreOrder(p.right);
-        trackCodeEntrance(getCodeCurrentMethod() + "_recR");
+        trackCodeEntrance(trackCodeGetCurrentMethod() + "_recR");
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         leaveNode(p);
     }

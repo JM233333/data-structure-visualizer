@@ -46,9 +46,9 @@ public class VisualizedList extends VDS {
             getVisualList(getName()).setColorScheme(i, ColorScheme.DEFAULT);
             getVisualList(getName()).setColorScheme(i + 1, ColorScheme.HIGHLIGHT, true);
             trackCodeEntrance(CodeTracker.NEXT_LINE);
-            trackCodeEntrance(getCodeCurrentMethod() + "_loop_begin");
+            trackCodeEntrance(trackCodeGetCurrentMethod() + "_loop_begin");
         }
-        trackCodeEntrance(getCodeCurrentMethod() + "_loop_end");
+        trackCodeEntrance(trackCodeGetCurrentMethod() + "_loop_end");
         return p;
     }
 
@@ -56,7 +56,7 @@ public class VisualizedList extends VDS {
         trackCodeMethodBeginning("getNode");
         Node p = getNode(index);
         trackCodeSetCurrentMethod("get");
-        trackCodeEntrance(getCodeCurrentMethod() + "_return");
+        trackCodeEntrance(trackCodeGetCurrentMethod() + "_return");
         if (p == null) {
             outputMessageError("Out of bound.");
             return 0;
@@ -78,14 +78,14 @@ public class VisualizedList extends VDS {
                 outputMessageReturn("true (Node)(value = " + p.value + ")");
                 return p;
             }
-            trackCodeEntrance(getCodeCurrentMethod() + "_if_end");
+            trackCodeEntrance(trackCodeGetCurrentMethod() + "_if_end");
             p = p.next;
             getVisualList(getName()).setColorScheme(index, ColorScheme.DEFAULT);
             if (p != null) getVisualList(getName()).setColorScheme(index + 1, ColorScheme.HIGHLIGHT, true);
             index ++;
-            trackCodeEntrance(getCodeCurrentMethod() + "_loop_begin");
+            trackCodeEntrance(trackCodeGetCurrentMethod() + "_loop_begin");
         }
-        trackCodeEntrance(getCodeCurrentMethod() + "_loop_end");
+        trackCodeEntrance(trackCodeGetCurrentMethod() + "_loop_end");
         outputMessageReturn("false");
         return null;
     }
@@ -115,12 +115,12 @@ public class VisualizedList extends VDS {
             pushFront(value);
             return;
         }
-        trackCodeEntrance(getCodeCurrentMethod() + "_getNode");
+        trackCodeEntrance(trackCodeGetCurrentMethod() + "_getNode");
         // get position
         trackCodeMethodBeginning("getNode");
         Node prv = getNode(index - 1);
         trackCodeSetCurrentMethod("insert");
-        trackCodeEntrance(getCodeCurrentMethod() + "_getNode");
+        trackCodeEntrance(trackCodeGetCurrentMethod() + "_getNode");
         // check validity
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         if (prv == null) {
@@ -128,7 +128,7 @@ public class VisualizedList extends VDS {
             outputMessageError("Out of bound.");
             return;
         }
-        trackCodeEntrance(getCodeCurrentMethod() + "_main_begin");
+        trackCodeEntrance(trackCodeGetCurrentMethod() + "_main_begin");
         // create new node
         Node p = new Node(value);
         getVisualList(getName()).setCachedNode(index, value);
@@ -155,7 +155,7 @@ public class VisualizedList extends VDS {
             outputMessageError("Empty list.");
             return;
         }
-        trackCodeEntrance(getCodeCurrentMethod() + "_main_begin");
+        trackCodeEntrance(trackCodeGetCurrentMethod() + "_main_begin");
         // pop front
         getVisualList(getName()).markNode(0);
         trackCodeEntrance(CodeTracker.NEXT_LINE);
@@ -174,12 +174,12 @@ public class VisualizedList extends VDS {
             popFront();
             return;
         }
-        trackCodeEntrance(getCodeCurrentMethod() + "_getNode");
+        trackCodeEntrance(trackCodeGetCurrentMethod() + "_getNode");
         // get position
         trackCodeMethodBeginning("getNode");
         Node prv = getNode(index - 1);
         trackCodeSetCurrentMethod("erase");
-        trackCodeEntrance(getCodeCurrentMethod() + "_getNode");
+        trackCodeEntrance(trackCodeGetCurrentMethod() + "_getNode");
         // check validity
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         trackCodeEntrance(CodeTracker.NEXT_LINE);
@@ -188,7 +188,7 @@ public class VisualizedList extends VDS {
             outputMessageError("Out of bound.");
             return;
         }
-        trackCodeEntrance(getCodeCurrentMethod() + "_main_begin");
+        trackCodeEntrance(trackCodeGetCurrentMethod() + "_main_begin");
         // erase
         getVisualList(getName()).markNode(index);
         trackCodeEntrance(CodeTracker.NEXT_LINE);
