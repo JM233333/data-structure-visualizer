@@ -69,7 +69,7 @@ public class CodeTracker extends ScrollPane {
      *
      * @param name the specified name of vds
      */
-    public void parseCodeList(final String name) {
+    public void parseCodeList(String name) {
         // clear
         codeBoard.getChildren().clear();
         mapEntrance.clear();
@@ -107,11 +107,6 @@ public class CodeTracker extends ScrollPane {
         }
         int nLineIndex = mapEntrance.get(nMethod);
         //
-        double virtualCurHeight = getLine(Math.max(0, nLineIndex - 3)).getLayoutY();
-        double virtualMaxHeight = getLine(codeBoard.getChildren().size() - 1).getLayoutY() - this.heightProperty().getValue();
-        double nScrollPos = virtualCurHeight / virtualMaxHeight;
-        Director.getInstance().updateAnimation(0.5, this.vvalueProperty(), Math.min(1.0, Math.max(0.0, nScrollPos)));
-        //
         currentMethod = nMethod;
     }
 
@@ -120,7 +115,7 @@ public class CodeTracker extends ScrollPane {
      *
      * @return name of the method currently tracked in
      */
-    public final String getCurrentMethod() {
+    public String getCurrentMethod() {
         return currentMethod;
     }
 
@@ -130,34 +125,34 @@ public class CodeTracker extends ScrollPane {
      * @param name name of the entrance
      */
     public void gotoEntrance(String name) {
+        // check eid REMAIN
         if (name.equals(REMAIN)) {
             return;
         }
-        if (name.equals(NEXT_LINE)) {
-            setCurrentLineIndex(currentLineIndex + 1);
-        } else {
-            setCurrentLineIndex(mapEntrance.get(name));
+        // get next index
+        Integer index = (name.equals(NEXT_LINE) ? currentLineIndex + 1 : mapEntrance.get(name));
+        // check existence
+        if (index == null || index < 0 || index >= codeBoard.getChildren().size()) {
+            System.err.println("Code Tracking Error for entrance name " + name);
+            return;
         }
+        // set index
+        setCurrentLineIndex(index);
     }
 
     /**
      * Tracks into the code line of the specified line index.
      *
-     * @param nLineIndex the specified line index
+     * @param index the specified line index
      */
-    public void setCurrentLineIndex(Integer nLineIndex) {
-        if (nLineIndex == null || nLineIndex < 0 || nLineIndex >= codeBoard.getChildren().size()) {
-            System.err.println("Code Tracking Error for Line " + nLineIndex);
-            return;
-        }
-        if (currentLineIndex != nLineIndex) {
-            // update current line index
+    private void setCurrentLineIndex(int index) {
+        if (currentLineIndex != index) {
+            // set line index
             final Text prvCurrentLine = getCurrentLine();
-            currentLineIndex = nLineIndex;
+            currentLineIndex = index;
             final Text newCurrentLine = getCurrentLine();
-            // create animation
             double ny = (newCurrentLine == null ? 8 : newCurrentLine.getLayoutY() + 4);
-            Director.getInstance().createAnimation(0.5, currentLineSymbol.layoutYProperty(), ny);
+            Director.getInstance().createAnimation(1.0, currentLineSymbol.layoutYProperty(), ny);
             Director.getInstance().getLastTimeline().setOnFinished((event) -> {
                 if (prvCurrentLine != null) {
                     prvCurrentLine.setFill(Color.BLACK);
@@ -168,7 +163,11 @@ public class CodeTracker extends ScrollPane {
                     newCurrentLine.setStyle("-fx-font-weight: bold;");
                 }
             });
-            Director.getInstance().createAnimation(0.5, currentLineSymbol.opacityProperty(), 1);
+            // adjust viewport
+            double virtualCurHeight = getLine(Math.max(0, index - 7)).getLayoutY();
+            double virtualMaxHeight = getLine(codeBoard.getChildren().size() - 1).getLayoutY() - this.heightProperty().getValue();
+            double nVvalue = Math.min(1.0, Math.max(0.0, virtualCurHeight / virtualMaxHeight));
+            Director.getInstance().updateAnimation(1.0, this.vvalueProperty(), Math.min(1.0, Math.max(0.0, nVvalue)));
         }
     }
 
@@ -181,10 +180,10 @@ public class CodeTracker extends ScrollPane {
         return currentLineIndex;
     }
 
-    private final Text getLine(int index) {
+    private Text getLine(int index) {
         return (Text)codeBoard.getChildren().get(index);
     }
-    private final Text getCurrentLine() {
+    private Text getCurrentLine() {
         if (currentLineIndex == -1) {
             return null;
         }

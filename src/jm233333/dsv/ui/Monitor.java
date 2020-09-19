@@ -124,4 +124,18 @@ public class Monitor extends ScrollPane {
         canvas.getChildren().add(visualBST);
         mapVisual.put(name, visualBST);
     }
+
+
+    /**
+     * Creates a {@link VisualInvocationStack} in the {@code Monitor}.
+     */
+    public void createVisualInvocationStack() {
+        if (!mapVisual.containsKey(VisualInvocationStack.BUILTIN_NAME)) {
+            VisualInvocationStack visualInvocationStack = new VisualInvocationStack(VisualInvocationStack.BUILTIN_NAME, 7);
+            visualInvocationStack.setLayoutX(this.getWidth() - 128);
+            visualInvocationStack.setLayoutY(64);
+            canvas.getChildren().add(visualInvocationStack);
+            mapVisual.put(VisualInvocationStack.BUILTIN_NAME, visualInvocationStack);
+        }
+    }
 }

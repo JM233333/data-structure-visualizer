@@ -174,11 +174,14 @@ Until 2020.3.23, I have not found any bug in the latest released version.
 |            | Fix BUG : Lack of out-of-bounds-check in several methods of VisualizedList. |
 |            | Fix BUG : Few UI layout mistakes. |
 | 2020.9.17  | Update : Supports fast-build for batch-processing. |
+| 2020.9.18  | Fix BUG : Mistake in method {erase(value)} of VisualizedBST. |
 
 ## Todo List
 
 Things planned to do in the near future:
 
 - Update : Implements {traverseXxxOrder()} of VisualizedBST.
+
+- Update : Implements method-invocation-stack for VDS.
 
 - Update : Supports global visual pointers for VDS.

@@ -11,6 +11,8 @@ import jm233333.dsv.ui.CodeTracker;
 import jm233333.dsv.ui.Monitor;
 import jm233333.dsv.visual.*;
 
+import java.util.Stack;
+
 /**
  * Abstract class {@code VDS} provides common properties for all types of VDSs (VDS is the abbreviation of Visualized Data Structure or Algorithm).
  *
@@ -21,6 +23,7 @@ import jm233333.dsv.visual.*;
 public abstract class VDS {
 
     private String name = "";
+    private Stack<String> invocationStack = new Stack<>();
 
     private Mode mode = null;
 
@@ -123,39 +126,9 @@ public abstract class VDS {
         this.outputBox = outputBox;
     }
 
-    /**
-     * Instruct the associated {@link CodeTracker} to track into the method of the specified name.
-     * Calls {@link CodeTracker#setCurrentMethod(String)}.
-     *
-     * @param name name of the method to go
-     */
-    public void trackCodeSetCurrentMethod(String name) {
-        codeTracker.setCurrentMethod(name);
-    }
-
-    /**
-     * Gets the name of the method that the the associated {@link CodeTracker} is currently tracking in.
-     *
-     * @return name of the method that the the associated code tracker is currently tracking in
-     */
-    public final String trackCodeGetCurrentMethod() {
-        return codeTracker.getCurrentMethod();
-    }
-
-    /**
-     * Instruct the associated {@link CodeTracker} to track into the method of the specified name and then track to its beginning line.
-     * Calls {@link VDS#trackCodeSetCurrentMethod(String)} and {@link VDS#trackCodeEntrance(String, boolean)}.
-     *
-     * @param name name of the method to go
-     */
-    public void trackCodeMethodBeginning(String name) {
-        trackCodeMethodBeginning(name, true);
-    }
-    public void trackCodeMethodBeginning(String name, boolean sync) {
-        trackCodeEntrance(name, sync);
-        trackCodeSetCurrentMethod(name);
-        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
-    }
+    // ============================================================
+    // methods for code-tracking
+    // ============================================================
 
     /**
      * Instruct the associated {@link CodeTracker} to track into the line of the specified entrance name in the current method,
@@ -180,6 +153,54 @@ public abstract class VDS {
         }
         codeTracker.gotoEntrance(name);
     }
+
+    /**
+     * Instruct the associated {@link CodeTracker} to track into the method of the specified name.
+     * Calls {@link CodeTracker#setCurrentMethod(String)}.
+     *
+     * @param name name of the method to go
+     */
+    public void trackMethodCall(String name) {
+        invocationStack.push(name);
+        codeTracker.setCurrentMethod(name);
+    }
+
+    /**
+     * Instruct the associated {@link CodeTracker} to track into the method of the specified name.
+     * Calls {@link CodeTracker#setCurrentMethod(String)}.
+     */
+    public void trackMethodReturn() {
+        invocationStack.pop();
+//        codeTracker.setCurrentMethod(name);
+    }
+
+    /**
+     * Gets the name of the method that the the associated {@link CodeTracker} is currently tracking in.
+     *
+     * @return name of the method that the the associated code tracker is currently tracking in
+     */
+    public final String getCurrentMethod() {
+        return codeTracker.getCurrentMethod();
+    }
+
+    /**
+     * Instruct the associated {@link CodeTracker} to track into the method of the specified name and then track to its beginning line.
+     * Calls {@link VDS#trackMethodCall(String)} and {@link VDS#trackCodeEntrance(String, boolean)}.
+     *
+     * @param name name of the method to go
+     */
+    public void trackCodeMethodBeginning(String name) {
+        trackCodeMethodBeginning(name, true);
+    }
+    public void trackCodeMethodBeginning(String name, boolean sync) {
+        trackCodeEntrance(name, sync);
+        trackMethodCall(name);
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
+    }
+
+    // ============================================================
+    // methods for outputting message
+    // ============================================================
 
     /**
      * Outputs message to the associated output box.
@@ -221,6 +242,10 @@ public abstract class VDS {
     public void clearOutputBox() {
         outputBox.getChildren().clear();
     }
+
+    // ============================================================
+    // methods for creating visual components
+    // ============================================================
 
     /**
      * Creates graphic components (e.g. instances of {@link Visual}) of the {@code VDS}.

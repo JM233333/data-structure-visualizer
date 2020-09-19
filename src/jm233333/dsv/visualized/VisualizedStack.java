@@ -34,7 +34,7 @@ public class VisualizedStack extends VDS {
             outputMessageError("Full stack.");
             return;
         }
-        trackCodeEntrance(trackCodeGetCurrentMethod() + "_main_begin");
+        trackCodeEntrance(getCurrentMethod() + "_main_begin");
         data[top] = value;
         getVisualArray(getName()).updateElement(top, value);
         trackCodeEntrance(CodeTracker.NEXT_LINE);
@@ -49,7 +49,7 @@ public class VisualizedStack extends VDS {
             outputMessageError("Empty stack.");
             return;
         }
-        trackCodeEntrance(trackCodeGetCurrentMethod() + "_main_begin");
+        trackCodeEntrance(getCurrentMethod() + "_main_begin");
         top --;
         getVisualArray(getName()).updateIndexField("top", top);
         getVisualArray(getName()).eraseElement(top);
@@ -62,7 +62,7 @@ public class VisualizedStack extends VDS {
             outputMessageError("Empty stack.");
             return 0;
         }
-        trackCodeEntrance(trackCodeGetCurrentMethod() + "_main_begin");
+        trackCodeEntrance(getCurrentMethod() + "_main_begin");
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         outputMessageReturn(data[top - 1]);
         return data[top - 1];

@@ -109,6 +109,22 @@ private:
 		dfs_pre_order(p->left);                //#/ dfsPreOrder_recL
 		dfs_pre_order(p->right);               //#/ dfsPreOrder_recR
 	}
+	void dfs_in_order(Node * p) {              //#/ dfsInOrder
+		if (p == nullptr) {
+			return;
+		}
+		dfs_in_order(p->left);                 //#/ dfsInOrder_recL
+		visit(p);                              //#/ dfsInOrder_visit
+		dfs_in_order(p->right);                //#/ dfsInOrder_recR
+	}
+	void dfs_post_order(Node * p) {            //#/ dfsPostOrder
+		if (p == nullptr) {
+			return;
+		}
+		dfs_post_order(p->left);               //#/ dfsPostOrder_recL
+		dfs_post_order(p->right);              //#/ dfsPostOrder_recR
+		visit(p);                              //#/ dfsPostOrder_visit
+	}
 	void visit(Node * p) {
 		printf("Node(%d)\n", p->value);
 	}
