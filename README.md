@@ -2,7 +2,7 @@ English | [简体中文](./README.cn.md)
 
 # DataStructureVisualizer
 
-[license_gpl](https://img.shields.io/badge/License-GPL-green)
+![license_gpl](https://img.shields.io/badge/License-GPL-green)
 
 *Authored by JM233333*
 
