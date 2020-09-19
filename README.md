@@ -2,6 +2,8 @@ English | [简体中文](./README.cn.md)
 
 # DataStructureVisualizer
 
+[license_gpl](https://img.shields.io/badge/License-GPL-green)
+
 *Authored by JM233333*
 
 *Notice: The current source code is only a DEMO version, and some basic functions are still flawed. For example, some basic data structures are not supported currently (e.g. k-ary tree or graph).*
@@ -174,13 +176,14 @@ Until 2020.3.23, I have not found any bug in the latest released version.
 |            | Fix BUG : Lack of out-of-bounds-check in several methods of VisualizedList. |
 |            | Fix BUG : Few UI layout mistakes. |
 | 2020.9.17  | Update : Supports fast-build for batch-processing. |
-| 2020.9.18  | Fix BUG : Mistake in method {erase(value)} of VisualizedBST. |
+| 2020.9.18  | Update : Implements {traverseXxxOrder()} of VisualizedBST. |
+|            | Fix BUG : Mistake in method {erase(value)} of VisualizedBST. |
+| 2020.9.19  | Update : Optimizes viewpoint-rolling in code-tracking. |
+|            |  |
 
 ## Todo List
 
 Things planned to do in the near future:
-
-- Update : Implements {traverseXxxOrder()} of VisualizedBST.
 
 - Update : Implements method-invocation-stack for VDS.
 
