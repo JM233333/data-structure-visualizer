@@ -4,13 +4,10 @@ import java.util.HashMap;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 
-import jm233333.dsv.util.Direction;
 import jm233333.dsv.visual.*;
+import jm233333.util.Direction;
 
 /**
  * Class {@code Monitor} is responsible for displaying the visualized data structure.
@@ -98,6 +95,7 @@ public class Monitor extends ScrollPane {
      */
     public void createVisualArray(String name, Direction direction, int n) {
         VisualArray visualArray = new VisualArray(name, direction, n);
+        visualArray.setBasePosition(baseX, baseY);
         visualArray.setLayoutX(baseX);
         visualArray.setLayoutY(baseY);
         canvas.getChildren().add(visualArray);
@@ -121,6 +119,7 @@ public class Monitor extends ScrollPane {
      */
     public void createVisualList(String name) {
         VisualList visualList = new VisualList(name);
+        visualList.setBasePosition(baseX, baseY);
         visualList.setLayoutX(baseX);
         visualList.setLayoutY(baseY);
         canvas.getChildren().add(visualList);
@@ -135,8 +134,9 @@ public class Monitor extends ScrollPane {
     public void createVisualBST(String name) {
         // create visual
         VisualBinarySearchTree visualBST = new VisualBinarySearchTree(name);
+        visualBST.setBasePosition(baseX, 0.0);
         visualBST.setLayoutX(baseX + VisualBinarySearchTree.PADDING);
-        visualBST.setLayoutY(baseY + VisualBinarySearchTree.PADDING);
+        visualBST.setLayoutY(VisualBinarySearchTree.PADDING);
         canvas.getChildren().add(visualBST);
         mapVisual.put(name, visualBST);
     }

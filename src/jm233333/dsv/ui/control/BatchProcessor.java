@@ -14,7 +14,7 @@ import javafx.stage.FileChooser;
 import jm233333.dsv.Director;
 import jm233333.dsv.Global;
 import jm233333.dsv.ui.PanelConsole;
-import jm233333.dsv.util.Pair;
+import jm233333.util.Pair;
 import jm233333.dsv.visualized.VDS;
 import jm233333.dsv.visualized.VDSOptParser;
 

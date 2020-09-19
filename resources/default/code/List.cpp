@@ -31,7 +31,7 @@ private:
 	}
 public:
 	int get(int index) {                       //#/ get
-		return get_node(index)->value;         //#/ get_return
+		return get_node(index)->value;
 	}
 	Node * find(int value) {                   //#/ find
 		Node * p = head;

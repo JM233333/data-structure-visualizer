@@ -1,4 +1,4 @@
-package jm233333.dsv.util;
+package jm233333.util;
 
 public interface Offset4 {
     int[] dx = new int[]{-1, +1, 0, 0};

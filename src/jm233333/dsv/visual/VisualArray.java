@@ -1,9 +1,9 @@
 package jm233333.dsv.visual;
 
-import jm233333.dsv.util.Direction;
-import jm233333.dsv.util.Offset4;
-
 import java.util.*;
+
+import jm233333.util.Direction;
+import jm233333.util.Offset4;
 
 /**
  * The {@code VisualArray} class defines the graphic components of an array that is displayed on the monitor.
@@ -35,8 +35,13 @@ public class VisualArray extends Visual {
     public void addIndexField(String name, int value) {
         VisualIndex indexField = new VisualIndex(name, value);
         VisualArrayNode firstNode = arrayNode.get(0);
-        indexField.setLayoutX(firstNode.getLayoutX() + firstNode.getWidth() * value * Offset4.dx[direction.ordinal()]);
-        indexField.setLayoutY(firstNode.getLayoutY() + firstNode.getHeight() * value * Offset4.dy[direction.ordinal()]);
+        if (direction == Direction.LEFT || direction == Direction.RIGHT) {
+            indexField.setLayoutX(firstNode.getLayoutX() + firstNode.getWidth() * value * Offset4.dx[direction.ordinal()]);
+            indexField.setLayoutY(firstNode.getLayoutY() + firstNode.getHeight());
+        } else {
+            indexField.setLayoutX(firstNode.getLayoutX() + firstNode.getWidth());
+            indexField.setLayoutY(firstNode.getLayoutY() + firstNode.getHeight() * value * Offset4.dy[direction.ordinal()]);
+        }
         mapIndexField.put(name, indexField);
         this.getChildren().add(indexField);
     }

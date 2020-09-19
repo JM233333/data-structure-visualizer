@@ -1,8 +1,9 @@
 package jm233333.dsv.visualized;
 
 import javafx.util.Pair;
+
 import jm233333.dsv.ui.CodeTracker;
-import jm233333.dsv.util.Direction;
+import jm233333.util.Direction;
 
 /**
  * Class {@code VisualizedStack} defines the data structure {@code Stack} for visualizing.

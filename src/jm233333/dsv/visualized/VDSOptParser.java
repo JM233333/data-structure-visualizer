@@ -3,7 +3,7 @@ package jm233333.dsv.visualized;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import jm233333.dsv.util.Pair;
+import jm233333.util.Pair;
 
 public class VDSOptParser {
 

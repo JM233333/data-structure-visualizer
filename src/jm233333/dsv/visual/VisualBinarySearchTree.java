@@ -1,10 +1,11 @@
 package jm233333.dsv.visual;
 
-import javafx.scene.Node;
-import jm233333.dsv.Director;
-import jm233333.dsv.util.Pair;
-
 import java.util.HashMap;
+
+import javafx.scene.Node;
+
+import jm233333.dsv.Director;
+import jm233333.util.Pair;
 
 /**
  * The {@code VisualBinarySearchTree} class defines the graphic components of a binary search tree that is displayed on the monitor.
@@ -120,7 +121,7 @@ public class VisualBinarySearchTree extends Visual {
         for (Node child : this.getChildren()) {
             minX = Math.min(minX, child.getLayoutX());
         }
-        this.setLayoutX(PADDING - minX);
+        this.setLayoutX(getBaseX() + PADDING - minX);
     }
     private void reconstruct() {
         Director.getInstance().addEmptyTimeline();
@@ -182,6 +183,26 @@ public class VisualBinarySearchTree extends Visual {
             tracedNode.setColorScheme(ColorScheme.DEFAULT);
         }
         tracedNode = tracedNode.getRight();
+    }
+    public void traceBack() {
+        if (tracedNode == null) {
+            return;
+        }
+        if (tracedNode.getParentNode() != null) {
+            VisualPointer<VisualBinaryTreeNode> pointerToChild;
+            if (tracedNode.getValue() < tracedNode.getParentNode().getValue()) {
+                pointerToChild = tracedNode.getPointerToLeft();
+            } else {
+                pointerToChild = tracedNode.getPointerToRight();
+            }
+            pointerToChild.setColorScheme(ColorScheme.HIGHLIGHT);
+            tracedNode.getParentNode().setColorScheme(ColorScheme.HIGHLIGHT, true);
+            tracedNode.setColorScheme(ColorScheme.DEFAULT);
+            pointerToChild.setColorScheme(ColorScheme.DEFAULT, true);
+        } else {
+            tracedNode.setColorScheme(ColorScheme.DEFAULT);
+        }
+        tracedNode = tracedNode.getParentNode();
     }
     public void traceClear() {
         if (tracedNode != null) {

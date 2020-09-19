@@ -1,4 +1,4 @@
-package jm233333.dsv.util;
+package jm233333.util;
 
 /**
  * Class {@code Pair} implements a container for a pair of (different types of) members.

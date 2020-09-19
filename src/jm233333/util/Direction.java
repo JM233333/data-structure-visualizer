@@ -1,4 +1,4 @@
-package jm233333.dsv.util;
+package jm233333.util;
 
 public enum Direction {
     LEFT,

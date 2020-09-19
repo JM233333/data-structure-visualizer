@@ -34,7 +34,13 @@ public:
 		return find_max_of(root);
 	}
 	void traverse_pre_order() {                //#/ traversePreOrder
-		dfs_pre_order(root);                   //#/ traversePreOrder_call
+		dfs_pre_order(root);
+	}
+	void traverse_in_order() {                 //#/ traverseInOrder
+		dfs_in_order(root);
+	}
+	void traverse_post_order() {               //#/ traversePostOrder
+		dfs_post_order(root);
 	}
 private:
 	Node * find_node(Node * & p, int value) {  //#/ findNode
@@ -63,7 +69,7 @@ private:
 		} else {
 			insert_node(p->right, value);      //#/ insertNode_recR
 		}
-	}
+	}                                          //#/ insertNode_end
 	void erase_node(Node * & p, int value) {   //#/ eraseNode
 		if (p == nullptr) {
 			return;
@@ -71,9 +77,9 @@ private:
 		if (value == p->value) {               //#/ eraseNode_ifEql
 			if (p->left != nullptr
 				 && p->right != nullptr) {
-				Node * np = find_max(p->left); //#/ eraseNode_findMax
+				Node * np = find_max(p->left);
 				int t = np->value;
-				erase_node(p->left, t);        //#/ eraseNode_subp
+				erase_node(p->left, t);
 				p->value = t;
 			} else {
 				Node * q = p;                  //#/ eraseNode_preDel
@@ -91,7 +97,7 @@ private:
 		} else {
 			erase_node(p->right, value);       //#/ eraseNode_recR
 		}
-	}
+	}                                          //#/ eraseNode_end
 	Node * find_max_of(Node * p) {             //#/ findMaxOf
 		if (p == nullptr) {
 			return nullptr;
@@ -105,25 +111,25 @@ private:
 		if (p == nullptr) {
 			return;
 		}
-		visit(p);                              //#/ dfsPreOrder_visit
-		dfs_pre_order(p->left);                //#/ dfsPreOrder_recL
-		dfs_pre_order(p->right);               //#/ dfsPreOrder_recR
+		visit(p);                              //#/ dfsPreOrder_main_begin
+		dfs_pre_order(p->left);
+		dfs_pre_order(p->right);
 	}
 	void dfs_in_order(Node * p) {              //#/ dfsInOrder
 		if (p == nullptr) {
 			return;
 		}
-		dfs_in_order(p->left);                 //#/ dfsInOrder_recL
-		visit(p);                              //#/ dfsInOrder_visit
-		dfs_in_order(p->right);                //#/ dfsInOrder_recR
+		dfs_in_order(p->left);                 //#/ dfsInOrder_main_begin
+		visit(p);
+		dfs_in_order(p->right);
 	}
 	void dfs_post_order(Node * p) {            //#/ dfsPostOrder
 		if (p == nullptr) {
 			return;
 		}
-		dfs_post_order(p->left);               //#/ dfsPostOrder_recL
-		dfs_post_order(p->right);              //#/ dfsPostOrder_recR
-		visit(p);                              //#/ dfsPostOrder_visit
+		dfs_post_order(p->left);               //#/ dfsPostOrder_main_begin
+		dfs_post_order(p->right);
+		visit(p);
 	}
 	void visit(Node * p) {
 		printf("Node(%d)\n", p->value);

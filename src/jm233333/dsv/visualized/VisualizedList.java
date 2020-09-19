@@ -56,7 +56,6 @@ public class VisualizedList extends VDS {
         trackMethodCall("getNode");
         Node p = getNode(index);
         trackMethodReturn();
-        trackCodeEntrance(getCurrentMethod() + "_return");
         if (p == null) {
             outputMessageError("Out of bound.");
             return 0;
@@ -114,6 +113,7 @@ public class VisualizedList extends VDS {
             trackMethodCall("pushFront");
             pushFront(value);
             trackMethodReturn();
+            trackCodeEntrance(CodeTracker.NEXT_LINE);
             return;
         }
         trackCodeEntrance(getCurrentMethod() + "_getNode");
@@ -121,7 +121,6 @@ public class VisualizedList extends VDS {
         trackMethodCall("getNode");
         Node prv = getNode(index - 1);
         trackMethodReturn();
-        trackCodeEntrance(getCurrentMethod() + "_getNode");
         // check validity
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         if (prv == null) {
@@ -174,6 +173,7 @@ public class VisualizedList extends VDS {
             trackMethodCall("popFront");
             popFront();
             trackMethodReturn();
+            trackCodeEntrance(CodeTracker.NEXT_LINE);
             return;
         }
         trackCodeEntrance(getCurrentMethod() + "_getNode");
@@ -181,7 +181,6 @@ public class VisualizedList extends VDS {
         trackMethodCall("getNode");
         Node prv = getNode(index - 1);
         trackMethodReturn();
-        trackCodeEntrance(getCurrentMethod() + "_getNode");
         // check validity
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         trackCodeEntrance(CodeTracker.NEXT_LINE);

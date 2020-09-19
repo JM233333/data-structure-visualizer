@@ -28,9 +28,6 @@ public class VisualInvocationStack extends Visual {
             arrayFrames.add(frame);
             this.getChildren().add(frame);
         }
-        // initialize visual index top
-//        visualIndexTop = new VisualIndex("top", 0);
-//        this.getChildren().add(visualIndexTop);
     }
 
     public void callMethod(String methodName) {

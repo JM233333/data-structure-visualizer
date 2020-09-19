@@ -1,6 +1,6 @@
 English | [简体中文](./README.cn.md)
 
-# DataStructureVisualizer
+# Data Structure Visualizer
 
 ![license_gpl](https://img.shields.io/badge/License-GPL-green)
 
@@ -12,7 +12,7 @@ English | [简体中文](./README.cn.md)
 
 ### Overview
 
-**DataStructureVisualizer** is a PC desktop application that provides visualization and interaction of algorithms and data structures, and supports programmers (even newbies) to simply extend it.
+**Data Structure Visualizer** is a PC desktop application that provides visualization and interaction of algorithms and data structures, and supports programmers (even newbies) to simply extend it.
 
 *This application provides a **step-by-step animation demonstration** and a matching **code tracking** , which facilitate users to intuitively understand the various operations performed on the data structure.*
 
@@ -91,7 +91,7 @@ If the build is successful, you will see the prompt `BUILD SUCCESSFUL` in the co
 ```
 custom/
 lib/
-DataStructureVisualizer.jar
+data-structure-visualizer.jar
 ```
 
 Run the `.jar` file directly to launch the application.
@@ -108,7 +108,8 @@ In addition, because the `.iml` configuration file used by IDEA is retained in t
 
 Start the visualization (please refer to the tutorial document for how-to-startup) , you will see the following GUI:
 
-![design/sample-gui.jpg](https://github.com/JM233333/DataStructureVisualizer/blob/master/design/sample-gui.jpg)
+![design/sample-gui.jpg](https://github.com/JM233333/data-structure-visualizer/blob/master/design/sample-gui.jpg)
+![design/sample-gui.jpg](design/sample-gui.jpg)
 
 The **Menu** at the top of the GUI is used to switch the VDS or return to the main menu.
 
@@ -178,13 +179,15 @@ Until 2020.3.23, I have not found any bug in the latest released version.
 | 2020.9.17  | Update : Supports fast-build for batch-processing. |
 | 2020.9.18  | Update : Implements {traverseXxxOrder()} of VisualizedBST. |
 |            | Fix BUG : Mistake in method {erase(value)} of VisualizedBST. |
-| 2020.9.19  | Update : Optimizes viewpoint-rolling in code-tracking. |
-|            |  |
+| 2020.9.19  | Update : Optimizes code-tracking. |
+|            | Update : Implements method-invocation-stack for VDS. |
 
 ## Todo List
 
 Things planned to do in the near future:
 
-- Update : Implements method-invocation-stack for VDS.
+- Fix BUG : Mistake of reconstructing process of VisualizedBST.
+
+- Refactors the implementation of MethodTrigger.
 
 - Update : Supports global visual pointers for VDS.

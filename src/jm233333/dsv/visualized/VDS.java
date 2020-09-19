@@ -9,8 +9,8 @@ import javafx.util.Pair;
 import jm233333.dsv.Director;
 import jm233333.dsv.ui.CodeTracker;
 import jm233333.dsv.ui.Monitor;
-import jm233333.dsv.util.Direction;
 import jm233333.dsv.visual.*;
+import jm233333.util.Direction;
 
 /**
  * Abstract class {@code VDS} provides common properties for all types of VDSs (VDS is the abbreviation of Visualized Data Structure or Algorithm).
@@ -160,25 +160,26 @@ public abstract class VDS {
     }
 
     /**
-     * Instruct the associated {@link CodeTracker} to track into the method of the specified name.
-     * Calls {@link CodeTracker#setCurrentMethod(String)}.
+     * Instruct the associated {@link CodeTracker} to call a method (e.g. change the current method).
+     * Calls {@link CodeTracker#callMethod(String)}.
      *
      * @param methodName name of the method to go
      */
     public void trackMethodCall(String methodName) {
+        codeTracker.cacheCallLineIndex();
         trackCodeEntrance(methodName);
         monitor.getVisualInvocationStack().callMethod(methodName);
-        codeTracker.setCurrentMethod(monitor.getVisualInvocationStack().getCurrentMethod());
+        codeTracker.callMethod(monitor.getVisualInvocationStack().getCurrentMethod());
         trackCodeEntrance(CodeTracker.NEXT_LINE, false);
     }
 
     /**
-     * Instruct the associated {@link CodeTracker} to track into the method of the specified name.
-     * Calls {@link CodeTracker#setCurrentMethod(String)}.
+     * Instruct the associated {@link CodeTracker} to return from the current method.
+     * Calls {@link CodeTracker#returnMethod()}.
      */
     public void trackMethodReturn() {
         monitor.getVisualInvocationStack().returnMethod();
-        codeTracker.setCurrentMethod(monitor.getVisualInvocationStack().getCurrentMethod());
+        codeTracker.returnMethod();
     }
 
     // ============================================================

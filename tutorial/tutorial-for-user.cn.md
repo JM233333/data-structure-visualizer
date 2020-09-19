@@ -1,6 +1,6 @@
 [English](./tutorial-for-user.md) | 简体中文
 
-# DataStuctureVisualizer 用户教程
+# Data Stucture Visualizer 用户教程
 
 *Authored by JM233333*
 
@@ -8,7 +8,7 @@
 
 ## 快速上手
 
-跟随下面的极简步骤，立即开始体验 DataStuctureVisualizer 为您提供的演示功能。
+跟随下面的极简步骤，立即开始体验 Data Stucture Visualizer 为您提供的演示功能。
 
 - 直接运行 `.jar` 或 `.exe` 文件，启动应用程序。
 

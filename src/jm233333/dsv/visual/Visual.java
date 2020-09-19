@@ -9,6 +9,7 @@ import javafx.scene.Group;
 public class Visual extends Group {
 
     private String name;
+    private double baseX, baseY;
 
     /**
      * Creates a {@code Visual} with an empty name.
@@ -24,6 +25,8 @@ public class Visual extends Group {
      */
     Visual(String name) {
         this.name = name;
+        this.baseX = 0;
+        this.baseY = 0;
         this.getStyleClass().add("visual");
         this.initializeCSS();
     }
@@ -39,4 +42,22 @@ public class Visual extends Group {
     public final String getName() {
         return name;
     }
+
+    public void setBasePosition(double baseX, double baseY) {
+        setBaseX(baseX);
+        setBaseY(baseY);
+    }
+    public void setBaseX(double baseX) {
+        this.baseX = baseX;
+    }
+    public void setBaseY(double baseY) {
+        this.baseY = baseY;
+    }
+    public final double getBaseX() {
+        return baseX;
+    }
+    public final double getBaseY() {
+        return baseY;
+    }
+
 }

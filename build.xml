@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
  
-<project name="DataStructureVisualizer" default="all" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
+<project name="data-structure-visualizer" default="all" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
 
   <property environment="env"/>
 
-  <property name="app.name" value="DataStructureVisualizer"/>
+  <property name="app.name" value="data-structure-visualizer"/>
   <property name="app.author" value="JM233333"/>
   <property name="app.version" value="1.0"/>
 

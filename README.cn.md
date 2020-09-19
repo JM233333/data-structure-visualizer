@@ -1,6 +1,6 @@
 [English](./README.md) | 简体中文
 
-# DataStructureVisualizer
+# Data Structure Visualizer
 
 ![license_gpl](https://img.shields.io/badge/License-GPL-green)
 
@@ -12,7 +12,7 @@
 
 ### 概述
 
-**DataStructureVisualizer** 是一个 PC 端桌面应用程序，它向用户提供算法数据结构的可视化展示及交互操作，并支持程序员（即便只是新手）对其进行简单的扩展。
+**Data Structure Visualizer** 是一个 PC 端桌面应用程序，它向用户提供算法数据结构的可视化展示及交互操作，并支持程序员（即便只是新手）对其进行简单的扩展。
 
 该应用提供了**可单步执行的动画演示**和与之配套的**代码跟踪**，方便用户直观地理解对数据结构执行的各种操作。
 
@@ -91,7 +91,7 @@ ant all
 ```
 custom/
 lib/
-DataStructureVisualizer.jar
+data-structure-visualizer.jar
 ```
 
 直接运行 `.jar` 文件即可启动应用程序。
@@ -108,7 +108,7 @@ DataStructureVisualizer.jar
 
 启动可视化演示后（启动方式请参照教程文档），你就会看到如下 GUI ：
 
-![design/sample-gui.jpg](https://github.com/JM233333/DataStructureVisualizer/blob/master/design/sample-gui.jpg)
+![design/sample-gui.jpg](https://github.com/JM233333/data-structure-visualizer/blob/master/design/sample-gui.jpg)
 
 界面上方的 **菜单** 用于切换应用程序所演示的数据结构，或是返回主菜单。
 

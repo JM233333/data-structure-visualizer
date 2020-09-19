@@ -1,5 +1,9 @@
 package jm233333.dsv.ui;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Stack;
+
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
@@ -10,11 +14,7 @@ import javafx.scene.text.TextFlow;
 
 import jm233333.dsv.Director;
 import jm233333.dsv.io.ResourceReader;
-import jm233333.dsv.util.Pair;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Stack;
+import jm233333.util.Pair;
 
 /**
  * Class {@code CodeTracker} is responsible for tracking the invoked method code of the visualized data structure.
@@ -40,6 +40,7 @@ public class CodeTracker extends ScrollPane {
     private HashMap<String, Integer> mapEntrance = new HashMap<>();
     private int currentLineIndex = -1;
     private Stack<Pair<String, Integer>> stackInvocation = new Stack<>();
+    private int cachedCallLineIndex = -1;
 
     /**
      * Creates a {@code CodeTracker}.
@@ -93,16 +94,30 @@ public class CodeTracker extends ScrollPane {
     }
 
     /**
-     * Tracks into the method of the specified name.
-     *
-     * @param nMethod name of the method to go
+     * Caches the line index while calling the latest method.
      */
-    public void setCurrentMethod(String nMethod) {
-        if (nMethod != null && mapEntrance.get(nMethod) == null) {
-            System.err.println("Error : Undefined method " + nMethod + " (in code tracker).");
+    public void cacheCallLineIndex() {
+        cachedCallLineIndex = currentLineIndex;
+    }
+    /**
+     * Calls a method (e.g. changes the current method).
+     *
+     * @param nameMethod name of the called method
+     */
+    public void callMethod(String nameMethod) {
+        if (nameMethod != null && mapEntrance.get(nameMethod) == null) {
+            System.err.println("Error : Undefined method " + nameMethod + " (in code tracker).");
             return;
         }
-        stackInvocation.push(new Pair<>(nMethod, -1));
+        stackInvocation.push(new Pair<>(nameMethod, cachedCallLineIndex));
+        cachedCallLineIndex = -1;
+    }
+    /**
+     * Returns from the current method.
+     */
+    public void returnMethod() {
+        setCurrentLineIndex(stackInvocation.peek().second);
+        stackInvocation.pop();
     }
 
     /**
@@ -112,6 +127,9 @@ public class CodeTracker extends ScrollPane {
      */
     public String getCurrentMethod() {
         return (stackInvocation.isEmpty() ? null : stackInvocation.peek().first);
+    }
+    public int getLastCallEntrance() {
+        return (stackInvocation.isEmpty() ? -1 : stackInvocation.peek().second);
     }
 
     /**
@@ -140,7 +158,7 @@ public class CodeTracker extends ScrollPane {
      *
      * @param index the specified line index
      */
-    private void setCurrentLineIndex(int index) {
+    public void setCurrentLineIndex(int index) {
         if (currentLineIndex != index) {
             // set line index
             final Text prvCurrentLine = getCurrentLine();
@@ -159,20 +177,17 @@ public class CodeTracker extends ScrollPane {
                 }
             });
             // adjust viewport
-            double virtualCurHeight = getLine(Math.max(0, index - 7)).getLayoutY();
-            double virtualMaxHeight = getLine(codeBoard.getChildren().size() - 1).getLayoutY() - this.heightProperty().getValue();
-            double nVvalue = Math.min(1.0, Math.max(0.0, virtualCurHeight / virtualMaxHeight));
-            Director.getInstance().updateAnimation(0.5, this.vvalueProperty(), Math.min(1.0, Math.max(0.0, nVvalue)));
+            if (index != -1) {
+                double virtualCurHeight = getLine(Math.max(0, index - 7)).getLayoutY();
+                double virtualMaxHeight = getLine(codeBoard.getChildren().size() - 1).getLayoutY() - this.heightProperty().getValue();
+                double nVvalue = Math.min(1.0, Math.max(0.0, virtualCurHeight / virtualMaxHeight));
+                Director.getInstance().updateAnimation(0.5, this.vvalueProperty(), Math.min(1.0, Math.max(0.0, nVvalue)));
+            }
             // delay
             Director.getInstance().createDelayInvocation(0.5, null);
         }
     }
 
-    /**
-     * Gets the current tracked line index.
-     *
-     * @return the current tracked line index
-     */
     public int getCurrentLineIndex() {
         return currentLineIndex;
     }
