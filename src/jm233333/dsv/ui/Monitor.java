@@ -9,6 +9,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
+import jm233333.dsv.util.Direction;
 import jm233333.dsv.visual.*;
 
 /**
@@ -38,6 +39,9 @@ public class Monitor extends ScrollPane {
      */
     private HashMap<String, String> mapIndexFieldConnection;
 
+    private VisualInvocationStack visualInvocationStack;
+    private double baseX, baseY;
+
     /**
      * Creates a {@code Monitor}.
      */
@@ -52,6 +56,18 @@ public class Monitor extends ScrollPane {
         // initialize data
         mapVisual = new HashMap<>();
         mapIndexFieldConnection = new HashMap<>();
+        // initialize visual invocation stack
+        visualInvocationStack = new VisualInvocationStack(VisualInvocationStack.BUILTIN_NAME, 7);
+        visualInvocationStack.setLayoutX(48);
+        visualInvocationStack.setLayoutY(48);
+        canvas.getChildren().add(visualInvocationStack);
+        // set base xy
+        baseX = visualInvocationStack.getLayoutX() + visualInvocationStack.getWidth() + 48;
+        baseY = visualInvocationStack.getLayoutY();
+    }
+
+    public VisualInvocationStack getVisualInvocationStack() {
+        return visualInvocationStack;
     }
 
     /**
@@ -59,7 +75,7 @@ public class Monitor extends ScrollPane {
      *
      * @param name name of the visual component
      */
-    public final Visual getVisual(String name) {
+    public Visual getVisual(String name) {
         return mapVisual.get(name);
     }
 
@@ -80,10 +96,10 @@ public class Monitor extends ScrollPane {
      * @param name name of the visual array
      * @param n length of the visual array
      */
-    public void createVisualArray(String name, int n) {
-        VisualArray visualArray = new VisualArray(name, n);
-        visualArray.setLayoutX(64);
-        visualArray.setLayoutY(64);
+    public void createVisualArray(String name, Direction direction, int n) {
+        VisualArray visualArray = new VisualArray(name, direction, n);
+        visualArray.setLayoutX(baseX);
+        visualArray.setLayoutY(baseY);
         canvas.getChildren().add(visualArray);
         mapVisual.put(name, visualArray);
     }
@@ -105,8 +121,8 @@ public class Monitor extends ScrollPane {
      */
     public void createVisualList(String name) {
         VisualList visualList = new VisualList(name);
-        visualList.setLayoutX(64);
-        visualList.setLayoutY(64);
+        visualList.setLayoutX(baseX);
+        visualList.setLayoutY(baseY);
         canvas.getChildren().add(visualList);
         mapVisual.put(name, visualList);
     }
@@ -119,23 +135,9 @@ public class Monitor extends ScrollPane {
     public void createVisualBST(String name) {
         // create visual
         VisualBinarySearchTree visualBST = new VisualBinarySearchTree(name);
-        visualBST.setLayoutX(VisualBinarySearchTree.PADDING);
-        visualBST.setLayoutY(VisualBinarySearchTree.PADDING);
+        visualBST.setLayoutX(baseX + VisualBinarySearchTree.PADDING);
+        visualBST.setLayoutY(baseY + VisualBinarySearchTree.PADDING);
         canvas.getChildren().add(visualBST);
         mapVisual.put(name, visualBST);
-    }
-
-
-    /**
-     * Creates a {@link VisualInvocationStack} in the {@code Monitor}.
-     */
-    public void createVisualInvocationStack() {
-        if (!mapVisual.containsKey(VisualInvocationStack.BUILTIN_NAME)) {
-            VisualInvocationStack visualInvocationStack = new VisualInvocationStack(VisualInvocationStack.BUILTIN_NAME, 7);
-            visualInvocationStack.setLayoutX(this.getWidth() - 128);
-            visualInvocationStack.setLayoutY(64);
-            canvas.getChildren().add(visualInvocationStack);
-            mapVisual.put(VisualInvocationStack.BUILTIN_NAME, visualInvocationStack);
-        }
     }
 }

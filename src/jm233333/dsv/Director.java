@@ -106,13 +106,13 @@ public class Director {
      * Creates a delay (e.g. a new empty {@link Timeline} with a duration) into {@link Director#animationWaitingList}.
      * Factually calls {@link Director#addEmptyTimeline}.
      *
-     * @param delay the duration of the delay (in milliseconds)
+     * @param timeScaleRate the rate of the delay duration (will be multiplied by {@link Director#animationRate})
      * @param eventHandler the event triggered after the delay
      */
-    public void createDelayInvocation(double delay, final EventHandler<ActionEvent> eventHandler) {
+    public void createDelayInvocation(double timeScaleRate, final EventHandler<ActionEvent> eventHandler) {
         addEmptyTimeline();
         Timeline timeline = getLastTimeline();
-        KeyFrame keyFrame = new KeyFrame(Duration.millis(delay), eventHandler);
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(getAnimationRate() * timeScaleRate), eventHandler);
         timeline.getKeyFrames().add(keyFrame);
     }
     /**
@@ -191,7 +191,7 @@ public class Director {
                     animationPlayingList.get(index + 1).play();
                     animationCurrentIndex = index + 1;
                     animationPlayingProperty().setValue(true);
-                    if (isSingleStep() && stepPointSet.contains(index)) {
+                    if (isSingleStep() && index != 0 && stepPointSet.contains(index)) {
                         pauseAnimation();
                     }
                 } else {

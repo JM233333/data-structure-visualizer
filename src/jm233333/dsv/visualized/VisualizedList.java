@@ -22,7 +22,7 @@ public class VisualizedList extends VDS {
     private Node head = null;
 
     public VisualizedList() {
-        super();
+        super("List");
     }
 
     @Override
@@ -53,9 +53,9 @@ public class VisualizedList extends VDS {
     }
 
     public int get(int index) {
-        trackCodeMethodBeginning("getNode");
+        trackMethodCall("getNode");
         Node p = getNode(index);
-        trackMethodCall("get");
+        trackMethodReturn();
         trackCodeEntrance(getCurrentMethod() + "_return");
         if (p == null) {
             outputMessageError("Out of bound.");
@@ -111,15 +111,16 @@ public class VisualizedList extends VDS {
         // special judge
         if (index <= 0) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
-            trackCodeMethodBeginning("pushFront");
+            trackMethodCall("pushFront");
             pushFront(value);
+            trackMethodReturn();
             return;
         }
         trackCodeEntrance(getCurrentMethod() + "_getNode");
         // get position
-        trackCodeMethodBeginning("getNode");
+        trackMethodCall("getNode");
         Node prv = getNode(index - 1);
-        trackMethodCall("insert");
+        trackMethodReturn();
         trackCodeEntrance(getCurrentMethod() + "_getNode");
         // check validity
         trackCodeEntrance(CodeTracker.NEXT_LINE);
@@ -170,15 +171,16 @@ public class VisualizedList extends VDS {
         // special judge
         if (index <= 0) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
-            trackCodeMethodBeginning("popFront");
+            trackMethodCall("popFront");
             popFront();
+            trackMethodReturn();
             return;
         }
         trackCodeEntrance(getCurrentMethod() + "_getNode");
         // get position
-        trackCodeMethodBeginning("getNode");
+        trackMethodCall("getNode");
         Node prv = getNode(index - 1);
-        trackMethodCall("erase");
+        trackMethodReturn();
         trackCodeEntrance(getCurrentMethod() + "_getNode");
         // check validity
         trackCodeEntrance(CodeTracker.NEXT_LINE);

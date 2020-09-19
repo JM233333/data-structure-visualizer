@@ -10,9 +10,11 @@ import javafx.scene.text.TextFlow;
 
 import jm233333.dsv.Director;
 import jm233333.dsv.io.ResourceReader;
+import jm233333.dsv.util.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Stack;
 
 /**
  * Class {@code CodeTracker} is responsible for tracking the invoked method code of the visualized data structure.
@@ -35,9 +37,9 @@ public class CodeTracker extends ScrollPane {
     private TextFlow codeBoard;
     private Polygon currentLineSymbol;
 
-    private HashMap<String, Integer> mapEntrance;
-    private String currentMethod;
-    private int currentLineIndex;
+    private HashMap<String, Integer> mapEntrance = new HashMap<>();
+    private int currentLineIndex = -1;
+    private Stack<Pair<String, Integer>> stackInvocation = new Stack<>();
 
     /**
      * Creates a {@code CodeTracker}.
@@ -58,10 +60,6 @@ public class CodeTracker extends ScrollPane {
         currentLineSymbol.setFill(Color.ORANGE);
         currentLineSymbol.setLayoutX(8);
         contentRoot.getChildren().add(currentLineSymbol);
-        // initialize data
-        mapEntrance = new HashMap<>();
-        currentMethod = "";
-        currentLineIndex = -1;
     }
 
     /**
@@ -100,14 +98,11 @@ public class CodeTracker extends ScrollPane {
      * @param nMethod name of the method to go
      */
     public void setCurrentMethod(String nMethod) {
-        //
-        if (mapEntrance.get(nMethod) == null) {
-            System.err.println("Code Tracking Error for Method Tag " + nMethod);
+        if (nMethod != null && mapEntrance.get(nMethod) == null) {
+            System.err.println("Error : Undefined method " + nMethod + " (in code tracker).");
             return;
         }
-        int nLineIndex = mapEntrance.get(nMethod);
-        //
-        currentMethod = nMethod;
+        stackInvocation.push(new Pair<>(nMethod, -1));
     }
 
     /**
@@ -116,7 +111,7 @@ public class CodeTracker extends ScrollPane {
      * @return name of the method currently tracked in
      */
     public String getCurrentMethod() {
-        return currentMethod;
+        return (stackInvocation.isEmpty() ? null : stackInvocation.peek().first);
     }
 
     /**
@@ -152,7 +147,7 @@ public class CodeTracker extends ScrollPane {
             currentLineIndex = index;
             final Text newCurrentLine = getCurrentLine();
             double ny = (newCurrentLine == null ? 8 : newCurrentLine.getLayoutY() + 4);
-            Director.getInstance().createAnimation(1.0, currentLineSymbol.layoutYProperty(), ny);
+            Director.getInstance().createAnimation(0.5, currentLineSymbol.layoutYProperty(), ny);
             Director.getInstance().getLastTimeline().setOnFinished((event) -> {
                 if (prvCurrentLine != null) {
                     prvCurrentLine.setFill(Color.BLACK);
@@ -167,7 +162,9 @@ public class CodeTracker extends ScrollPane {
             double virtualCurHeight = getLine(Math.max(0, index - 7)).getLayoutY();
             double virtualMaxHeight = getLine(codeBoard.getChildren().size() - 1).getLayoutY() - this.heightProperty().getValue();
             double nVvalue = Math.min(1.0, Math.max(0.0, virtualCurHeight / virtualMaxHeight));
-            Director.getInstance().updateAnimation(1.0, this.vvalueProperty(), Math.min(1.0, Math.max(0.0, nVvalue)));
+            Director.getInstance().updateAnimation(0.5, this.vvalueProperty(), Math.min(1.0, Math.max(0.0, nVvalue)));
+            // delay
+            Director.getInstance().createDelayInvocation(0.5, null);
         }
     }
 

@@ -94,7 +94,7 @@ public class SceneLoading extends Scene {
         wait.play();
         // load resources
         Director.getInstance().addEmptyTimeline();
-        Director.getInstance().createDelayInvocation(1000, (event) -> {
+        Director.getInstance().createDelayInvocation(2.0, (event) -> {
             ResourceReader.getInstance().getCustomResources();
         });
         Director.getInstance().playAnimation();

@@ -9,9 +9,8 @@ import javafx.util.Pair;
 import jm233333.dsv.Director;
 import jm233333.dsv.ui.CodeTracker;
 import jm233333.dsv.ui.Monitor;
+import jm233333.dsv.util.Direction;
 import jm233333.dsv.visual.*;
-
-import java.util.Stack;
 
 /**
  * Abstract class {@code VDS} provides common properties for all types of VDSs (VDS is the abbreviation of Visualized Data Structure or Algorithm).
@@ -23,7 +22,6 @@ import java.util.Stack;
 public abstract class VDS {
 
     private String name = "";
-    private Stack<String> invocationStack = new Stack<>();
 
     private Mode mode = null;
 
@@ -42,8 +40,6 @@ public abstract class VDS {
     public VDS() {
         //mapAssociatedArray = new HashMap<>();
     }*/
-
-    public VDS() {}
 
     /**
      * Creates a {@code VDS} with a specific name.
@@ -131,6 +127,15 @@ public abstract class VDS {
     // ============================================================
 
     /**
+     * Gets the name of the method that the the associated {@link CodeTracker} is currently tracking in.
+     *
+     * @return name of the method that the the associated code tracker is currently tracking in
+     */
+    public final String getCurrentMethod() {
+        return codeTracker.getCurrentMethod();
+    }
+
+    /**
      * Instruct the associated {@link CodeTracker} to track into the line of the specified entrance name in the current method,
      * and set a step point into the animation waiting list of {@link Director}.
      * Factually calls {@link VDS#trackCodeEntrance(String, boolean)} with parameters ({@code name}, {@code true}).
@@ -158,11 +163,13 @@ public abstract class VDS {
      * Instruct the associated {@link CodeTracker} to track into the method of the specified name.
      * Calls {@link CodeTracker#setCurrentMethod(String)}.
      *
-     * @param name name of the method to go
+     * @param methodName name of the method to go
      */
-    public void trackMethodCall(String name) {
-        invocationStack.push(name);
-        codeTracker.setCurrentMethod(name);
+    public void trackMethodCall(String methodName) {
+        trackCodeEntrance(methodName);
+        monitor.getVisualInvocationStack().callMethod(methodName);
+        codeTracker.setCurrentMethod(monitor.getVisualInvocationStack().getCurrentMethod());
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
     }
 
     /**
@@ -170,32 +177,8 @@ public abstract class VDS {
      * Calls {@link CodeTracker#setCurrentMethod(String)}.
      */
     public void trackMethodReturn() {
-        invocationStack.pop();
-//        codeTracker.setCurrentMethod(name);
-    }
-
-    /**
-     * Gets the name of the method that the the associated {@link CodeTracker} is currently tracking in.
-     *
-     * @return name of the method that the the associated code tracker is currently tracking in
-     */
-    public final String getCurrentMethod() {
-        return codeTracker.getCurrentMethod();
-    }
-
-    /**
-     * Instruct the associated {@link CodeTracker} to track into the method of the specified name and then track to its beginning line.
-     * Calls {@link VDS#trackMethodCall(String)} and {@link VDS#trackCodeEntrance(String, boolean)}.
-     *
-     * @param name name of the method to go
-     */
-    public void trackCodeMethodBeginning(String name) {
-        trackCodeMethodBeginning(name, true);
-    }
-    public void trackCodeMethodBeginning(String name, boolean sync) {
-        trackCodeEntrance(name, sync);
-        trackMethodCall(name);
-        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
+        monitor.getVisualInvocationStack().returnMethod();
+        codeTracker.setCurrentMethod(monitor.getVisualInvocationStack().getCurrentMethod());
     }
 
     // ============================================================
@@ -218,7 +201,7 @@ public abstract class VDS {
             text.setFont(Font.font(fontSize));
         });
         outputBox.getChildren().add(text);
-        Director.getInstance().createAnimation(0.25, text.opacityProperty(), 1.0);
+        Director.getInstance().createAnimation(0.3, text.opacityProperty(), 1.0);
     }
     public void outputMessage(String message, int fontSize, Color fontColor) {
         outputMessage(message, fontSize, fontColor, true);
@@ -252,8 +235,8 @@ public abstract class VDS {
      */
     public abstract void createVisual();
 
-    public void createVisualArray(String name, int n, Pair<String, Integer>... indexFields) {
-        monitor.createVisualArray(name, n);
+    public void createVisualArray(String name, Direction direction, int n, Pair<String, Integer>... indexFields) {
+        monitor.createVisualArray(name, direction, n);
         for (Pair<String, Integer> indexField : indexFields) {
             createVisualIndexField(name, indexField);
         }

@@ -31,13 +31,15 @@ public class VisualizedBinarySearchTree extends VDS {
     private final HashMap<Node, VisualBinaryTreeNode> mapNodes = new HashMap<>();
 
     public VisualizedBinarySearchTree() {
-        super();
+        super("BST");
     }
 
     @Override
     public void createVisual() {
         createVisualBST(getName());
     }
+
+    void trackCodeMethodBeginning(String s) {}
 
     public Node find(int value) {
         if (root != null) {

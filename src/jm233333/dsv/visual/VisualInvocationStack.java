@@ -11,44 +11,44 @@ public class VisualInvocationStack extends Visual {
 
     public static final String BUILTIN_NAME = "__BUILTIN_INVOCATION_STACK";
 
-    private ArrayList<VisualArrayNode> arrayNode = new ArrayList<>();
-    private HashMap<String, VisualIndex> mapIndexField = new HashMap<>();
+    private ArrayList<VisualInvocationStackFrame> arrayFrames;
+    private int top = 0;
+//    private VisualIndex visualIndexTop;
 
     public VisualInvocationStack(String name, int n) {
         // super
         super(name);
         // initialize
         this.getStyleClass().add("visual-array");
-        // initialize nodes
+        // initialize frames
+        arrayFrames = new ArrayList<>();
         for (int i = 0; i < n; i ++) {
-            VisualArrayNode node = new VisualArrayNode();
-            node.setLayoutY(node.getHeight() * i);
-            arrayNode.add(node);
-            this.getChildren().add(node);
+            VisualInvocationStackFrame frame = new VisualInvocationStackFrame();
+            frame.setLayoutY(frame.getHeight() * i);
+            arrayFrames.add(frame);
+            this.getChildren().add(frame);
         }
+        // initialize visual index top
+//        visualIndexTop = new VisualIndex("top", 0);
+//        this.getChildren().add(visualIndexTop);
     }
 
-    public void addIndexField(String name, int value) {
-        VisualIndex indexField = new VisualIndex(name, value);
-        VisualArrayNode firstNode = arrayNode.get(0);
-        indexField.setLayoutX(firstNode.getLayoutX() + firstNode.getWidth() * value);
-        indexField.setLayoutY(firstNode.getLayoutY() + firstNode.getHeight());
-        mapIndexField.put(name, indexField);
-        this.getChildren().add(indexField);
+    public void callMethod(String methodName) {
+        arrayFrames.get(top).setMethodName(methodName);
+        top ++;
+    }
+    public void returnMethod() {
+        top --;
+        arrayFrames.get(top).clear();
+    }
+    public String getCurrentMethod() {
+        return (top == 0 ? null : arrayFrames.get(top - 1).getMethodName());
     }
 
-    public void updateIndexField(String name, int value) {
-        VisualIndex indexField = mapIndexField.get(name);
-        indexField.setValue(value);
+    public double getWidth() {
+        return (arrayFrames.isEmpty() ? 0 : arrayFrames.get(0).getWidth());
     }
-
-    public void updateElement(int index, int value) {
-        VisualArrayNode node = arrayNode.get(index);
-        node.setValue(value);
-    }
-
-    public void eraseElement(int index) {
-        VisualArrayNode node = arrayNode.get(index);
-        node.clear();
+    public double getHeight() {
+        return (arrayFrames.isEmpty() ? 0 : arrayFrames.get(0).getHeight() * arrayFrames.size());
     }
 }

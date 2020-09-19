@@ -2,6 +2,8 @@
 
 # DataStructureVisualizer
 
+![license_gpl](https://img.shields.io/badge/License-GPL-green)
+
 *Authored by JM233333*
 
 *注意：现在的源代码只是一个 DEMO 版本，一些基本功能还存在缺陷，例如并不支持一部分基本数据结构（例如 k 叉树和图）等。*

@@ -128,11 +128,12 @@ public class MethodTrigger extends HBox {
             }
         }
         // invoke method
-        vds.outputMessageInvoke(s.toString());
-        vds.trackCodeMethodBeginning(name, false);
         try {
+            vds.outputMessageInvoke(s.toString());
+            vds.trackMethodCall(name);
             Method method = vds.getClass().getDeclaredMethod(name, parameterTypes);
             method.invoke(vds, arguments.toArray());
+            vds.trackMethodReturn();
 //            Director.getInstance().getLastTimeline().setOnFinished(eventAtLast);
             return true;
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {

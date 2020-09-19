@@ -2,6 +2,7 @@ package jm233333.dsv.visualized;
 
 import javafx.util.Pair;
 import jm233333.dsv.ui.CodeTracker;
+import jm233333.dsv.util.Direction;
 
 /**
  * Class {@code VisualizedStack} defines the data structure {@code Stack} for visualizing.
@@ -17,7 +18,7 @@ public class VisualizedStack extends VDS {
         this(n, ModeStack.TOP_TO_UPON);
     }
     public VisualizedStack(int n, ModeStack mode) {
-        super();
+        super("Stack");
         data = new int[n];
         top = 0;
         this.mode = mode;
@@ -25,7 +26,7 @@ public class VisualizedStack extends VDS {
 
     @Override
     public void createVisual() {
-        createVisualArray(getName(), data.length, new Pair<>("top", 0));
+        createVisualArray(getName(), Direction.RIGHT, data.length, new Pair<>("top", 0));
     }
 
     public void push(int value) {
