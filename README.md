@@ -188,6 +188,8 @@ Things planned to do in the near future:
 
 - Fix BUG : Mistake of reconstructing process of VisualizedBST.
 
+- Fix BUG : Mistake of build functionality of batch-processing.
+
 - Refactors the implementation of MethodTrigger.
 
 - Update : Supports global visual pointers for VDS.
