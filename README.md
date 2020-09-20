@@ -183,12 +183,12 @@ Until 2020.3.23, I have not found any bug in the latest released version.
 |            | Update : Implements method-invocation-stack for VDS. |
 | 2020.9.20  | Fix BUG : Mistake of build functionality of batch-processing. |
 |            | Fix BUG : Mistake of reconstructing process of VisualizedBST. |
+|            | Fix BUG : Mistake of step-by-step mode after batch-building. |
+|            | Fix BUG : Mistake in {traverseXxxOrder()} of VisualizedBST. |
 
 ## Todo List
 
 Things planned to do in the near future:
-
-- Optimizes the animation effect of step-by-step mode.
 
 - Refactors the implementation of MethodTrigger.
 

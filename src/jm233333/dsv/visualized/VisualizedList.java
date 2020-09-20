@@ -1,5 +1,6 @@
 package jm233333.dsv.visualized;
 
+import jm233333.dsv.Global;
 import jm233333.dsv.ui.CodeTracker;
 import jm233333.dsv.visual.ColorScheme;
 import jm233333.dsv.visual.VisualList;
@@ -66,7 +67,7 @@ public class VisualizedList extends VDS {
         if (p == null) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             outputMessageError("Out of bound.");
-            return 0xffffffff;
+            return Global.INFINITY;
         }
         // return
         trackCodeEntrance(getCurrentMethod() + "_return");
@@ -76,25 +77,32 @@ public class VisualizedList extends VDS {
     }
 
     public Node find(int value) {
+        // initialize pointer
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
         Node p = head;
-        int index = 0;
         if (p != null) getVisualList(getName()).setColorScheme(0, ColorScheme.HIGHLIGHT);
+        // loop
         trackCodeEntrance(CodeTracker.NEXT_LINE);
+        int index = 0;
         while (p != null) {
+            // if found
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             if (p.value == value) {
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 getVisualList(getName()).setColorScheme(index, ColorScheme.DEFAULT);
-                outputMessageReturn("true (Node)(value = " + p.value + ")");
+                outputMessageReturn("(Node)(value = " + p.value + ")");
                 return p;
             }
+            // go next
             trackCodeEntrance(getCurrentMethod() + "_if_end");
             p = p.next;
             getVisualList(getName()).setColorScheme(index, ColorScheme.DEFAULT);
             if (p != null) getVisualList(getName()).setColorScheme(index + 1, ColorScheme.HIGHLIGHT, true);
             index ++;
+            // re-loop
             trackCodeEntrance(getCurrentMethod() + "_loop_begin");
         }
+        // return
         trackCodeEntrance(getCurrentMethod() + "_loop_end");
         outputMessageReturn("false");
         return null;
@@ -122,6 +130,7 @@ public class VisualizedList extends VDS {
 
     public void insert(int index, int value) {
         // special judge
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
         if (index <= 0) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             trackMethodCall("pushFront");
@@ -130,8 +139,8 @@ public class VisualizedList extends VDS {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             return;
         }
+        // get prev node
         trackCodeEntrance(getCurrentMethod() + "_getNode");
-        // get position
         trackMethodCall("getNode");
         Node prv = getNode(index - 1);
         trackMethodReturn();
@@ -142,46 +151,52 @@ public class VisualizedList extends VDS {
             outputMessageError("Out of bound.");
             return;
         }
-        trackCodeEntrance(getCurrentMethod() + "_main_begin");
         // create new node
+        trackCodeEntrance(getCurrentMethod() + "_main_begin");
         Node p = new Node(value);
         getVisualList(getName()).setCachedNode(index, value);
+        // insert (st.1)
         trackCodeEntrance(CodeTracker.NEXT_LINE);
-        // insert
         p.next = prv.next;
         if (prv.next != null) {
             getVisualList(getName()).setPointerNext(VisualList.CACHED_NODE, index);
         }
         getVisualList(getName()).moveRestNodes(index, 1);
+        // insert (st.2)
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         prv.next = p;
         getVisualList(getName()).setPointerNext(index - 1, VisualList.CACHED_NODE);
         getVisualList(getName()).insertCachedNode(index);
+        // end
         trackCodeEntrance(CodeTracker.NEXT_LINE);
-        // clear highlight
         getVisualList(getName()).setColorScheme(index - 1, ColorScheme.DEFAULT);
     }
 
     public void popFront() {
-        // special judge
+        // check if empty
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
         if (head == null) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             outputMessageError("Empty list.");
             return;
         }
+        // pop front (st.1)
         trackCodeEntrance(getCurrentMethod() + "_main_begin");
-        // pop front
         getVisualList(getName()).markNode(0);
+        // pop front (st.2)
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         head = head.next;
         getVisualList(getName()).moveRestNodes(1, -1);
+        // delete
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         getVisualList(getName()).eraseMarkedNode();
+        // end
         trackCodeEntrance(CodeTracker.NEXT_LINE);
     }
 
     public void erase(int index) {
         // special judge
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
         if (index <= 0) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             trackMethodCall("popFront");
@@ -190,22 +205,23 @@ public class VisualizedList extends VDS {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             return;
         }
+        // get node
         trackCodeEntrance(getCurrentMethod() + "_getNode");
-        // get position
         trackMethodCall("getNode");
         Node prv = getNode(index - 1);
         trackMethodReturn();
         // check validity
         trackCodeEntrance(CodeTracker.NEXT_LINE);
-        trackCodeEntrance(CodeTracker.NEXT_LINE);
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
         if (prv == null || prv.next == null) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             outputMessageError("Out of bound.");
             return;
         }
+        // erase (st.1)
         trackCodeEntrance(getCurrentMethod() + "_main_begin");
-        // erase
         getVisualList(getName()).markNode(index);
+        // erase (st.2)
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         prv.next = prv.next.next;
         if (prv.next != null) {
@@ -214,10 +230,11 @@ public class VisualizedList extends VDS {
             getVisualList(getName()).setPointerNextToNull(index - 1);
         }
         getVisualList(getName()).moveRestNodes(index + 1, -1);
+        // erase (st.3)
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         getVisualList(getName()).eraseMarkedNode();
+        // end
         trackCodeEntrance(CodeTracker.NEXT_LINE);
-        // clear highlight
         getVisualList(getName()).setColorScheme(index - 1, ColorScheme.DEFAULT);
     }
 }

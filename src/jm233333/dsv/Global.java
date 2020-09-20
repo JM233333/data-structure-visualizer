@@ -14,7 +14,8 @@ public class Global {
 //     * The flag indicating whether the application is running in the jar package.
 //     */
 //    public static final boolean isJar = Main.class.getResource("Main.class").toString().startsWith("jar");
-    public static final boolean isDebug = true;
+    public static final boolean IS_DEBUG = true;
+    public static final int INFINITY = 0xffffffff;
 
     /**
      * Gets the (absolute) root path where the application runs.
@@ -24,7 +25,7 @@ public class Global {
     public static String getRootPath() {
         String pathJar = Main.class.getProtectionDomain().getCodeSource().getLocation().getFile();
         String pathRoot = pathJar.substring(0, pathJar.lastIndexOf('/') + 1);
-        if (isDebug) {
+        if (IS_DEBUG) {
             pathRoot += "../../";
         }
         // debug

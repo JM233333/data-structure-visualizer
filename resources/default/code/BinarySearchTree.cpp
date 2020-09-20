@@ -57,7 +57,7 @@ private:
 		}
 	}
 	void insert_node(Node * & p, int value) {  //#/ insertNode
-		if (p == nullptr) {                    //#/ insertNode_ifIns
+		if (p == nullptr) {
 			p = new Node(value);
 			return;
 		}
@@ -111,25 +111,25 @@ private:
 		if (p == nullptr) {
 			return;
 		}
-		visit(p);                              //#/ dfsPreOrder_main_begin
-		dfs_pre_order(p->left);
-		dfs_pre_order(p->right);
+		visit(p);                              //#/ dfsPreOrder_visit
+		dfs_pre_order(p->left);                //#/ dfsPreOrder_recL
+		dfs_pre_order(p->right);               //#/ dfsPreOrder_recR
 	}
 	void dfs_in_order(Node * p) {              //#/ dfsInOrder
 		if (p == nullptr) {
 			return;
 		}
-		dfs_in_order(p->left);                 //#/ dfsInOrder_main_begin
-		visit(p);
-		dfs_in_order(p->right);
+		dfs_in_order(p->left);                 //#/ dfsInOrder_recL
+		visit(p);                              //#/ dfsInOrder_visit
+		dfs_in_order(p->right);                //#/ dfsInOrder_recR
 	}
 	void dfs_post_order(Node * p) {            //#/ dfsPostOrder
 		if (p == nullptr) {
 			return;
 		}
-		dfs_post_order(p->left);               //#/ dfsPostOrder_main_begin
-		dfs_post_order(p->right);
-		visit(p);
+		dfs_post_order(p->left);               //#/ dfsPostOrder_recL
+		dfs_post_order(p->right);              //#/ dfsPostOrder_recR
+		visit(p);                              //#/ dfsPostOrder_visit
 	}
 	void visit(Node * p) {
 		printf("Node(%d)\n", p->value);

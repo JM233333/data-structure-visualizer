@@ -1,5 +1,6 @@
 package jm233333.dsv.visualized;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import javafx.scene.paint.Color;
@@ -41,16 +42,20 @@ public class VisualizedBinarySearchTree extends VDS {
     }
 
     public Node find(int value) {
+        // find node
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
+        trackMethodCall("findNode");
         if (root != null) {
             getVisualBST(getName()).traceRoot();
         }
-        trackMethodCall("findNode");
         Node res = findNode(root, value);
         trackMethodReturn();
+        getVisualBST(getName()).resetColorOfAll();
         return res;
     }
     private Node findNode(Node p, int value) {
         // check if failed
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
         if (p == null) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             outputMessageReturn("false");
@@ -68,14 +73,16 @@ public class VisualizedBinarySearchTree extends VDS {
         trackCodeEntrance(getCurrentMethod() + "_ifLR");
         Node res;
         if (value < p.value) {
+            // recursion to left-subtree
             trackCodeEntrance(getCurrentMethod() + "_recL");
-            getVisualBST(getName()).traceToLeft();
             trackMethodCall(getCurrentMethod());
+            getVisualBST(getName()).traceToLeft();
             res = findNode(p.left, value);
         } else {
+            // recursion to right-subtree
             trackCodeEntrance(getCurrentMethod() + "_recR");
-            getVisualBST(getName()).traceToRight();
             trackMethodCall(getCurrentMethod());
+            getVisualBST(getName()).traceToRight();
             res = findNode(p.right, value);
         }
         trackMethodReturn();
@@ -83,21 +90,27 @@ public class VisualizedBinarySearchTree extends VDS {
     }
 
     public void insert(int value) {
-        if (root != null) {
-            getVisualBST(getName()).traceRoot();
-        }
+        // insert node
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
         trackMethodCall("insertNode");
         if (root == null) {
+            // check if reached (*always true)
+            trackCodeEntrance(CodeTracker.NEXT_LINE, false);
+            // create node
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             root = new Node(value);
             root.parent = null;
             getVisualBST(getName()).insertNode(value);
+            // return
             trackCodeEntrance(CodeTracker.NEXT_LINE);
+            trackMethodReturn();
         } else {
+            getVisualBST(getName()).traceRoot();
             insertNode(root, value, 0);
+            trackMethodReturn();
+            getVisualBST(getName()).traceBack();
         }
-        trackMethodReturn();
-        getVisualBST(getName()).traceBack();
+        // end
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         getVisualBST(getName()).resetColorOfAll();
     }
@@ -107,7 +120,9 @@ public class VisualizedBinarySearchTree extends VDS {
             outputMessageError("Depth limit exceed.");
             return;
         }
-        // deal with duplication
+        // check if reached (*always false)
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
+        // check if duplicated
         trackCodeEntrance(getCurrentMethod() + "_ifEql");
         if (value == p.value) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
@@ -116,60 +131,65 @@ public class VisualizedBinarySearchTree extends VDS {
         // discussion
         trackCodeEntrance(getCurrentMethod() + "_ifLR");
         if (value < p.value) {
+            // recursion to left-subtree
             trackCodeEntrance(getCurrentMethod() + "_recL");
+            trackMethodCall(getCurrentMethod());
             if (p.left == null) {
-                trackMethodCall(getCurrentMethod());
+                // check if reached (*always true)
+                trackCodeEntrance(CodeTracker.NEXT_LINE, false);
+                // create node
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 p.left = new Node(value);
                 p.left.parent = p;
                 getVisualBST(getName()).insertNode(value);
+                // return
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 trackMethodReturn();
             } else {
                 getVisualBST(getName()).traceToLeft();
-                trackMethodCall(getCurrentMethod());
                 insertNode(p.left, value, curDepth + 1);
                 trackMethodReturn();
                 getVisualBST(getName()).traceBack();
             }
         } else {
+            // recursion to right-subtree
             trackCodeEntrance(getCurrentMethod() + "_recR");
+            trackMethodCall(getCurrentMethod());
             if (p.right == null) {
-                trackMethodCall(getCurrentMethod());
+                // check if reached (*always true)
+                trackCodeEntrance(CodeTracker.NEXT_LINE, false);
+                // create node
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 p.right = new Node(value);
                 p.right.parent = p;
                 getVisualBST(getName()).insertNode(value);
+                // return
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 trackMethodReturn();
             } else {
                 getVisualBST(getName()).traceToRight();
-                trackMethodCall(getCurrentMethod());
                 insertNode(p.right, value, curDepth + 1);
                 trackMethodReturn();
                 getVisualBST(getName()).traceBack();
             }
         }
+        // end
         trackCodeEntrance(getCurrentMethod() + "_end");
     }
 
-    private void cc(Node p) {
-        if (p == null) return;
-        System.out.printf("cc1 p=%d pL=%d pR=%d pF=%d\n",
-                p.value, p.left==null?-1:p.left.value,p.right==null?-1:p.right.value,
-                p.parent==null?-1:p.parent.value);
-        cc(p.left);
-        cc(p.right);
-    }
     public void erase(int value) {
+        // erase node
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
+        trackMethodCall("eraseNode");
         if (root != null) {
             getVisualBST(getName()).traceRoot();
         }
-        trackMethodCall("eraseNode");
         if (root != null && value == root.value) {
+            // check if reached (*always true)
             trackCodeEntrance(getCurrentMethod() + "_ifEql");
+            // discussion
             trackCodeEntrance(CodeTracker.NEXT_LINE);
-            trackCodeEntrance(CodeTracker.NEXT_LINE);
+            trackCodeEntrance(CodeTracker.NEXT_LINE, true);
             if (root.left != null && root.right != null) {
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 Node np = __findMaxOf(root.left);
@@ -204,11 +224,13 @@ public class VisualizedBinarySearchTree extends VDS {
         }
         trackMethodReturn();
         getVisualBST(getName()).traceBack();
+        // end
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         getVisualBST(getName()).resetColorOfAll();
     }
     private void eraseNode(Node p, int value) {
         // check if failed
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
         if (p == null) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             outputMessageReturn("The value is nonexistent.");
@@ -217,31 +239,37 @@ public class VisualizedBinarySearchTree extends VDS {
         // check if reached
         trackCodeEntrance(getCurrentMethod() + "_ifEql");
         if (value == p.value) {
+            // discussion
             trackCodeEntrance(CodeTracker.NEXT_LINE);
-            trackCodeEntrance(CodeTracker.NEXT_LINE);
+            trackCodeEntrance(CodeTracker.NEXT_LINE, false);
             if (p.left != null && p.right != null) {
+                // find the max node of left-subtree
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 Node np = __findMaxOf(p.left);
                 getVisualBST(getName()).markNodeOfValue(np.value, ColorScheme.MARKED);
+                // cache the max value
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 int t = np.value;
                 getVisualBST(getName()).markNodeOfValue(np.value, ColorScheme.DEFAULT);
-                /* start sub routine */
+                // erase the max node of left-subtree (start a sub-routine)
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
-                getVisualBST(getName()).traceToLeft();
                 trackMethodCall(getCurrentMethod());
+                getVisualBST(getName()).traceToLeft();
                 eraseNode(p.left, np.value);
                 trackMethodReturn();
                 getVisualBST(getName()).traceBack();
-                /* end sub routine */
+                // modify the value
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 getVisualBST(getName()).modifyNode(p.value, t);
                 p.value = t;
             } else {
+                // cache the to-be-erased node
                 trackCodeEntrance(getCurrentMethod() + "_preDel");
+                // discussion
                 trackCodeEntrance(CodeTracker.NEXT_LINE);
                 Node f = p.parent;
                 if (p.left != null) {
+                    // relink to left-subtree
                     trackCodeEntrance(getCurrentMethod() + "_linkL");
                     if (p.value < f.value) {
                         f.left = p.left;
@@ -251,6 +279,7 @@ public class VisualizedBinarySearchTree extends VDS {
                         f.right.parent = f;
                     }
                 } else {
+                    // relink to right-subtree
                     trackCodeEntrance(getCurrentMethod() + "_linkR");
                     if (p.value < f.value) {
                         f.left = p.right;
@@ -261,57 +290,67 @@ public class VisualizedBinarySearchTree extends VDS {
                     }
                 }
                 getVisualBST(getName()).eraseNodePrep(p.value);
+                // really erase node
                 trackCodeEntrance(getCurrentMethod() + "_delete");
                 getVisualBST(getName()).eraseCachedNode();
             }
+            // return
             trackCodeEntrance(getCurrentMethod() + "_return");
             return;
         }
         // discussion
         trackCodeEntrance(getCurrentMethod() + "_ifLR");
         if (value < p.value) {
+            // recursion to left-subtree
             trackCodeEntrance(getCurrentMethod() + "_recL");
-            getVisualBST(getName()).traceToLeft();
             trackMethodCall(getCurrentMethod());
+            getVisualBST(getName()).traceToLeft();
             eraseNode(p.left, value);
         } else {
+            // recursion to right-subtree
             trackCodeEntrance(getCurrentMethod() + "_recR");
-            getVisualBST(getName()).traceToRight();
             trackMethodCall(getCurrentMethod());
+            getVisualBST(getName()).traceToRight();
             eraseNode(p.right, value);
         }
         trackMethodReturn();
         getVisualBST(getName()).traceBack();
+        // end
         trackCodeEntrance(getCurrentMethod() + "_end");
     }
 
     public Node findMax() {
+        // find the max node of the whole tree
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
+        trackMethodCall("findMaxOf");
         if (root != null) {
             getVisualBST(getName()).traceRoot();
         }
-        trackMethodCall("findMaxOf");
         Node res = findMaxOf(root);
         trackMethodReturn();
         return res;
     }
     private Node findMaxOf(Node p) {
-        // check if null
+        // check if empty
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
         if (p == null) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             outputMessageReturn("false (empty BST)");
             return null;
         }
-        // iterate
+        // loop
         trackCodeEntrance(getCurrentMethod() + "_loop");
         while (p.right != null) {
+            // go next
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             getVisualBST(getName()).traceToRight();
             p = p.right;
+            // re-loop
             trackCodeEntrance(getCurrentMethod() + "_loop");
         }
         // return
         trackCodeEntrance(getCurrentMethod() + "_return");
-        outputMessageReturn("true (Node)(value = " + p.value + ")");
+        outputMessageReturn("(Node)(value = " + p.value + ")");
         return p;
     }
     private Node __findMaxOf(Node p) {
@@ -325,39 +364,91 @@ public class VisualizedBinarySearchTree extends VDS {
     }
 
     public void traversePreOrder() {
+        __traverse("dfsPreOrder");
+    }
+    public void traverseInOrder() {
+        __traverse("dfsInOrder");
+    }
+    public void traversePostOrder() {
+        __traverse("dfsPostOrder");
+    }
+
+    private void __traverse(String dfsMethodName) {
         outputMessage(" | RES : ", 16, Color.BLACK, false);
+        // dfs pre-order
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
+        trackMethodCall(dfsMethodName);
         getVisualBST(getName()).traceRoot();
-        trackMethodCall("dfsPreOrder");
-        dfsPreOrder(root);
+        try {
+            Method dfs = this.getClass().getDeclaredMethod(dfsMethodName, Node.class, Method.class);
+            dfs.setAccessible(true);
+            dfs.invoke(this, root, dfs);
+            dfs.setAccessible(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
         trackMethodReturn();
         getVisualBST(getName()).traceBack();
+        // end
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         getVisualBST(getName()).resetColorOfAll();
         outputMessage("\n", 16, Color.BLACK, false);
     }
-    private void dfsPreOrder(Node p) {
-        if (p == null) {
-            trackCodeEntrance(CodeTracker.NEXT_LINE);
-            return;
-        }
-        trackCodeEntrance(getCurrentMethod() + "_main_begin");
+    private void dfsPreOrder(Node p, Method self) throws Exception {
+        // check if null (*always false)
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
+        // traverse
         visitNode(p);
+        __traverseLeftSubtree(p, self);
+        __traverseRightSubtree(p, self);
+        // end
         trackCodeEntrance(CodeTracker.NEXT_LINE);
-        if (p.left != null) getVisualBST(getName()).traceToLeft();
-        trackMethodCall(getCurrentMethod());
-        dfsPreOrder(p.left);
-        trackMethodReturn();
-        if (p.left != null) getVisualBST(getName()).traceBack();
+    }
+    private void dfsInOrder(Node p, Method self) throws Exception {
+        // check if null (*always false)
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
+        // traverse
+        __traverseLeftSubtree(p, self);
+        visitNode(p);
+        __traverseRightSubtree(p, self);
+        // end
         trackCodeEntrance(CodeTracker.NEXT_LINE);
-        if (p.right != null) getVisualBST(getName()).traceToRight();
-        trackMethodCall(getCurrentMethod());
-        dfsPreOrder(p.right);
-        trackMethodReturn();
-        if (p.right != null) getVisualBST(getName()).traceBack();
+    }
+    private void dfsPostOrder(Node p, Method self) throws Exception {
+        // check if null (*always false)
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
+        // traverse
+        __traverseLeftSubtree(p, self);
+        __traverseRightSubtree(p, self);
+        visitNode(p);
+        // end
         trackCodeEntrance(CodeTracker.NEXT_LINE);
     }
 
     private void visitNode(Node p) {
+        trackCodeEntrance(getCurrentMethod() + "_visit");
         outputMessage(p.value + " ", 16, Color.BLACK, false);
+    }
+
+    private void __traverseLeftSubtree(Node p, Method dfs) throws Exception {
+        trackCodeEntrance(getCurrentMethod() + "_recL");
+        if (p.left != null) {
+            trackMethodCall(getCurrentMethod());
+            getVisualBST(getName()).traceToLeft();
+            dfs.invoke(this, p.left, dfs);
+            trackMethodReturn();
+            getVisualBST(getName()).traceBack();
+        }
+    }
+    private void __traverseRightSubtree(Node p, Method dfs) throws Exception {
+        trackCodeEntrance(getCurrentMethod() + "_recR");
+        if (p.right != null) {
+            trackMethodCall(getCurrentMethod());
+            getVisualBST(getName()).traceToRight();
+            dfs.invoke(this, p.right, dfs);
+            trackMethodReturn();
+            getVisualBST(getName()).traceBack();
+        }
     }
 }

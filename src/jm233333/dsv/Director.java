@@ -256,6 +256,7 @@ public class Director {
             }
         }
         animationWaitingList.clear();
+        stepPointSet.clear();
     }
     private <T> void extractAnimation(WritableValue<T> property, T value) {
 //        if (property instanceof DoubleProperty) System.out.println(((DoubleProperty) property).getName() + " | " + property.getValue() + " -> " + value);
