@@ -75,11 +75,6 @@ public class VisualListNode extends VisualNode {
         return boxValue.getHeight();
     }
 
-//    @Override
-    public void setHighlightColorBoard() {
-        ;
-    }
-
     @Override
     public void setColorScheme(ColorScheme colorScheme, boolean sync) {
         // create animation if required

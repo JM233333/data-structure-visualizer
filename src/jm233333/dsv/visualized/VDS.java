@@ -154,6 +154,7 @@ public abstract class VDS {
      */
     public void trackCodeEntrance(String name, boolean isStepPoint) {
         if (isStepPoint) {
+            System.out.println("step-point line " + codeTracker.getCurrentLineIndex() + ", " + name);
             Director.getInstance().addStepPoint();
         }
         codeTracker.gotoEntrance(name);

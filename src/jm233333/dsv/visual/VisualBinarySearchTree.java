@@ -75,7 +75,10 @@ public class VisualBinarySearchTree extends Visual {
         Director.getInstance().updateAnimation(1.0, node.scaleYProperty(), 0);
         Director.getInstance().getLastTimeline().setOnFinished((event) -> {
             this.getChildren().remove(node);
-            mapNode.remove(node.getValue());
+        });
+        mapNode.remove(node.getValue());
+        reconstruct();
+        Director.getInstance().getLastTimeline().setOnFinished((event) -> {
             relocate();
         });
     }
@@ -121,7 +124,7 @@ public class VisualBinarySearchTree extends Visual {
         for (Node child : this.getChildren()) {
             minX = Math.min(minX, child.getLayoutX());
         }
-        this.setLayoutX(getBaseX() + PADDING - minX);
+        this.setLayoutX(getBaseX() + PADDING / 2 - minX);
     }
     private void reconstruct() {
         Director.getInstance().addEmptyTimeline();
@@ -149,7 +152,7 @@ public class VisualBinarySearchTree extends Visual {
     public void traceRoot() {
         boolean sync = (tracedNode != null);
         if (tracedNode != null) {
-            tracedNode.setColorScheme(ColorScheme.DEFAULT);
+            tracedNode.setColorScheme(ColorScheme.TRACED);
         }
         tracedNode = rootNode;
         if (tracedNode != null) {
@@ -163,10 +166,10 @@ public class VisualBinarySearchTree extends Visual {
         if (tracedNode.getLeft() != null) {
             tracedNode.getPointerToLeft().setColorScheme(ColorScheme.HIGHLIGHT);
             tracedNode.getLeft().setColorScheme(ColorScheme.HIGHLIGHT, true);
-            tracedNode.setColorScheme(ColorScheme.DEFAULT);
-            tracedNode.getPointerToLeft().setColorScheme(ColorScheme.DEFAULT, true);
+            tracedNode.setColorScheme(ColorScheme.TRACED);
+            tracedNode.getPointerToLeft().setColorScheme(ColorScheme.TRACED, true);
         } else {
-            tracedNode.setColorScheme(ColorScheme.DEFAULT);
+            tracedNode.setColorScheme(ColorScheme.TRACED);
         }
         tracedNode = tracedNode.getLeft();
     }
@@ -177,10 +180,10 @@ public class VisualBinarySearchTree extends Visual {
         if (tracedNode.getRight() != null) {
             tracedNode.getPointerToRight().setColorScheme(ColorScheme.HIGHLIGHT);
             tracedNode.getRight().setColorScheme(ColorScheme.HIGHLIGHT, true);
-            tracedNode.setColorScheme(ColorScheme.DEFAULT);
-            tracedNode.getPointerToRight().setColorScheme(ColorScheme.DEFAULT, true);
+            tracedNode.setColorScheme(ColorScheme.TRACED);
+            tracedNode.getPointerToRight().setColorScheme(ColorScheme.TRACED, true);
         } else {
-            tracedNode.setColorScheme(ColorScheme.DEFAULT);
+            tracedNode.setColorScheme(ColorScheme.TRACED);
         }
         tracedNode = tracedNode.getRight();
     }
@@ -197,16 +200,16 @@ public class VisualBinarySearchTree extends Visual {
             }
             pointerToChild.setColorScheme(ColorScheme.HIGHLIGHT);
             tracedNode.getParentNode().setColorScheme(ColorScheme.HIGHLIGHT, true);
-            tracedNode.setColorScheme(ColorScheme.DEFAULT);
-            pointerToChild.setColorScheme(ColorScheme.DEFAULT, true);
+            tracedNode.setColorScheme(ColorScheme.TRACED);
+            pointerToChild.setColorScheme(ColorScheme.TRACED, true);
         } else {
-            tracedNode.setColorScheme(ColorScheme.DEFAULT);
+            tracedNode.setColorScheme(ColorScheme.TRACED);
         }
         tracedNode = tracedNode.getParentNode();
     }
     public void traceClear() {
         if (tracedNode != null) {
-            tracedNode.setColorScheme(ColorScheme.DEFAULT);
+            tracedNode.setColorScheme(ColorScheme.TRACED);
             tracedNode = null;
         }
     }
@@ -220,9 +223,13 @@ public class VisualBinarySearchTree extends Visual {
             node.setColorScheme(colorScheme, sync);
         }
     }
-    public void markClear() {
-        for (VisualBinaryTreeNode node : mapNode.values()) {
+
+    public void resetColorOfAll() {
+        traceClear();
+        for (VisualBinaryTreeNode node : mapNode.values()) { System.out.println("reset color of node " + node.getValue());
             node.setColorScheme(ColorScheme.DEFAULT, true);
+            node.getPointerToLeft().setColorScheme(ColorScheme.DEFAULT, true);
+            node.getPointerToRight().setColorScheme(ColorScheme.DEFAULT, true);
         }
     }
 
@@ -295,10 +302,6 @@ public class VisualBinarySearchTree extends Visual {
     public void eraseCachedNode() {
         removeNode(cachedNode);
         cachedNode = null;
-        reconstruct();
-        Director.getInstance().createDelayInvocation(0.5, (event) -> {
-            relocate();
-        });//Director.getInstance().getLastTimeline().setOnFinished(
     }
 
     public void modifyNode(int value, int nValue) {
@@ -306,7 +309,7 @@ public class VisualBinarySearchTree extends Visual {
         if (p != null) {
             mapNode.remove(p.getValue());
             p.setValue(nValue);
-            mapNode.put(p.getValue(), p);
+            mapNode.put(p.getValue(), p); System.out.printf("put-into-map <%d, %s<%d>>\n", p.getValue(), p, p.getValue());
         }
     }
 

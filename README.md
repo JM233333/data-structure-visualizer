@@ -188,6 +188,8 @@ Until 2020.3.23, I have not found any bug in the latest released version.
 
 Things planned to do in the near future:
 
+- Optimizes the animation effect of step-by-step mode.
+
 - Refactors the implementation of MethodTrigger.
 
 - Update : Supports global visual pointers for VDS.

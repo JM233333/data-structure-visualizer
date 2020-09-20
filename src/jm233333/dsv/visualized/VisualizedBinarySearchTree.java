@@ -1,11 +1,12 @@
 package jm233333.dsv.visualized;
 
+import java.util.HashMap;
+
 import javafx.scene.paint.Color;
+
 import jm233333.dsv.ui.CodeTracker;
 import jm233333.dsv.visual.ColorScheme;
 import jm233333.dsv.visual.VisualBinaryTreeNode;
-
-import java.util.HashMap;
 
 /**
  * Class {@code VisualizedBinarySearchTree} defines the data structure {@code BinarySearchTree} for visualizing.
@@ -71,14 +72,13 @@ public class VisualizedBinarySearchTree extends VDS {
             getVisualBST(getName()).traceToLeft();
             trackMethodCall(getCurrentMethod());
             res = findNode(p.left, value);
-            trackMethodReturn();
         } else {
             trackCodeEntrance(getCurrentMethod() + "_recR");
             getVisualBST(getName()).traceToRight();
             trackMethodCall(getCurrentMethod());
             res = findNode(p.right, value);
-            trackMethodReturn();
         }
+        trackMethodReturn();
         return res;
     }
 
@@ -99,6 +99,7 @@ public class VisualizedBinarySearchTree extends VDS {
         trackMethodReturn();
         getVisualBST(getName()).traceBack();
         trackCodeEntrance(CodeTracker.NEXT_LINE);
+        getVisualBST(getName()).resetColorOfAll();
     }
     private void insertNode(Node p, int value, int curDepth) {
         // check depth limit
@@ -204,6 +205,7 @@ public class VisualizedBinarySearchTree extends VDS {
         trackMethodReturn();
         getVisualBST(getName()).traceBack();
         trackCodeEntrance(CodeTracker.NEXT_LINE);
+        getVisualBST(getName()).resetColorOfAll();
     }
     private void eraseNode(Node p, int value) {
         // check if failed
@@ -324,11 +326,14 @@ public class VisualizedBinarySearchTree extends VDS {
 
     public void traversePreOrder() {
         outputMessage(" | RES : ", 16, Color.BLACK, false);
-        if (root != null) getVisualBST(getName()).markNodeOfValue(root.value, ColorScheme.MARKED);
+        getVisualBST(getName()).traceRoot();
         trackMethodCall("dfsPreOrder");
         dfsPreOrder(root);
         trackMethodReturn();
+        getVisualBST(getName()).traceBack();
         trackCodeEntrance(CodeTracker.NEXT_LINE);
+        getVisualBST(getName()).resetColorOfAll();
+        outputMessage("\n", 16, Color.BLACK, false);
     }
     private void dfsPreOrder(Node p) {
         if (p == null) {
@@ -338,30 +343,21 @@ public class VisualizedBinarySearchTree extends VDS {
         trackCodeEntrance(getCurrentMethod() + "_main_begin");
         visitNode(p);
         trackCodeEntrance(CodeTracker.NEXT_LINE);
-        if (p.left != null) getVisualBST(getName()).markNodeOfValue(p.left.value, ColorScheme.MARKED);
+        if (p.left != null) getVisualBST(getName()).traceToLeft();
         trackMethodCall(getCurrentMethod());
         dfsPreOrder(p.left);
         trackMethodReturn();
+        if (p.left != null) getVisualBST(getName()).traceBack();
         trackCodeEntrance(CodeTracker.NEXT_LINE);
-        if (p.right != null) getVisualBST(getName()).markNodeOfValue(p.right.value, ColorScheme.MARKED);
+        if (p.right != null) getVisualBST(getName()).traceToRight();
         trackMethodCall(getCurrentMethod());
         dfsPreOrder(p.right);
         trackMethodReturn();
+        if (p.right != null) getVisualBST(getName()).traceBack();
         trackCodeEntrance(CodeTracker.NEXT_LINE);
-        leaveNode(p);
     }
 
     private void visitNode(Node p) {
-        outputMessage(p.value + ", ", 16, Color.BLACK, false);
-        getVisualBST(getName()).markNodeOfValue(p.value, ColorScheme.HIGHLIGHT);
-        if (p.parent != null) {
-            getVisualBST(getName()).markNodeOfValue(p.parent.value, ColorScheme.MARKED, true);
-        }
-    }
-    private void leaveNode(Node p) {
-        getVisualBST(getName()).markNodeOfValue(p.value, ColorScheme.MARKED);
-        if (p.parent != null) {
-            getVisualBST(getName()).markNodeOfValue(p.parent.value, ColorScheme.HIGHLIGHT, true);
-        }
+        outputMessage(p.value + " ", 16, Color.BLACK, false);
     }
 }

@@ -7,7 +7,6 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.BooleanPropertyBase;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.WritableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -258,15 +257,8 @@ public class Director {
         }
         animationWaitingList.clear();
     }
-
-    /**
-     * Extracts a pair of (property, value), e.g. finish the animation immediately.
-     *
-     * @param property the animated property
-     * @param value the target value of the animated property
-     */
-    public <T> void extractAnimation(WritableValue<T> property, T value) {
-        if (property instanceof DoubleProperty) System.out.println(((DoubleProperty) property).getName() + " | " + property.getValue() + " -> " + value);
+    private <T> void extractAnimation(WritableValue<T> property, T value) {
+//        if (property instanceof DoubleProperty) System.out.println(((DoubleProperty) property).getName() + " | " + property.getValue() + " -> " + value);
         property.setValue(value);
     }
 

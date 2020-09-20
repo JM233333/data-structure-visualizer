@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.IntegerPropertyBase;
 import javafx.beans.value.ChangeListener;
-import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.FlowPane;
