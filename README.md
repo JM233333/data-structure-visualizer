@@ -147,45 +147,6 @@ Until 2020.3.23, I have not found any bug in the latest released version.
 
 ；
 
-## Change Log
-
-| Date       | Updates |
-| :---       | :--- |
-| 2019.12.1  | Starts developing this project. |
-|            | Early update records are omitted for brevity. |
-| 2020.3.5   | Most basic features are implemented. |
-| 2020.3.17  | Adds support for compilation with Ant. |
-| 2020.3.23  | Finishes writing the README. |
-| 2020.3.27  | Fix BUG : Localization of VisualBST. |
-|            | Fix BUG : Animation mistake of batch-processing. |
-| 2020.3.28  | Fix BUG : Animation mistake of VisualPointer. |
-|            | Adds the todo list into the README. |
-| 2020.3.29  | Update : Adds support for single-step animation of VisualizedList. |
-|            | Fix BUG : Mistake in method {pushFront(value)} of VisualizedList. |
-|            | Fix BUG : Sometimes wrong current method name in code-tracking. |
-| 2020.8.24  | Update : Implements methods {get(index)} and {find(value)} of VisualizedList. |
-|            | Update : Implements methods of VisualizedBST. |
-| 2020.8.25  | Update : Adds support for single-step animation of VisualizedBST. |
-|            | Fix BUG : BUG triggered while running batch-processing more than once. |
-| 2020.9.5   | Update : Implements methods {erase(value)} of VisualizedBST. (too complex!) |
-| 2020.9.7   | Refactors the source code. |
-|            | Refactors the information for javadoc. |
-| 2020.9.10  | Update : Implements illegal input detection for batch-processing. |
-| 2020.9.15  | Writes tutorial for user (Chinese). |
-|            | Refactors the design documents. |
-| 2020.9.16  | Update : Implements the main part of OutputBox. |
-|            | Fix BUG : Lack of out-of-bounds-check in several methods of VisualizedList. |
-|            | Fix BUG : Few UI layout mistakes. |
-| 2020.9.17  | Update : Supports fast-build for batch-processing. |
-| 2020.9.18  | Update : Implements {traverseXxxOrder()} of VisualizedBST. |
-|            | Fix BUG : Mistake in method {erase(value)} of VisualizedBST. |
-| 2020.9.19  | Update : Optimizes code-tracking. |
-|            | Update : Implements method-invocation-stack for VDS. |
-| 2020.9.20  | Fix BUG : Mistake of build functionality of batch-processing. |
-|            | Fix BUG : Mistake of reconstructing process of VisualizedBST. |
-|            | Fix BUG : Mistake of step-by-step mode after batch-building. |
-|            | Fix BUG : Mistake in {traverseXxxOrder()} of VisualizedBST. |
-
 ## Todo List
 
 Things planned to do in the near future:
@@ -193,3 +154,43 @@ Things planned to do in the near future:
 - Refactors the implementation of MethodTrigger.
 
 - Update : Supports global visual pointers for VDS.
+
+## Update History
+
+| Date       | Updates |
+| :---       | :--- |
+| 2020.9.20  | Fix BUG : Mistake of build functionality of batch-processing. |
+|            | Fix BUG : Mistake of reconstructing process of VisualizedBST. |
+|            | Fix BUG : Mistake of step-by-step mode after batch-building. |
+|            | Fix BUG : Mistake in {traverseXxxOrder()} of VisualizedBST. |
+|            | Reorders the update history in README. |
+| 2020.9.19  | Update : Optimizes code-tracking. |
+|            | Update : Implements method-invocation-stack for VDS. |
+| 2020.9.18  | Update : Implements {traverseXxxOrder()} of VisualizedBST. |
+|            | Fix BUG : Mistake in method {erase(value)} of VisualizedBST. |
+| 2020.9.17  | Update : Supports fast-build for batch-processing. |
+| 2020.9.16  | Update : Implements the main part of OutputBox. |
+|            | Fix BUG : Lack of out-of-bounds-check in several methods of VisualizedList. |
+|            | Fix BUG : Few UI layout mistakes. |
+| 2020.9.15  | Writes tutorial for user (Chinese). |
+|            | Refactors the design documents. |
+| 2020.9.10  | Update : Implements illegal input detection for batch-processing. |
+| 2020.9.7   | Refactors the source code. |
+|            | Refactors the information for javadoc. |
+| 2020.9.5   | Update : Implements methods {erase(value)} of VisualizedBST. (too complex!) |
+| 2020.8.25  | Update : Adds support for single-step animation of VisualizedBST. |
+|            | Fix BUG : BUG triggered while running batch-processing more than once. |
+| 2020.8.24  | Update : Implements methods {get(index)} and {find(value)} of VisualizedList. |
+|            | Update : Implements methods of VisualizedBST. |
+| 2020.3.29  | Update : Adds support for single-step animation of VisualizedList. |
+|            | Fix BUG : Mistake in method {pushFront(value)} of VisualizedList. |
+|            | Fix BUG : Sometimes wrong current method name in code-tracking. |
+| 2020.3.28  | Fix BUG : Animation mistake of VisualPointer. |
+|            | Adds the todo list into the README. |
+| 2020.3.27  | Fix BUG : Localization of VisualBST. |
+|            | Fix BUG : Animation mistake of batch-processing. |
+| 2020.3.23  | Finishes writing README. |
+| 2020.3.17  | Adds support for compilation with Ant. |
+| 2020.3.5   | Most basic features are implemented. |
+| 2019.12.1  | Starts developing this project. |
+|            | Early update records are omitted for brevity. |
