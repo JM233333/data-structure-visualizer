@@ -6,6 +6,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.*;
@@ -101,7 +103,7 @@ public class MethodTrigger extends HBox {
         }
         // set listener
         button.setOnAction((event) -> {
-            trigger(getArguments());
+            trigger(getArguments(), null);
             Director.getInstance().playAnimation();
         });
     }
@@ -109,7 +111,7 @@ public class MethodTrigger extends HBox {
     /**
      * Triggers the method.
      */
-    public boolean trigger(ArrayList<Integer> arguments) { //, EventHandler<ActionEvent> eventAtLast) {
+    public boolean trigger(ArrayList<Integer> arguments, EventHandler<ActionEvent> handlerAtLast) {
         // debug
         StringBuilder s = new StringBuilder(name);
         for (int argument : arguments) {
@@ -135,6 +137,15 @@ public class MethodTrigger extends HBox {
             method.invoke(vds, arguments.toArray());
             vds.trackMethodReturn();
 //            Director.getInstance().getLastTimeline().setOnFinished(eventAtLast);
+            final EventHandler<ActionEvent> handlerOld = Director.getInstance().getLastTimeline().getOnFinished();
+            Director.getInstance().getLastTimeline().setOnFinished((event) -> {
+                if (handlerAtLast != null) {
+                    handlerAtLast.handle(event);
+                }
+                if (handlerOld != null) {
+                    handlerOld.handle(event);
+                }
+            });
             return true;
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();

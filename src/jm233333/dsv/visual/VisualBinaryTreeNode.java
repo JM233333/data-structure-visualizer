@@ -3,6 +3,7 @@ package jm233333.dsv.visual;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeType;
+
 import jm233333.dsv.Director;
 
 public class VisualBinaryTreeNode extends VisualNode {

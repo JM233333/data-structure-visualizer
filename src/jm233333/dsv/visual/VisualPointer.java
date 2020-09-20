@@ -1,7 +1,6 @@
 package jm233333.dsv.visual;
 
 import javafx.beans.value.ChangeListener;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeLineCap;

@@ -7,6 +7,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.BooleanPropertyBase;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.WritableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -240,18 +241,19 @@ public class Director {
     /**
      * Extracts all cached animations in {@link Director#animationWaitingList}, e.g. finish them immediately.
      */
-    public void extractAnimation() {
+    public void extractAnimation(ActionEvent event) {
 //        Circle test = new Circle();
 //        Class<?> clz = test.layoutXProperty().getClass(); System.out.println(clz.getName());
 //        Type tp = clz.getGenericSuperclass(); System.out.println(tp);
 //        for (Type t : itfcs) System.out.print(t.getClass().getName() + " "); System.out.print('\n');
         for (Timeline timeline : animationWaitingList) {
-            for (KeyFrame keyFrame : timeline.getKeyFrames()) {
-                for (KeyValue keyValue : keyFrame.getValues()) {
-                    WritableValue property = keyValue.getTarget();
-                    Object value = keyValue.getEndValue();
-                    extractAnimation(property, value);
-                }
+            for (KeyFrame keyFrame : timeline.getKeyFrames()) for (KeyValue keyValue : keyFrame.getValues()) {
+                WritableValue property = keyValue.getTarget();
+                Object value = keyValue.getEndValue();
+                extractAnimation(property, value);
+            }
+            if (timeline.getOnFinished() != null) {
+                timeline.getOnFinished().handle(event);
             }
         }
         animationWaitingList.clear();
@@ -264,6 +266,7 @@ public class Director {
      * @param value the target value of the animated property
      */
     public <T> void extractAnimation(WritableValue<T> property, T value) {
+        if (property instanceof DoubleProperty) System.out.println(((DoubleProperty) property).getName() + " | " + property.getValue() + " -> " + value);
         property.setValue(value);
     }
 

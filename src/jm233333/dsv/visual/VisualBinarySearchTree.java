@@ -296,7 +296,7 @@ public class VisualBinarySearchTree extends Visual {
         removeNode(cachedNode);
         cachedNode = null;
         reconstruct();
-        Director.getInstance().createDelayInvocation(1.0, (event) -> {
+        Director.getInstance().createDelayInvocation(0.5, (event) -> {
             relocate();
         });//Director.getInstance().getLastTimeline().setOnFinished(
     }

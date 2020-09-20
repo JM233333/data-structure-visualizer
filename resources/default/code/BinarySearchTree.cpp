@@ -145,4 +145,7 @@ insert 47
 insert 48
 insert 46
 insert 40
+erase 45
+erase 40
+erase 50
 */

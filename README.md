@@ -181,14 +181,12 @@ Until 2020.3.23, I have not found any bug in the latest released version.
 |            | Fix BUG : Mistake in method {erase(value)} of VisualizedBST. |
 | 2020.9.19  | Update : Optimizes code-tracking. |
 |            | Update : Implements method-invocation-stack for VDS. |
+| 2020.9.20  | Fix BUG : Mistake of build functionality of batch-processing. |
+|            | Fix BUG : Mistake of reconstructing process of VisualizedBST. |
 
 ## Todo List
 
 Things planned to do in the near future:
-
-- Fix BUG : Mistake of reconstructing process of VisualizedBST.
-
-- Fix BUG : Mistake of build functionality of batch-processing.
 
 - Refactors the implementation of MethodTrigger.
 
