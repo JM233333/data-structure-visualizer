@@ -171,7 +171,6 @@ public abstract class VDS {
         trackCodeEntrance(methodName);
         monitor.getVisualInvocationStack().callMethod(methodName);
         codeTracker.callMethod(monitor.getVisualInvocationStack().getCurrentMethod());
-        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
     }
 
     /**

@@ -180,8 +180,8 @@ public class CodeTracker extends ScrollPane {
             if (index != -1) {
                 double virtualCurHeight = getLine(Math.max(0, index - 7)).getLayoutY();
                 double virtualMaxHeight = getLine(codeBoard.getChildren().size() - 1).getLayoutY() - this.heightProperty().getValue();
-                double nVvalue = Math.min(1.0, Math.max(0.0, virtualCurHeight / virtualMaxHeight));
-                Director.getInstance().updateAnimation(0.5, this.vvalueProperty(), Math.min(1.0, Math.max(0.0, nVvalue)));
+                double nVvalue = Math.min(0.95, Math.max(0.0, virtualCurHeight / virtualMaxHeight));
+                Director.getInstance().updateAnimation(0.5, this.vvalueProperty(), nVvalue);
             }
             // delay
             Director.getInstance().createDelayInvocation(0.5, null);

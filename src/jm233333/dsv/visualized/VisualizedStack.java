@@ -11,7 +11,7 @@ import jm233333.util.Direction;
  */
 public class VisualizedStack extends VDS {
 
-    private int[] data;
+    private final int[] data;
     private int top;
     private ModeStack mode;
 
@@ -31,51 +31,66 @@ public class VisualizedStack extends VDS {
     }
 
     public void push(int value) {
+        // check if full
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
         if (_isFull()) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             outputMessageError("Full stack.");
             return;
         }
+        // push (st.1)
         trackCodeEntrance(getCurrentMethod() + "_main_begin");
         data[top] = value;
         getVisualArray(getName()).updateElement(top, value);
+        // push (st.2)
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         top ++;
         getVisualArray(getName()).updateIndexField("top", top);
+        // end
         trackCodeEntrance(CodeTracker.NEXT_LINE);
     }
 
     public void pop() {
+        // check if empty
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
         if (_isEmpty()) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             outputMessageError("Empty stack.");
             return;
         }
+        // pop
         trackCodeEntrance(getCurrentMethod() + "_main_begin");
         top --;
         getVisualArray(getName()).updateIndexField("top", top);
         getVisualArray(getName()).eraseElement(top);
+        // end
         trackCodeEntrance(CodeTracker.NEXT_LINE);
     }
 
     public int top() {
+        // check if empty
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
         if (_isEmpty()) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
             outputMessageError("Empty stack.");
             return 0;
         }
+        // return
         trackCodeEntrance(getCurrentMethod() + "_main_begin");
-        trackCodeEntrance(CodeTracker.NEXT_LINE);
         outputMessageReturn(data[top - 1]);
         return data[top - 1];
     }
 
     public boolean isEmpty() {
+        // return
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
         boolean flag = (top == 0);
         outputMessageReturn(flag ? "true" : "false");
         return flag;
     }
     public boolean isFull() {
+        // return
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
         boolean flag = (top == data.length);
         outputMessageReturn(flag ? "true" : "false");
         return flag;

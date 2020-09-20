@@ -31,8 +31,11 @@ public class VisualizedList extends VDS {
     }
 
     private Node getNode(int index) {
+        // initialize pointer
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
         Node p = head;
         if (p != null) getVisualList(getName()).setColorScheme(0, ColorScheme.HIGHLIGHT);
+        // loop
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         for (int i = 0; i < index; i ++) {
             trackCodeEntrance(CodeTracker.NEXT_LINE);
@@ -53,14 +56,22 @@ public class VisualizedList extends VDS {
     }
 
     public int get(int index) {
+        // get node
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
         trackMethodCall("getNode");
         Node p = getNode(index);
         trackMethodReturn();
+        // check if out-of-bound
+        trackCodeEntrance(CodeTracker.NEXT_LINE);
         if (p == null) {
+            trackCodeEntrance(CodeTracker.NEXT_LINE);
             outputMessageError("Out of bound.");
-            return 0;
+            return 0xffffffff;
         }
+        // return
+        trackCodeEntrance(getCurrentMethod() + "_return");
         outputMessageReturn(p.value);
+        getVisualList(getName()).setColorScheme(index, ColorScheme.DEFAULT);
         return p.value;
     }
 
@@ -91,18 +102,21 @@ public class VisualizedList extends VDS {
 
     public void pushFront(int value) {
         // create new node
+        trackCodeEntrance(CodeTracker.NEXT_LINE, false);
         Node node = new Node(value);
         getVisualList(getName()).setCachedNode(0, value);
+        // push front (st.1)
         trackCodeEntrance(CodeTracker.NEXT_LINE);
-        // push front
         node.next = head;
         if (head != null) {
             getVisualList(getName()).setPointerNext(VisualList.CACHED_NODE, 0);
         }
         getVisualList(getName()).moveRestNodes(0, 1);
+        // push front (st.2)
         trackCodeEntrance(CodeTracker.NEXT_LINE);
         head = node;
         getVisualList(getName()).insertCachedNode(0);
+        // end
         trackCodeEntrance(CodeTracker.NEXT_LINE);
     }
 
