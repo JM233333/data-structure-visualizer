@@ -14,7 +14,7 @@ public class Global {
 //     * The flag indicating whether the application is running in the jar package.
 //     */
 //    public static final boolean isJar = Main.class.getResource("Main.class").toString().startsWith("jar");
-    public static final boolean IS_DEBUG = true;
+    public static final boolean IS_DEBUG = false;
     public static final int INFINITY = 0xffffffff;
 
     /**
