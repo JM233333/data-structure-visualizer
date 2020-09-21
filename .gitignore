@@ -2,3 +2,4 @@
 __artifacts_temp/
 doc/
 out/
+custom/visualized/**.class
