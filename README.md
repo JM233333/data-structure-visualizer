@@ -6,7 +6,7 @@ English | [简体中文](./README.cn.md)
 
 *Authored by JM233333*
 
-*Notice: The current source code is only a DEMO version, and some basic functions are still flawed. For example, some basic data structures are not supported currently (e.g. k-ary tree or graph).*
+*Version 0.1*
 
 ## Introduction
 
@@ -18,7 +18,11 @@ English | [简体中文](./README.cn.md)
 
 *This application can be used as an auxiliary tool for personal learning, as well as a teaching tool (e.g. demonstrating on the screen in class)*
 
-*For convenience of description, we will abbreviate the data structure (or algorithm) visualized by the application as **VDS**.*
+If this application is useful to you, please *Star* it on GitHub.
+
+[https://github.com/JM233333/data-structure-visualizer](https://github.com/JM233333/data-structure-visualizer)
+
+*For convenience of description, we will abbreviate the data structure (or algorithm) visualized by the application as **VDS** below.*
 
 ### Features
 

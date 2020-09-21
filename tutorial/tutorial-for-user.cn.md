@@ -125,3 +125,9 @@
 ## 自定义扩展
 
 tutorial tbd.
+
+## 写在最后
+
+如果该应用对你有所帮助，请你在 GitHub 上 *Star* 该项目，我将感激不尽。
+
+[https://github.com/JM233333/data-structure-visualizer](https://github.com/JM233333/data-structure-visualizer)
