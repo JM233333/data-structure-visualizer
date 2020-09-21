@@ -128,9 +128,7 @@ For more detailed usage, please refer to the tutorial document in the pre-compil
 
 ### Known BUGs
 
-Until 2020.3.23, I have not found any bug in the latest released version.
-
-- *Because I have not released the application yet \^\_\^*
+Until 2020.9.21, I have not found any bug in the latest released version (v0.1).
 
 ## More
 
