@@ -24,25 +24,15 @@ English | [简体中文](./README.cn.md)
 
 With this visualization tool, you can:
 
-- See the visual elements of the logical structure of VDS;
+- Intuitively see the graphical representation of the logical structure of VDS, as well as the animation of the various operations performed on the VDS (i.e. the data structure maintenance or algorithm execution);
 
-- See an animation of the algorithm execution process and data structure maintenance process;
+- See the code trace synchronized with the animation, as well as the synchronized classic console output;
 
-- See code traces of performed VDS operations synchronized with the animation;
+- Use single-step animation mode to deeply understand the operation process of VDS.
 
-- See the output of various operations of the VDS.
+- Add other user-defined VDS by yourself and let the tool visually display them.
 
-And you can also interact with the VDS, for example:
-
-- Let the VDS perform the operation specified by the user;
-
-- Set animation parameters, such as adjusting the animation playback rate and setting whether to play in a single step;
-
-- Control the detail-level of the output, such as requiring all intermediate DEBUG information to be output or only the final result.
-
-What's more, the programmers can add user-defined VDS by themselves.
-
-Importantly, They don't need to read and understand the source code of the application. They just need to consult the developer manual provided by us. The only condition is that the programmers should has at least a basic understanding of Java syntax, and they need to follow some preset rules while extending.
+This tool provides good support for user extensions. Programmers don't need to read and understand the source code of the application. They just need to consult the developer manual provided by us. The only condition is that the programmers should has at least a basic understanding of Java syntax, and they need to follow some preset rules while extending.
 
 However, the extension is limited. At present, the tool only supports VDSs based on one or more of the following logical structures:
 
@@ -64,7 +54,7 @@ Obviously supporting only the above is insufficient, so I plan to add support fo
 
 In order to help those who have no experience with Java to get started quickly, I prepared pre-compiled jar package and exe file, which can be downloaded from the following URL. However, these may not be the latest version.
 
-[(Download_address_has_not_been_set)](blog.jm233333.com)
+[(Download_address_has_not_been_set)]()
 
 For any PC user, you can directly download the compressed package containing the jar package, decompress it, and run the `.jar` file directly to launch the application. However, you must download and configure JRE 8+ to run the `.jar` file.
 
@@ -108,7 +98,6 @@ In addition, because the `.iml` configuration file used by IDEA is retained in t
 
 Start the visualization (please refer to the tutorial document for how-to-startup) , you will see the following GUI:
 
-![design/sample-gui.jpg](https://github.com/JM233333/data-structure-visualizer/blob/master/design/sample-gui.jpg)
 ![design/sample-gui.jpg](design/sample-gui.jpg)
 
 The **Menu** at the top of the GUI is used to switch the VDS or return to the main menu.

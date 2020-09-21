@@ -54,7 +54,7 @@ public class Monitor extends ScrollPane {
         mapVisual = new HashMap<>();
         mapIndexFieldConnection = new HashMap<>();
         // initialize visual invocation stack
-        visualInvocationStack = new VisualInvocationStack(VisualInvocationStack.BUILTIN_NAME, 7);
+        visualInvocationStack = new VisualInvocationStack(VisualInvocationStack.BUILTIN_NAME, 6);
         visualInvocationStack.setLayoutX(48);
         visualInvocationStack.setLayoutY(48);
         canvas.getChildren().add(visualInvocationStack);

@@ -1,3 +1,5 @@
-Stack 10
+Stack 7
+Queue 7
+CircularQueue 7
 List
 BinarySearchTree
