@@ -18,10 +18,6 @@ English | [简体中文](./README.cn.md)
 
 *This application can be used as an auxiliary tool for personal learning, as well as a teaching tool (e.g. demonstrating on the screen in class)*
 
-If this application is useful to you, please *Star* it on GitHub.
-
-[https://github.com/JM233333/data-structure-visualizer](https://github.com/JM233333/data-structure-visualizer)
-
 *For convenience of description, we will abbreviate the data structure (or algorithm) visualized by the application as **VDS** below.*
 
 ### Features
@@ -52,29 +48,23 @@ Obviously supporting only the above is insufficient, so I plan to add support fo
 
 - Graph (simple structure only).
 
+## Environment Configuration
+
+Windows and Linux are supported (availability guaranteed on Windows 10 and Ubuntu 18/20/22).
+
+JDK 8+ and the JavaFX module are required.
+
+- If using JDK 10+, you may need to manually add JavaFX modules to your JDK.
+
+- We recommend Linux users **DO NOT** install Java through the package manager (e.g. `sudo apt install openjdk-8-jdk`) as the JavaFX module may not be built in. The JDK 8 downloaded from the Oracle official website has a JavaFX module built in, which requires no additional configuration.
+
+We already provide an Ant build script. It is recommended to use Apache Ant 1.10.x.
+
 ## Installation
 
-### Option 1 : Download the pre-compiled jar package or exe file
+You can build the project using Ant or any IDE (e.g. Ecllipse, IDEA, ...).
 
-In order to help those who have no experience with Java to get started quickly, I prepared pre-compiled jar package and exe file, which can be downloaded from the following URL. However, these may not be the latest version.
-
-[(Download_address_has_not_been_set)]()
-
-For any PC user, you can directly download the compressed package containing the jar package, decompress it, and run the `.jar` file directly to launch the application. However, you must download and configure JRE 8+ to run the `.jar` file.
-
-If you are a Windows user, you can also directly download the compressed package containing the exe file, decompress it, and run the `.exe` file directly to launch the application. In this way, you don't need to configure the JRE because it has been packaged into this exe file.
-
-*Notice:*
-
-- *JRE 8 or higher version is required for jar package. If using JRE 10+, you may need to manually add JavaFX modules to your JRE.*
-
-- *The exe file must be run in Windows but requires no additional environment configuration.*
-
-### Option 2 : Download and compile the source code
-
-If you have experience with Java, you can clone or download the source code from the project's GitHub page, and then build the project using Ant or any IDE (such as Ecllipse, IDEA, etc.).
-
-The easiest way is to compile directly with Ant, but you must first download and configure JDK 8+ and Apache Ant 1.10.x, and set the environment variable `JAVA_HOME` to the root directory of JDK. After completing the configuration, go to the root directory of the source code folder, open the CLI, and run the following command:
+The easiest way is to build directly with the Ant build script we provided, but you must install Apache Ant 1.10.x, and set the environment variable `JAVA_HOME` to the root directory of JDK. After completing the configuration, go to the root directory of the source code folder, open the CLI, and run the following command:
 
 ```
 ant all
@@ -90,11 +80,15 @@ data-structure-visualizer.jar
 
 Run the `.jar` file directly to launch the application.
 
+```bash
+java -jar /path/to/data-structure-visualizer.jar
+```
+
 In addition, because the `.iml` configuration file used by IDEA is retained in the project source code, it is very convenient to use IDEA to build the project, just one-click compile and run.
 
 *Notice:*
 
-- *JDK 8 or higher version is required. If using JDK 10+, you may need to manually add JavaFX modules to your JDK.*
+- *JDK 8 or higher version is required.*
 
 - *If you build the project with Ant, then 1.10.x is required.*
 

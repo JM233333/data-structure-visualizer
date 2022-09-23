@@ -18,10 +18,6 @@
 
 该应用可作为个人学习的辅助工具使用，也可作为教学工具使用（例如在课堂上进行投屏演示）。
 
-如果该应用对你有所帮助，请你在 GitHub 上 *Star* 该项目，我将感激不尽。
-
-[https://github.com/JM233333/data-structure-visualizer](https://github.com/JM233333/data-structure-visualizer)
-
 *为便于描述，在下文中我们会将被展示的数据结构（或算法）缩写为 **VDS**。*
 
 ### 特性
@@ -52,29 +48,23 @@
 
 - 图（仅限简单结构）。
 
+## 环境配置
+
+支持 Windows 和 Linux（在 Windows 10 和 Ubuntu 18/20/22 上确保可用）。
+
+需要 JDK 8+ 和 JavaFX 模块。
+
+- 如果使用 JDK 10+ ，那么你可能需要手动将 JavaFX 模块加入你的 JDK 中。
+
+- 建议 Linux 用户不要通过包管理器安装 Java（例如 `sudo apt install openjdk-8-jdk`），很可能不内置 JavaFX 模块。从 Oracle 官网上下载的 JDK 8 内置了 JavaFX 模块，无需另外配置。
+
+项目提供 Ant 构建脚本，建议使用 Apache Ant 1.10.x 。
+
 ## 安装
 
-### 选项 1 ：下载已经编译好的 jar 包或 exe 文件
+你可以使用 Ant 或任何集成开发环境（例如 Ecllipse 和 IDEA 等）来构建项目。
 
-为便于没有 Java 使用经验的人快速开始，我准备了事先编译好的 jar 包和 exe 文件，可以从下面的网址中下载，但这可能不是最新的版本。
-
-[（下载地址还未设置好）](blog.jm233333.com)
-
-对于任意 PC 用户，你可以直接下载包含 jar 包的压缩包，将其解压后，直接运行 `.jar` 文件即可启动应用程序。但是你必须先下载并配置 JRE 1.8+ 才能运行 `.jar` 文件。
-
-如果你是 Windows 用户，你也可以直接下载包含 exe 文件的压缩包，将其解压后，直接运行 `.exe` 文件即可启动应用程序。这样你就无需配置 JRE 了，因为 JRE 已经被打包到了这个 exe 文件中。
-
-*注意：*
-
-- *运行 jar 包必须使用 JRE 8 或更高的版本。如果使用 JRE 10+ ，那么你可能需要手动将 JavaFX 模块加入你的 JRE 中。*
-
-- *运行 exe 文件必须在 Windows 环境下，不需要任何额外的环境配置。*
-
-### 选项 2 ：下载并编译源代码
-
-如果你有一定的 Java 使用经验，你可以从项目的 GitHub 页面 clone 或下载源代码，然后使用 Ant 或任何集成开发环境（例如 Ecllipse 和 IDEA 等）来构建项目。
-
-最简单的方法是直接用 Ant 来编译，但是你必须先下载并配置 JDK 8 和 Apache Ant 1.10.x ，并将环境变量 `JAVA_HOME` 设置为 JDK 的根目录。配置完成后，进入源代码文件夹的根目录，打开命令行，然后运行如下命令：
+最简单的方法是直接用项目提供 Ant 构建脚本来编译，但是你必须安装 Apache Ant 1.10.x ，并将环境变量 `JAVA_HOME` 设置为 JDK 的根目录。配置完成后，进入源代码文件夹的根目录，打开命令行，然后运行如下命令：
 
 ```
 ant all
@@ -90,11 +80,15 @@ data-structure-visualizer.jar
 
 直接运行 `.jar` 文件即可启动应用程序。
 
+```bash
+java -jar /path/to/data-structure-visualizer.jar
+```
+
 另外，因为项目源码中保留了 IDEA 使用的 `.iml` 配置文件，所以使用 IDEA 来构建项目也是非常方便的，一键编译运行即可。
 
 *注意：*
 
-- *必须使用 JDK 8 或更高的版本。如果使用 JDK 10+ ，那么你可能需要手动将 JavaFX 模块加入你的 JDK 中。*
+- *必须使用 JDK 8 或更高的版本。*
 
 - *如果使用 Ant 来构建项目，则必须使用 Ant 1.10.x 。*
 

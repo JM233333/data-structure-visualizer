@@ -26,7 +26,7 @@
 
 演示界面的 GUI 示意图如下：
 
-![design/sample-gui.jpg](https://github.com/JM233333/DataStructureVisualizer/blob/master/design/sample-gui.jpg)
+![design/sample-gui.jpg](https://github.com/JM233333/data-structure-visualizer/blob/master/design/sample-gui.jpg)
 
 界面上方的 **菜单** 用于切换应用程序所演示的数据结构，或是返回主菜单。
 
@@ -125,9 +125,3 @@
 ## 自定义扩展
 
 tutorial tbd.
-
-## 写在最后
-
-如果该应用对你有所帮助，请你在 GitHub 上 *Star* 该项目，我将感激不尽。
-
-[https://github.com/JM233333/data-structure-visualizer](https://github.com/JM233333/data-structure-visualizer)

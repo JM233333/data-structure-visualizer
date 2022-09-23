@@ -103,7 +103,7 @@ public class ResourceReader {
             System.out.format("    Finished. Default menu list is found.\n");
         } catch (NullPointerException e) {
             System.out.format("    Failed. Cannot find any text file for the menu list.\n");
-            System.err.format("Failed to get neither custom or default text file for the menu list.\n");
+            System.err.format("\nFailed to get neither custom or default text file for the menu list.\n\n");
             System.err.format("    at %s (%s)\n", "ResourceReader", "getMenuItems");
             isAllSucceeded = false;
             return;
@@ -142,7 +142,7 @@ public class ResourceReader {
             // dynamic compile
             getCustomVDSClassType(vdsClassName);
             // dynamic load
-            URL url = new URL("file:/" + Global.getRootPath());
+            URL url = new URL("file:" + Global.getRootPath());
             URLClassLoader classLoader = new URLClassLoader(new URL[]{url});
             vdsClassType = classLoader.loadClass("custom.visualized." + vdsClassName);
             System.out.format("    Finished. Custom definition of class %s is dynamic-compiled and loaded.\n", vdsClassName);
@@ -155,7 +155,7 @@ public class ResourceReader {
             } catch (ClassNotFoundException e2) {
                 System.out.format("        %s: %s\n", e2.getClass().getName(), e2.getMessage());
                 System.out.format("        Failed. No default definition of class %s exists.\n", vdsClassName);
-                System.err.format("Failed to get neither custom or default definition of class %s.\n", vdsClassName);
+                System.err.format("\nFailed to get neither custom or default definition of class %s.\n\n", vdsClassName);
                 System.err.format("    at %s (%s)\n", "ResourceReader", "getVDSInstantiations");
                 isAllSucceeded = false;
                 return;
